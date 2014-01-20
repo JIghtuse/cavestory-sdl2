@@ -1,7 +1,7 @@
 CXX := g++
 MKDIR := mkdir -p
 CXXFLAGS := -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++11
-LDFLAGS := 
+LDFLAGS := -lSDL2
 PROGS := bin/cave
 OBJS := $(patsubst src/%.cpp,obj/%.o, $(wildcard src/*.cpp))
 
