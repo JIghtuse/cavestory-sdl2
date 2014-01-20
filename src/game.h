@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <chrono>
+
 struct Game {
     Game();
     ~Game();

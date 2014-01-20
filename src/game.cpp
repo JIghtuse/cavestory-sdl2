@@ -4,7 +4,7 @@
 namespace {
     const int kScreenWidth = 640;
     const int kScreenHeight = 480;
-    const int kFps = 60;
+    const double kFps = 60.0;
 }
 
 Game::Game()
@@ -29,7 +29,11 @@ void Game::runEventLoop() {
 
     bool running{true};
     while (running) {
-        const unsigned int start_time_ms{SDL_GetTicks()};
+        using std::chrono::high_resolution_clock;
+        using std::chrono::milliseconds;
+
+        const auto start_time = high_resolution_clock::now();
+
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
             case SDL_KEYDOWN:
@@ -44,8 +48,17 @@ void Game::runEventLoop() {
 
         update();
         draw();
-        const unsigned int elapsed_time_ms{SDL_GetTicks() - start_time_ms};
-        SDL_Delay(1000 / kFps - elapsed_time_ms);
+
+        const auto end_time = high_resolution_clock::now();
+
+        std::chrono::duration<double> elapsed_time =
+            std::chrono::duration_cast<milliseconds>(end_time - start_time);
+
+        auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
+        if (delay_duration.count() < 0)
+            delay_duration = milliseconds(0);
+
+        SDL_Delay(delay_duration.count());
     }
 }
 
