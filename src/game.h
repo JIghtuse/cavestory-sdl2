@@ -8,8 +8,6 @@ private:
     void runEventLoop();
     void update();
     void draw();
-
-    const int fpsDelay;
 };
 
 #endif /* GAME_H */

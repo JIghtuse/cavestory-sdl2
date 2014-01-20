@@ -1,10 +1,20 @@
 #include "game.h"
 #include <SDL2/SDL.h>
 
-Game::Game() :
-    fpsDelay(60)
+namespace {
+    const int kScreenWidth = 640;
+    const int kScreenHeight = 480;
+    const int kFps = 60;
+}
+
+Game::Game()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_CreateWindow(
+            "Cave",
+            0,0,kScreenWidth,kScreenHeight,
+            SDL_WINDOW_FULLSCREEN_DESKTOP
+            );
     runEventLoop();
 }
 
@@ -21,6 +31,11 @@ void Game::runEventLoop() {
         const unsigned int start_time_ms{SDL_GetTicks()};
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_q) {
+                    running = false;
+                }
+                break;
             default:
                 break;
             }
@@ -29,13 +44,8 @@ void Game::runEventLoop() {
         update();
         draw();
         const unsigned int elapsed_time_ms{SDL_GetTicks() - start_time_ms};
-        SDL_Delay(1000 / fpsDelay - elapsed_time_ms);
+        SDL_Delay(1000 / kFps - elapsed_time_ms);
     }
-    // TODO
-    // while (running) - 60 Hz
-    // Handle input. Handle timer callbacks.
-    // update(). Move the player. Move projectiles. Check collisions
-    // draw()    draw everything!
 }
 
 void Game::update()
