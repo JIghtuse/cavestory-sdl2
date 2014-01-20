@@ -6,9 +6,7 @@ const double kFps = 60.0;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    sprite_{new Sprite("content/MyChar.bmp",
-                0, 0, 32, 32,
-                graphics_.getRenderer())}
+    sprite_{new Sprite("content/MyChar.bmp", 0, 0, 32, 32, graphics_.getRenderer())}
 {
     runEventLoop();
 }
@@ -62,4 +60,5 @@ void Game::update()
 void Game::draw(Graphics& graphics)
 {
     sprite_->draw(graphics, 320, 240);
+    graphics.flip();
 }

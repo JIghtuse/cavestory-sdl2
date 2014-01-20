@@ -9,7 +9,7 @@ struct Graphics;
 struct Sprite {
     Sprite(const std::string& file_path,
             int source_x, int source_y,
-            int width, int height, SDL_Renderer *renderer);
+            int width, int height, SDL_Renderer* ren);
     ~Sprite();
 
     Sprite(const Sprite&)=delete;
@@ -19,7 +19,6 @@ struct Sprite {
 
 private:
     SDL_Renderer *renderer_;
-    SDL_Surface *surface_;
     SDL_Texture *texture_;
     SDL_Rect source_rect_;
 };

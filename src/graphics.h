@@ -23,7 +23,7 @@ struct Graphics
             int y,
             SDL_Rect *clip=nullptr);
 
-    void update();
+    void flip();
 
     SDL_Renderer *getRenderer()
     {

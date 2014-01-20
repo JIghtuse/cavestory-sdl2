@@ -2,13 +2,18 @@
 #define SDL_H
 
 #include <SDL2/SDL.h>
+#include <stdexcept>
 
 struct SDLEngine
 {
     SDLEngine()
     {
-        SDL_Init(SDL_INIT_EVERYTHING);
-        SDL_ShowCursor(SDL_DISABLE);
+        if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+            throw std::runtime_error("SDL_Init");
+        }
+        if (SDL_ShowCursor(SDL_DISABLE) < 0) {
+            throw std::runtime_error("SDL_ShowCursor");
+        }
     }
     ~SDLEngine()
     {

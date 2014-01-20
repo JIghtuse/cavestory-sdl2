@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include <stdexcept>
 
 const int kScreenWidth = 640;
 const int kScreenHeight = 480;
@@ -9,8 +10,17 @@ Graphics::Graphics() :
                 0, 0, kScreenWidth,kScreenHeight,
                 SDL_WINDOW_FULLSCREEN_DESKTOP
                 )},
-    sdlRenderer {SDL_CreateRenderer(sdlWindow, -1, 0)}
+    sdlRenderer {SDL_CreateRenderer(
+            sdlWindow,
+            -1,
+            SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)}
 {
+    if (sdlWindow == nullptr) {
+        throw std::runtime_error("SDL_CreateWindow");
+    }
+    if (sdlRenderer == nullptr) {
+        throw std::runtime_error("SDL_CreateRenderer");
+    }
 }
 
 Graphics::~Graphics()
@@ -25,7 +35,7 @@ void Graphics::renderTexture(
         SDL_Rect dst,
         SDL_Rect *clip)
 {
-    SDL_RenderClear(sdlRenderer);
+    SDL_RenderClear(ren);
     SDL_RenderCopy(ren, tex, clip, &dst);
 }
 
@@ -33,7 +43,6 @@ void Graphics::renderTexture(
  * Draw an SDL_Texture at some destination rect taking a clip of the
  * texture if desired
  */
-
 void Graphics::renderTexture(
         SDL_Texture *tex,
         SDL_Renderer *ren,
@@ -53,7 +62,7 @@ void Graphics::renderTexture(
     renderTexture(tex, ren, dst, clip);
 }
 
-void Graphics::update()
+void Graphics::flip()
 {
     SDL_RenderPresent(sdlRenderer);
 }
