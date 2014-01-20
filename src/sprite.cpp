@@ -20,5 +20,8 @@ Sprite::~Sprite()
 
 void Sprite::draw(Graphics& graphics, int x, int y)
 {
-    graphics.renderTexture(texture_, graphics.getRenderer(), x, y);
+    graphics.renderTexture(texture_,
+            graphics.getRenderer(),
+            x, y,
+            &source_rect_);
 }

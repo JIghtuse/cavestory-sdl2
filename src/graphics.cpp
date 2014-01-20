@@ -15,6 +15,8 @@ Graphics::Graphics() :
 
 Graphics::~Graphics()
 {
+    SDL_DestroyRenderer(sdlRenderer);
+    SDL_DestroyWindow(sdlWindow);
 }
 
 void Graphics::renderTexture(
@@ -23,7 +25,6 @@ void Graphics::renderTexture(
         SDL_Rect dst,
         SDL_Rect *clip)
 {
-    SDL_SetRenderTarget(sdlRenderer, tex);
     SDL_RenderClear(sdlRenderer);
     SDL_RenderCopy(ren, tex, clip, &dst);
 }
