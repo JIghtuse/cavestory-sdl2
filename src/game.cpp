@@ -1,10 +1,14 @@
 #include "game.h"
-#include "sdlengine.h"
-#include "graphics.h"
+#include "sprite.h"
 
 const double kFps = 60.0;
 
-Game::Game()
+Game::Game() :
+    sdlEngine_(),
+    graphics_(),
+    sprite_{new Sprite("content/MyChar.bmp",
+                0, 0, 32, 32,
+                graphics_.getRenderer())}
 {
     runEventLoop();
 }
@@ -14,9 +18,6 @@ Game::~Game()
 }
 
 void Game::runEventLoop() {
-    SDLEngine sdlEngine;
-    Graphics graphics;
-
     SDL_Event event;
 
     bool running{true};
@@ -39,7 +40,7 @@ void Game::runEventLoop() {
         }
 
         update();
-        draw();
+        draw(graphics_);
 
         const auto end_time = high_resolution_clock::now();
 
@@ -58,6 +59,7 @@ void Game::update()
 {
 }
 
-void Game::draw()
+void Game::draw(Graphics& graphics)
 {
+    sprite_->draw(graphics, 320, 240);
 }

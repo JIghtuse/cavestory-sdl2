@@ -1,9 +1,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-struct SDL_Renderer;
-struct SDL_Window;
-struct SDL_Texture;
+#include <SDL2/SDL.h>
 
 struct Graphics
 {
@@ -13,7 +11,24 @@ struct Graphics
     Graphics(const Graphics&)=delete;
     Graphics operator=(const Graphics&)=delete;
 
-    void renderTexture(SDL_Texture *texture);
+    void renderTexture(
+            SDL_Texture *tex,
+            SDL_Renderer *ren,
+            SDL_Rect dst,
+            SDL_Rect *clip=nullptr);
+    void renderTexture(
+            SDL_Texture *tex,
+            SDL_Renderer *ren,
+            int x,
+            int y,
+            SDL_Rect *clip=nullptr);
+
+    void update();
+
+    SDL_Renderer *getRenderer()
+    {
+        return sdlRenderer;
+    }
 
 private:
     SDL_Window *sdlWindow;
