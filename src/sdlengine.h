@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-class SDLEngine
+struct SDLEngine
 {
     SDLEngine()
     {

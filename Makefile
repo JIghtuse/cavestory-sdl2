@@ -14,7 +14,7 @@ build: $(PROGS)
 clean:
 	rm -rf $(PROGS) $(OBJS)
 
-bin/cave: obj/game.o obj/main.o
+bin/cave: obj/game.o obj/main.o obj/graphics.o
 
 $(PROGS):
 	@$(MKDIR) $(dir $@)
