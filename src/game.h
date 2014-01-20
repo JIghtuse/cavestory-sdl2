@@ -4,6 +4,8 @@
 struct Game {
     Game();
     ~Game();
+private:
+    void runEventLoop();
 };
 
 #endif /* GAME_H */

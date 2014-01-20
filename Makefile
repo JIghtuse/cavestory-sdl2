@@ -1,9 +1,9 @@
 CXX := g++
 MKDIR := mkdir -p
-CXXFLAGS := -Wall -Werror -Wextra -pedantic
+CXXFLAGS := -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++11
 LDFLAGS := 
 PROGS := bin/cave
-OBJS := $(patsubst src/%.c,obj/%.o, $(wildcard src/*.c))
+OBJS := $(patsubst src/%.cpp,obj/%.o, $(wildcard src/*.cpp))
 
 .PHONY: all clean
 
