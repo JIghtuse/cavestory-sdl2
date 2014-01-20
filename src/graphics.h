@@ -3,6 +3,7 @@
 
 struct SDL_Renderer;
 struct SDL_Window;
+struct SDL_Texture;
 
 struct Graphics
 {
@@ -11,6 +12,8 @@ struct Graphics
 
     Graphics(const Graphics&)=delete;
     Graphics operator=(const Graphics&)=delete;
+
+    void renderTexture(SDL_Texture *texture);
 
 private:
     SDL_Window *sdlWindow;

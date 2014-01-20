@@ -21,3 +21,10 @@ Graphics::Graphics() :
 Graphics::~Graphics()
 {
 }
+
+void Graphics::renderTexture(SDL_Texture *texture)
+{
+    SDL_RenderClear(sdlRenderer);
+    SDL_RenderCopy(sdlRenderer, texture, NULL, NULL);
+    SDL_RenderPresent(sdlRenderer);
+}
