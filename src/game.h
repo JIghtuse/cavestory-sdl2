@@ -6,7 +6,10 @@ struct Game {
     ~Game();
 private:
     void runEventLoop();
-    int fpsDelay;
+    void update();
+    void draw();
+
+    const int fpsDelay;
 };
 
 #endif /* GAME_H */
