@@ -10,6 +10,7 @@ namespace {
 Game::Game()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_ShowCursor(SDL_DISABLE);
     SDL_CreateWindow(
             "Cave",
             0,0,kScreenWidth,kScreenHeight,
