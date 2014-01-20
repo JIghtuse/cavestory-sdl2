@@ -1,5 +1,5 @@
 #include "game.h"
-#include <SDL2/SDL.h>
+#include "sdlengine.h"
 
 namespace {
     const int kScreenWidth = 640;
@@ -7,21 +7,24 @@ namespace {
     const double kFps = 60.0;
 }
 
-Game::Game()
+Game::Game() :
+    sdlEngine(),
+    sdlWindow(
+            SDL_CreateWindow(
+                "Cave Reconstructed",
+                0, 0, kScreenWidth,kScreenHeight,
+                SDL_WINDOW_FULLSCREEN_DESKTOP
+                )
+            ),
+    sdlRenderer(
+            SDL_CreateRenderer(sdlWindow, -1, 0)
+            )
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_ShowCursor(SDL_DISABLE);
-    SDL_CreateWindow(
-            "Cave",
-            0,0,kScreenWidth,kScreenHeight,
-            SDL_WINDOW_FULLSCREEN_DESKTOP
-            );
     runEventLoop();
 }
 
 Game::~Game()
 {
-    SDL_Quit();
 }
 
 void Game::runEventLoop() {
