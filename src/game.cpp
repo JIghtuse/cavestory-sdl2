@@ -3,10 +3,17 @@
 
 const double kFps = 60.0;
 
+int Game::kTileSize = 32;
+
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    sprite_{new Sprite("content/MyChar.bmp", 0, 0, 32, 32, graphics_.getRenderer())}
+    sprite_{new Sprite(
+            "content/MyChar.bmp",
+            0, 0,
+            kTileSize, kTileSize,
+            graphics_.getRenderer()
+            )}
 {
     runEventLoop();
 }

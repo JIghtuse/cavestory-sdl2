@@ -11,6 +11,8 @@ struct Sprite;
 struct Game {
     Game();
     ~Game();
+
+    static int kTileSize;
 private:
     void runEventLoop();
     void update();
