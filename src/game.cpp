@@ -1,5 +1,5 @@
 #include "game.h"
-#include "sprite.h"
+#include "animated_sprite.h"
 
 const double kFps = 60.0;
 
@@ -8,11 +8,12 @@ int Game::kTileSize = 32;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    sprite_{new Sprite(
+    sprite_{new AnimatedSprite(
             "content/MyChar.bmp",
             0, 0,
             kTileSize, kTileSize,
-            graphics_.getRenderer()
+            graphics_.getRenderer(),
+            15, 3
             )}
 {
     runEventLoop();
@@ -26,9 +27,12 @@ void Game::runEventLoop() {
     SDL_Event event;
 
     bool running{true};
+    auto last_updated_time = std::chrono::high_resolution_clock::now();
     while (running) {
         using std::chrono::high_resolution_clock;
         using std::chrono::milliseconds;
+        using std::chrono::duration_cast;
+        using std::chrono::duration;
 
         const auto start_time = high_resolution_clock::now();
 
@@ -44,13 +48,16 @@ void Game::runEventLoop() {
             }
         }
 
-        update();
+        // update scene and last_updated_time
+        const auto current_time = high_resolution_clock::now();
+        update(duration_cast<milliseconds>(current_time - last_updated_time));
+        last_updated_time = current_time;
+
         draw(graphics_);
 
+        // calculate delay for constant fps
         const auto end_time = high_resolution_clock::now();
-
-        std::chrono::duration<double> elapsed_time =
-            std::chrono::duration_cast<milliseconds>(end_time - start_time);
+        duration<double,std::milli> elapsed_time = (end_time - start_time);
 
         auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
         if (delay_duration.count() < 0)
@@ -60,8 +67,9 @@ void Game::runEventLoop() {
     }
 }
 
-void Game::update()
+void Game::update(std::chrono::duration<double,std::milli> elapsed_time)
 {
+    sprite_->update(elapsed_time);
 }
 
 void Game::draw(Graphics& graphics)

@@ -14,7 +14,11 @@ build: $(PROGS)
 clean:
 	rm -rf $(PROGS) $(OBJS)
 
-bin/cave: obj/game.o obj/main.o obj/graphics.o obj/sprite.o
+bin/cave: obj/game.o \
+	obj/main.o \
+	obj/graphics.o \
+	obj/sprite.o \
+	obj/animated_sprite.o
 
 $(PROGS):
 	@$(MKDIR) $(dir $@)

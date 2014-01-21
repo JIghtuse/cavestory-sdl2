@@ -15,7 +15,7 @@ struct Game {
     static int kTileSize;
 private:
     void runEventLoop();
-    void update();
+    void update(std::chrono::duration<double,std::milli> elapsed_time);
     void draw(Graphics& graphics);
 
     SDLEngine sdlEngine_;
