@@ -1,4 +1,5 @@
 #include "game.h"
+#include "input.h"
 #include "animated_sprite.h"
 
 const double kFps = 60.0;
@@ -24,6 +25,7 @@ Game::~Game()
 }
 
 void Game::runEventLoop() {
+    Input input;
     SDL_Event event;
 
     bool running{true};
@@ -36,16 +38,24 @@ void Game::runEventLoop() {
 
         const auto start_time = high_resolution_clock::now();
 
+        input.beginNewFrame();
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
             case SDL_KEYDOWN:
+                input.keyDownEvent(event);
                 if (event.key.keysym.sym == SDLK_q) {
                     running = false;
                 }
                 break;
+            case SDL_KEYUP:
+                input.keyDownEvent(event);
+                break;
             default:
                 break;
             }
+        }
+        if (input.wasKeyPressed(SDL_SCANCODE_Q)) {
+            running = false;
         }
 
         // update scene and last_updated_time
