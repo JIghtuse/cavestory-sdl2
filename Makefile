@@ -19,6 +19,7 @@ bin/cave: obj/game.o \
 	obj/graphics.o \
 	obj/sprite.o \
 	obj/input.o \
+	obj/player.o \
 	obj/animated_sprite.o
 
 $(PROGS):

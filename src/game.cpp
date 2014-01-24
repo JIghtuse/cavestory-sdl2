@@ -1,6 +1,6 @@
 #include "game.h"
 #include "input.h"
-#include "animated_sprite.h"
+#include "player.h"
 
 const double kFps = 60.0;
 
@@ -9,13 +9,7 @@ int Game::kTileSize = 32;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    sprite_{new AnimatedSprite(
-            "content/MyChar.bmp",
-            0, 0,
-            kTileSize, kTileSize,
-            graphics_.getRenderer(),
-            15, 3
-            )}
+    player_{new Player(320, 240, graphics_)}
 {
     runEventLoop();
 }
@@ -79,11 +73,11 @@ void Game::runEventLoop() {
 
 void Game::update(std::chrono::duration<double,std::milli> elapsed_time)
 {
-    sprite_->update(elapsed_time);
+    player_->update(elapsed_time);
 }
 
 void Game::draw(Graphics& graphics)
 {
-    sprite_->draw(graphics, 320, 240);
+    player_->draw(graphics);
     graphics.flip();
 }
