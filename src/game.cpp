@@ -37,9 +37,6 @@ void Game::runEventLoop() {
             switch (event.type) {
             case SDL_KEYDOWN:
                 input.keyDownEvent(event);
-                if (event.key.keysym.sym == SDLK_q) {
-                    running = false;
-                }
                 break;
             case SDL_KEYUP:
                 input.keyUpEvent(event);
@@ -50,6 +47,18 @@ void Game::runEventLoop() {
         }
         if (input.wasKeyPressed(SDL_SCANCODE_Q)) {
             running = false;
+        }
+
+        if (input.isKeyHeld(SDL_SCANCODE_LEFT)
+                && input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
+            // if both left and right are being pressed we need to stop moving
+            player_->stopMoving();
+        } else if (input.isKeyHeld(SDL_SCANCODE_LEFT)) {
+            player_->startMovingLeft();
+        } else if (input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
+            player_->startMovingRight();
+        } else {
+            player_->stopMoving();
         }
 
         // update scene and last_updated_time
