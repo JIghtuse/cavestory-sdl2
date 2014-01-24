@@ -1,4 +1,4 @@
-Episode 3: Animated Sprite
+Episode 4: Animated Sprite
 ==========================
 
 Problem:
