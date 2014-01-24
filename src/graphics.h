@@ -9,7 +9,7 @@ struct Graphics
     ~Graphics();
 
     Graphics(const Graphics&)=delete;
-    Graphics operator=(const Graphics&)=delete;
+    Graphics& operator=(const Graphics&)=delete;
 
     void renderTexture(
             SDL_Texture *tex,

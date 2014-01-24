@@ -14,7 +14,7 @@ struct Sprite {
     virtual ~Sprite();
 
     Sprite(const Sprite&)=delete;
-    Sprite operator=(const Sprite&)=delete;
+    Sprite& operator=(const Sprite&)=delete;
 
     virtual void update(std::chrono::duration<double,std::milli>) {};
     void draw(Graphics& graphics, int x, int y);
