@@ -42,7 +42,7 @@ void Game::runEventLoop() {
                 }
                 break;
             case SDL_KEYUP:
-                input.keyDownEvent(event);
+                input.keyUpEvent(event);
                 break;
             default:
                 break;
