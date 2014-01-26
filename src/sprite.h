@@ -4,6 +4,7 @@
 #include <chrono>
 #include <string>
 #include <SDL2/SDL.h>
+#include "vector.h"
 
 struct Graphics;
 
@@ -20,7 +21,7 @@ struct Sprite {
     Sprite& operator=(const Sprite&)=delete;
 
     virtual void update(std::chrono::duration<double,std::milli>) {};
-    void draw(Graphics& graphics, int x, int y);
+    void draw(Graphics& graphics, Vector<int>& pos);
 
 private:
     SDL_Texture *texture_;

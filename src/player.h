@@ -5,11 +5,12 @@
 #include <map>
 #include <memory>
 #include "sprite.h"
+#include "vector.h"
 
 struct Graphics;
 
 struct Player {
-   Player(Graphics& graphics, int x, int y);
+   Player(Graphics& graphics, Vector<int> pos);
    ~Player();
 
    void update(std::chrono::duration<double,std::milli> elapsed_time);
@@ -18,6 +19,9 @@ struct Player {
    void startMovingLeft();
    void startMovingRight();
    void stopMoving();
+
+   void startJump();
+   void stopJump();
 
 private:
    enum class MotionType {
@@ -42,10 +46,9 @@ private:
    void initializeSprites(Graphics& graphics);
    SpriteState getSpriteState();
 
-   int x_;
-   int y_;
-   double velocity_x_;
-   double acceleration_x_;
+   Vector<int> pos_;
+   Vector<double> velocity_;
+   Vector<double> acceleration_;
    HorizontalFacing horizontal_facing_;
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
    static int kTileSize;

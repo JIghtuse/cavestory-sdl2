@@ -8,6 +8,7 @@
 const double kSlowdownFactor = 0.8;
 const double kWalkingAcceleration = 0.0012; // (pixels/ms) / ms
 const double kMaxSpeedX = 0.325;            // pixels / ms
+//const double kJumpSpeed = 0.325;            // pixels / ms
 
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
@@ -15,12 +16,11 @@ bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
             std::tie(b.motion_type, b.horizontal_facing);
 }
 
-Player::Player(Graphics& graphics, int x, int y) :
-    x_{x},
-    y_{y},
-    velocity_x_{0.0},
-    acceleration_x_{0.0},
-    horizontal_facing_(HorizontalFacing::LEFT),
+Player::Player(Graphics& graphics, Vector<int> pos) :
+    pos_(pos),
+    velocity_{0.0, 0.0},
+    acceleration_{0.0, 0.0},
+    horizontal_facing_{HorizontalFacing::LEFT},
     sprites_()
 {
     initializeSprites(graphics);
@@ -34,37 +34,51 @@ Player::~Player()
 void Player::update(std::chrono::duration<double,std::milli> elapsed_time)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
-    x_ += round(velocity_x_ * elapsed_time.count());
-    velocity_x_ += acceleration_x_ * elapsed_time.count();
-    if (acceleration_x_ < 0.0) {
-        velocity_x_ = std::max(velocity_x_, -kMaxSpeedX);
-    } else if (acceleration_x_ > 0.0) {
-        velocity_x_ = std::min(velocity_x_, kMaxSpeedX);
+    pos_.x += round(velocity_.x * elapsed_time.count());
+    velocity_.x += acceleration_.x * elapsed_time.count();
+    if (acceleration_.x < 0.0) {
+        velocity_.x = std::max(velocity_.x, -kMaxSpeedX);
+    } else if (acceleration_.x > 0.0) {
+        velocity_.x = std::min(velocity_.x, kMaxSpeedX);
     } else {
-        velocity_x_ *= kSlowdownFactor;
+        velocity_.x *= kSlowdownFactor;
     }
 }
 
 void Player::draw(Graphics& graphics)
 {
-    sprites_[getSpriteState()]->draw(graphics, x_, y_);
+    sprites_[getSpriteState()]->draw(graphics, pos_);
 }
 
 void Player::startMovingLeft()
 {
     horizontal_facing_ = HorizontalFacing::LEFT;
-    acceleration_x_ = -kWalkingAcceleration;
+    acceleration_.x = -kWalkingAcceleration;
 }
 
 void Player::startMovingRight()
 {
     horizontal_facing_ = HorizontalFacing::RIGHT;
-    acceleration_x_ = kWalkingAcceleration;
+    acceleration_.x = kWalkingAcceleration;
 }
 
 void Player::stopMoving()
 {
-    acceleration_x_ = 0.0;
+    acceleration_.x = 0.0;
+}
+
+void Player::startJump()
+{
+    //if (is_on_ground()) {
+        //jump_.reset();
+        //velocity_.y = -kJumpSpeed;
+    //} else if (velocity_.y < 0.0) {
+        //jump_.reactivate();
+    //}
+}
+
+void Player::stopJump()
+{
 }
 
 void Player::initializeSprites(Graphics& graphics)
@@ -96,7 +110,7 @@ void Player::initializeSprites(Graphics& graphics)
 Player::SpriteState Player::getSpriteState()
 {
     return SpriteState(
-            acceleration_x_ == 0.0 ? MotionType::STANDING
+            acceleration_.x == 0.0 ? MotionType::STANDING
                                    : MotionType::WALKING,
             horizontal_facing_);
 }

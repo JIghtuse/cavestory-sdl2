@@ -15,7 +15,7 @@ Sprite::~Sprite()
 {
 }
 
-void Sprite::draw(Graphics& graphics, int x, int y)
+void Sprite::draw(Graphics& graphics, Vector<int>& pos)
 {
-    graphics.renderTexture(texture_, x, y, &source_rect_);
+    graphics.renderTexture(texture_, pos.x, pos.y, &source_rect_);
 }

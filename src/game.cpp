@@ -9,7 +9,7 @@ int Game::kTileSize = 32;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    player_{new Player(graphics_, 320, 240)}
+    player_{new Player(graphics_, Vector<int>{320, 240})}
 {
     runEventLoop();
 }
@@ -49,6 +49,7 @@ void Game::runEventLoop() {
             running = false;
         }
 
+        // Player Horizontal Movement
         if (input.isKeyHeld(SDL_SCANCODE_LEFT)
                 && input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
             // if both left and right are being pressed we need to stop moving
@@ -59,6 +60,13 @@ void Game::runEventLoop() {
             player_->startMovingRight();
         } else {
             player_->stopMoving();
+        }
+
+        // Player Jump
+        if (input.wasKeyPressed(SDL_SCANCODE_Z)) {
+            player_->startJump();
+        } else if (input.wasKeyReleased(SDL_SCANCODE_Z)) {
+            player_->stopJump();
         }
 
         // update scene and last_updated_time
