@@ -25,18 +25,18 @@ Solution:
 
   - Introduce a Player class which contains
     - sprite
-    - x, y, velocity_x
+    - x, y, velocity\_x
     - startMovingLeft, startMovingRight, stopMoving
     - no movements will take place in the input-handling methods
     - update, draw
     
   - Equations for walking:
-    - x += velocity_x * time    
-    - velocity_x += acceleration_x * time
-    - acceleration_x varies based on Quote's state.
-      - Walking Left: acceleration_x = -walking_acceleration
-      - Walking Right: acceleration_x = walking_acceleration
-    - velocity_x also varies based on Quote's state.
+    - x += velocity\_x \* time
+    - velocity\_x += acceleration\_x \* time
+    - acceleration\_x varies based on Quote's state.
+      - Walking Left: acceleration\_x = -walking\_acceleration
+      - Walking Right: acceleration\_x = walking\_acceleration
+    - velocity\_x also varies based on Quote's state.
       - Walking: (already given)
       - Standing: (not from physics)
-        velocity_x = velocity_x / slowdown_constant (around 1.2)
+        velocity\_x = velocity\_x / slowdown\_constant (around 1.2)
