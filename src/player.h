@@ -13,7 +13,7 @@ struct Player {
    Player(Graphics& graphics, Vector<int> pos);
    ~Player();
 
-   void update(std::chrono::duration<double,std::milli> elapsed_time);
+   void update(std::chrono::milliseconds elapsed_time);
    void draw(Graphics& graphics);
 
    void startMovingLeft();

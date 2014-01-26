@@ -28,7 +28,6 @@ void Game::runEventLoop() {
         using std::chrono::high_resolution_clock;
         using std::chrono::milliseconds;
         using std::chrono::duration_cast;
-        using std::chrono::duration;
 
         const auto start_time = high_resolution_clock::now();
 
@@ -78,7 +77,7 @@ void Game::runEventLoop() {
 
         // calculate delay for constant fps
         const auto end_time = high_resolution_clock::now();
-        duration<double,std::milli> elapsed_time = (end_time - start_time);
+        auto elapsed_time = duration_cast<milliseconds>(end_time - start_time);
 
         auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
         if (delay_duration.count() < 0)
@@ -88,7 +87,7 @@ void Game::runEventLoop() {
     }
 }
 
-void Game::update(std::chrono::duration<double,std::milli> elapsed_time)
+void Game::update(std::chrono::milliseconds elapsed_time)
 {
     player_->update(elapsed_time);
 }

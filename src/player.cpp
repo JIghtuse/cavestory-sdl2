@@ -8,7 +8,8 @@
 const double kSlowdownFactor = 0.8;
 const double kWalkingAcceleration = 0.0012; // (pixels/ms) / ms
 const double kMaxSpeedX = 0.325;            // pixels / ms
-//const double kJumpSpeed = 0.325;            // pixels / ms
+const double kJumpSpeed = 0.325;            // pixels / ms
+const auto kJumpTime = std::chrono::milliseconds(275);
 
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
@@ -31,7 +32,7 @@ Player::~Player()
     ;
 }
 
-void Player::update(std::chrono::duration<double,std::milli> elapsed_time)
+void Player::update(std::chrono::milliseconds elapsed_time)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
     pos_.x += round(velocity_.x * elapsed_time.count());
