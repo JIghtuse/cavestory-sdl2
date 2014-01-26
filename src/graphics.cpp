@@ -27,6 +27,9 @@ Graphics::Graphics() :
 
 Graphics::~Graphics()
 {
+    for (auto& kv : sprite_sheets_) {
+        SDL_DestroyTexture(kv.second);
+    }
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 }
