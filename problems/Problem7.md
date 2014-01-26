@@ -1,4 +1,4 @@
-Episode 6: Spritesheet Cache
+Episode 7: Spritesheet Cache
 ============================
 
 Problem:

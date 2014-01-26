@@ -34,6 +34,10 @@ Graphics::~Graphics()
     SDL_DestroyWindow(sdlWindow);
 }
 
+/**
+ * Loads SDL_Texture from file_path into sprite cache (sprite_sheets_ map) and
+ * returns it. If texture already presents in cache just returns it.
+ */
 SDL_Texture* Graphics::loadImage(const std::string& file_path)
 {
     // spritesheet not loaded
