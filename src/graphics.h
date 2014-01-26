@@ -2,6 +2,8 @@
 #define GRAPHICS_H
 
 #include <SDL2/SDL.h>
+#include <map>
+#include <string>
 
 struct Graphics
 {
@@ -11,28 +13,17 @@ struct Graphics
     Graphics(const Graphics&)=delete;
     Graphics& operator=(const Graphics&)=delete;
 
-    void renderTexture(
-            SDL_Texture *tex,
-            SDL_Renderer *ren,
-            SDL_Rect dst,
-            SDL_Rect *clip=nullptr);
-    void renderTexture(
-            SDL_Texture *tex,
-            SDL_Renderer *ren,
-            int x,
-            int y,
-            SDL_Rect *clip=nullptr);
+    SDL_Texture* loadImage(const std::string& file_path);
+
+    void renderTexture(SDL_Texture *tex, SDL_Rect dst, SDL_Rect *clip=nullptr);
+    void renderTexture(SDL_Texture *tex, int x, int y, SDL_Rect *clip=nullptr);
 
     void flip();
-
-    SDL_Renderer *getRenderer()
-    {
-        return sdlRenderer;
-    }
 
 private:
     SDL_Window *sdlWindow;
     SDL_Renderer *sdlRenderer;
+    std::map<std::string, SDL_Texture*> sprite_sheets_;
 };
 
 #endif /*  GRAPHICS_H  */

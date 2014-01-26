@@ -9,14 +9,14 @@ const double kSlowdownFactor = 0.8;
 const double kWalkingAcceleration = 0.0012; // (pixels/ms) / ms
 const double kMaxSpeedX = 0.325;            // pixels / ms
 
-Player::Player(int x, int y, Graphics& graphics) :
+Player::Player(Graphics& graphics, int x, int y) :
     x_{x},
     y_{y},
     sprite_{new AnimatedSprite(
+                graphics,
                 "content/MyChar.bmp",
                 0, 0,
                 Game::kTileSize, Game::kTileSize,
-                graphics.getRenderer(),
                 15, 3
                 )},
     velocity_x_{0.0},

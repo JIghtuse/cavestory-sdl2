@@ -9,7 +9,7 @@ int Game::kTileSize = 32;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    player_{new Player(320, 240, graphics_)}
+    player_{new Player(graphics_, 320, 240)}
 {
     runEventLoop();
 }

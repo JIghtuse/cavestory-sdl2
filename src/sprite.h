@@ -8,9 +8,12 @@
 struct Graphics;
 
 struct Sprite {
-    Sprite(const std::string& file_path,
+    Sprite(
+            Graphics& graphics,
+            const std::string& file_path,
             int source_x, int source_y,
-            int width, int height, SDL_Renderer* ren);
+            int width, int height
+            );
     virtual ~Sprite();
 
     Sprite(const Sprite&)=delete;
@@ -20,7 +23,6 @@ struct Sprite {
     void draw(Graphics& graphics, int x, int y);
 
 private:
-    SDL_Renderer *renderer_;
     SDL_Texture *texture_;
 
 protected:

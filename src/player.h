@@ -8,7 +8,7 @@
 struct Graphics;
 
 struct Player {
-   Player(int x, int y, Graphics& graphics);
+   Player(Graphics& graphics, int x, int y);
    ~Player();
 
    void update(std::chrono::duration<double,std::milli> elapsed_time);

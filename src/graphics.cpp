@@ -1,5 +1,6 @@
-#include "graphics.h"
+#include <SDL2/SDL_image.h>
 #include <stdexcept>
+#include "graphics.h"
 
 const int kScreenWidth = 640;
 const int kScreenHeight = 480;
@@ -13,7 +14,8 @@ Graphics::Graphics() :
     sdlRenderer {SDL_CreateRenderer(
             sdlWindow,
             -1,
-            SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)}
+            SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)},
+    sprite_sheets_()
 {
     if (sdlWindow == nullptr) {
         throw std::runtime_error("SDL_CreateWindow");
@@ -29,14 +31,23 @@ Graphics::~Graphics()
     SDL_DestroyWindow(sdlWindow);
 }
 
+SDL_Texture* Graphics::loadImage(const std::string& file_path)
+{
+    // spritesheet not loaded
+    if (sprite_sheets_.count(file_path) == 0) {
+        sprite_sheets_[file_path] = IMG_LoadTexture(sdlRenderer,
+                file_path.c_str());
+    }
+    return sprite_sheets_[file_path];
+}
+
 void Graphics::renderTexture(
         SDL_Texture *tex,
-        SDL_Renderer *ren,
         SDL_Rect dst,
         SDL_Rect *clip)
 {
-    SDL_RenderClear(ren);
-    SDL_RenderCopy(ren, tex, clip, &dst);
+    SDL_RenderClear(sdlRenderer);
+    SDL_RenderCopy(sdlRenderer, tex, clip, &dst);
 }
 
 /**
@@ -45,7 +56,6 @@ void Graphics::renderTexture(
  */
 void Graphics::renderTexture(
         SDL_Texture *tex,
-        SDL_Renderer *ren,
         int x,
         int y,
         SDL_Rect *clip)
@@ -59,7 +69,7 @@ void Graphics::renderTexture(
     } else {
         SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
     }
-    renderTexture(tex, ren, dst, clip);
+    renderTexture(tex, dst, clip);
 }
 
 void Graphics::flip()
