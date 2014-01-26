@@ -9,17 +9,17 @@ Problem:
 
 Details:
 
-  - Cave Story uses ← and → for movement
-  - When ← is pushed
+  - Cave Story uses &larr; and &rarr; for movement
+  - When &larr; is pushed
     1. Quote faces left
     2. Quote accelerates left
-  - When ← is held
+  - When &larr; is held
     1. Quote accelerates left
     2. Quote does not exceed a maximum (horizontal) speed
-  - When ← is released
+  - When &larr; is released
     1. Quote decelerates left, until velocity is 0
-  - Similarly for →
-  - When ← and → are pushed at the same time, Quote does not move
+  - Similarly for &rarr;
+  - When &larr; and &rarr; are pushed at the same time, Quote does not move
 
 Solution:
 

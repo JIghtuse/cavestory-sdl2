@@ -8,7 +8,7 @@ Problem:
 Details:
 
   - is a particular key being held?
-    - used for: determining key collisions (← and → in particular)    
+    - used for: determining key collisions (&larr; and &rarr; in particular)    
   - has a key just been pressed?
     - used for: jumping, walking (and more)
   - has a key just been released?
