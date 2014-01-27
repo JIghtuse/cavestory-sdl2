@@ -62,6 +62,8 @@ private:
        VerticalFacing vertical_facing;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b);
+   int getFrameX(const SpriteState&) const;
+   int getFrameY(const SpriteState&) const;
 
    struct Jump {
        Jump() : time_remaining_(0), active_(false) {}

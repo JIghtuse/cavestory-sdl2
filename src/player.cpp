@@ -136,18 +136,18 @@ void Player::stopJump()
     jump_.deactivate();
 }
 
-void Player::initializeSprite(Graphics& graphics,
-        const SpriteState& sprite_state)
+int Player::getFrameY(const SpriteState& s) const
 {
-    int source_y;
-    if (sprite_state.horizontal_facing == HorizontalFacing::LEFT) {
-        source_y = 2 * kCharacterFrame * Game::kTileSize;
-    } else {
-        source_y = (1 + 2 * kCharacterFrame) * Game::kTileSize;
-    }
+    int source_y = (s.horizontal_facing == HorizontalFacing::LEFT)
+        ? 2 * kCharacterFrame * Game::kTileSize
+        : (1 + 2 * kCharacterFrame) * Game::kTileSize;
+    return source_y;
+}
 
+int Player::getFrameX(const SpriteState& s) const
+{
     int source_x{0};
-    switch (sprite_state.motion_type) {
+    switch (s.motion_type) {
     case MotionType::WALKING:
         source_x = kWalkFrame * Game::kTileSize;
         break;
@@ -164,9 +164,22 @@ void Player::initializeSprite(Graphics& graphics,
         break;
     }
 
-    if (sprite_state.vertical_facing == VerticalFacing::UP) {
+    if (s.vertical_facing == VerticalFacing::UP) {
         source_x += kUpFrameOffset * Game::kTileSize;
+    } else if (s.vertical_facing == VerticalFacing::DOWN) {
+        source_x = s.motion_type == MotionType::STANDING
+            ? kBackFrame * Game::kTileSize
+            : kDownFrame * Game::kTileSize;
     }
+
+    return source_x;
+}
+
+void Player::initializeSprite(Graphics& graphics,
+        const SpriteState& sprite_state)
+{
+    int source_y = getFrameY(sprite_state);
+    int source_x = getFrameX(sprite_state);
 
     if (sprite_state.motion_type == MotionType::WALKING) {
         sprites_[sprite_state] = std::unique_ptr<Sprite>{
@@ -178,11 +191,6 @@ void Player::initializeSprite(Graphics& graphics,
                     )
         };
     } else {
-        if (sprite_state.vertical_facing == VerticalFacing::DOWN) {
-            source_x = sprite_state.motion_type == MotionType::STANDING ?
-                kBackFrame * Game::kTileSize :
-                kDownFrame * Game::kTileSize;
-        }
         sprites_[sprite_state] = std::unique_ptr<Sprite>{
             new Sprite(
                     graphics,
@@ -220,10 +228,12 @@ Player::SpriteState Player::getSpriteState()
 {
     MotionType motion;
     if (is_on_ground()) {
-        motion = acceleration_.x == 0.0 ? MotionType::STANDING
+        motion = acceleration_.x == 0.0
+            ? MotionType::STANDING
             : MotionType::WALKING;
     } else {
-        motion = velocity_.y < 0.0 ? MotionType::JUMPING
+        motion = velocity_.y < 0.0
+            ? MotionType::JUMPING
             : MotionType::FALLING;
     }
     return SpriteState(motion, horizontal_facing_, vertical_facing_);
