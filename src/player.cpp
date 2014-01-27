@@ -5,20 +5,37 @@
 #include "graphics.h"
 #include "game.h"
 
+// Walk Motion
 const double kSlowdownFactor = 0.8;
 const double kWalkingAcceleration = 0.0012; // (pixels/ms) / ms
 const double kMaxSpeedX = 0.325;            // pixels / ms
+// Fall Motion
 const double kMaxSpeedY = 0.325;            // pixels / ms
 const double kGravity = 0.0012;             // (pixels / ms) / ms
+// Jump Motion
 const double kJumpSpeed = 0.325;            // pixels / ms
 const auto kJumpTime = std::chrono::milliseconds(275);
+// Sprites
+const std::string kSpriteFilePath("content/MyChar.bmp");
+// Sprite Frames
+const int kCharacterFrame = 10;
+
+const int kWalkFrame = 0;
+const int kStandFrame = 0;
 const int kJumpFrame = 1;
 const int kFallFrame = 2;
 
+const int kUpFrameOffset = 3;
+const int kDownFrame = 6;
+const int kBackFrame = 7;
+// Walk Anumation
+const int kNumWalkFrames = 3;
+const int kWalkFps = 15;
+
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
-    return std::tie(a.motion_type, a.horizontal_facing) <
-            std::tie(b.motion_type, b.horizontal_facing);
+    return std::tie(a.motion_type, a.horizontal_facing, a.vertical_facing) <
+            std::tie(b.motion_type, b.horizontal_facing, b.vertical_facing);
 }
 
 Player::Player(Graphics& graphics, Vector<int> pos) :
@@ -26,6 +43,7 @@ Player::Player(Graphics& graphics, Vector<int> pos) :
     velocity_{0.0, 0.0},
     acceleration_{0.0, 0.0},
     horizontal_facing_{HorizontalFacing::LEFT},
+    vertical_facing_{VerticalFacing::HORIZONTAL},
     is_on_ground_{false},
     jump_(),
     sprites_()
@@ -88,6 +106,21 @@ void Player::stopMoving()
     acceleration_.x = 0.0;
 }
 
+void Player::lookUp()
+{
+    vertical_facing_ = VerticalFacing::UP;
+}
+
+void Player::lookDown()
+{
+    vertical_facing_ = VerticalFacing::DOWN;
+}
+
+void Player::lookHorizontal()
+{
+    vertical_facing_ = VerticalFacing::HORIZONTAL;
+}
+
 void Player::startJump()
 {
     if (is_on_ground()) {
@@ -103,55 +136,84 @@ void Player::stopJump()
     jump_.deactivate();
 }
 
+void Player::initializeSprite(Graphics& graphics,
+        const SpriteState& sprite_state)
+{
+    int source_y;
+    if (sprite_state.horizontal_facing == HorizontalFacing::LEFT) {
+        source_y = kCharacterFrame * Game::kTileSize;
+    } else {
+        source_y = (1 + kCharacterFrame) * Game::kTileSize;
+    }
+
+    int source_x{0};
+    switch (sprite_state.motion_type) {
+    case MotionType::WALKING:
+        source_x = kWalkFrame * Game::kTileSize;
+        break;
+    case MotionType::STANDING:
+        source_x = kStandFrame * Game::kTileSize;
+        break;
+    case MotionType::JUMPING:
+        source_x = kJumpFrame * Game::kTileSize;
+        break;
+    case MotionType::FALLING:
+        source_x = kFallFrame * Game::kTileSize;
+        break;
+    case MotionType::LAST_MOTION_TYPE:
+        break;
+    }
+
+    if (sprite_state.vertical_facing == VerticalFacing::UP) {
+        source_x += kUpFrameOffset * Game::kTileSize;
+    }
+
+    if (sprite_state.motion_type == MotionType::WALKING) {
+        sprites_[sprite_state] = std::unique_ptr<Sprite>{
+            new AnimatedSprite(
+                    graphics,
+                    kSpriteFilePath,
+                    source_x, source_y, Game::kTileSize, Game::kTileSize,
+                    kWalkFps, kNumWalkFrames
+                    )
+        };
+    } else {
+        if (sprite_state.vertical_facing == VerticalFacing::DOWN) {
+            source_x = sprite_state.motion_type == MotionType::STANDING ?
+                kBackFrame * Game::kTileSize :
+                kDownFrame * Game::kTileSize;
+        }
+        sprites_[sprite_state] = std::unique_ptr<Sprite>{
+            new Sprite(
+                    graphics,
+                    kSpriteFilePath,
+                    source_x, source_y,
+                    Game::kTileSize, Game::kTileSize
+                    )
+        };
+    }
+}
+
 void Player::initializeSprites(Graphics& graphics)
 {
-    sprites_[SpriteState(MotionType::STANDING, HorizontalFacing::LEFT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                0, 0, Game::kTileSize, Game::kTileSize)};
-    sprites_[SpriteState(MotionType::WALKING, HorizontalFacing::LEFT)] =
-        std::unique_ptr<Sprite>{new AnimatedSprite(
-                graphics,
-                "content/MyChar.bmp",
-                0, 0, Game::kTileSize, Game::kTileSize,
-                15, 3)};
-    sprites_[SpriteState(MotionType::JUMPING, HorizontalFacing::LEFT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                kJumpFrame*Game::kTileSize, 0,
-                Game::kTileSize, Game::kTileSize)};
-    sprites_[SpriteState(MotionType::FALLING, HorizontalFacing::LEFT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                kFallFrame*Game::kTileSize, 0,
-                Game::kTileSize, Game::kTileSize)};
+    for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
+            m < (int)(MotionType::LAST_MOTION_TYPE);
+            ++m)
+        for (int h = (int)(HorizontalFacing::FIRST_HORIZONTAL_FACING);
+                h < (int)(HorizontalFacing::LAST_HORIZONTAL_FACING);
+                ++h)
+            for (int v = (int)(VerticalFacing::FIRST_VERTICAL_FACING);
+                    v < (int)(VerticalFacing::LAST_VERTICAL_FACING);
+                    ++v) {
+                MotionType motion_type = (MotionType)m;
+                HorizontalFacing horiz_facing = (HorizontalFacing)h;
+                VerticalFacing vert_facing = (VerticalFacing)v;
 
-    sprites_[SpriteState(MotionType::STANDING, HorizontalFacing::RIGHT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                0, Game::kTileSize, Game::kTileSize, Game::kTileSize)};
-    sprites_[SpriteState(MotionType::WALKING, HorizontalFacing::RIGHT)] =
-        std::unique_ptr<Sprite>{new AnimatedSprite(
-                graphics,
-                "content/MyChar.bmp",
-                0, Game::kTileSize, Game::kTileSize, Game::kTileSize,
-                15, 3)};
-    sprites_[SpriteState(MotionType::JUMPING, HorizontalFacing::RIGHT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                kJumpFrame*Game::kTileSize, Game::kTileSize,
-                Game::kTileSize, Game::kTileSize)};
-    sprites_[SpriteState(MotionType::FALLING, HorizontalFacing::RIGHT)] =
-        std::unique_ptr<Sprite>{new Sprite(
-                graphics,
-                "content/MyChar.bmp",
-                kFallFrame*Game::kTileSize, Game::kTileSize,
-                Game::kTileSize, Game::kTileSize)};
+                initializeSprite(
+                        graphics,
+                        SpriteState(motion_type, horiz_facing, vert_facing)
+                        );
+            }
 }
 
 Player::SpriteState Player::getSpriteState()
@@ -159,12 +221,12 @@ Player::SpriteState Player::getSpriteState()
     MotionType motion;
     if (is_on_ground()) {
         motion = acceleration_.x == 0.0 ? MotionType::STANDING
-                                        : MotionType::WALKING;
+            : MotionType::WALKING;
     } else {
         motion = velocity_.y < 0.0 ? MotionType::JUMPING
-                                   : MotionType::FALLING;
+            : MotionType::FALLING;
     }
-    return SpriteState(motion, horizontal_facing_);
+    return SpriteState(motion, horizontal_facing_, vertical_facing_);
 }
 
 void Player::Jump::reset()

@@ -20,28 +20,46 @@ struct Player {
    void startMovingRight();
    void stopMoving();
 
+   void lookUp();
+   void lookDown();
+   void lookHorizontal();
+
    void startJump();
    void stopJump();
 
 private:
    enum class MotionType {
-       STANDING,
+       FIRST_MOTION_TYPE,
+       STANDING = FIRST_MOTION_TYPE,
        WALKING,
        JUMPING,
-       FALLING
+       FALLING,
+       LAST_MOTION_TYPE
    };
    enum class HorizontalFacing {
-       LEFT,
-       RIGHT
+       FIRST_HORIZONTAL_FACING,
+       LEFT = FIRST_HORIZONTAL_FACING,
+       RIGHT,
+       LAST_HORIZONTAL_FACING
+   };
+   enum class VerticalFacing {
+       FIRST_VERTICAL_FACING,
+       UP = FIRST_VERTICAL_FACING,
+       DOWN,
+       HORIZONTAL,
+       LAST_VERTICAL_FACING
    };
    struct SpriteState {
        SpriteState(MotionType motion_type=MotionType::STANDING,
-               HorizontalFacing horizontal_facing=HorizontalFacing::LEFT) :
+               HorizontalFacing horizontal_facing=HorizontalFacing::LEFT,
+               VerticalFacing vertical_facing=VerticalFacing::HORIZONTAL) :
            motion_type(motion_type),
-           horizontal_facing(horizontal_facing) {}
+           horizontal_facing(horizontal_facing),
+           vertical_facing(vertical_facing) {}
 
        MotionType motion_type;
        HorizontalFacing horizontal_facing;
+       VerticalFacing vertical_facing;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b);
 
@@ -58,6 +76,7 @@ private:
    };
 
    void initializeSprites(Graphics& graphics);
+   void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    SpriteState getSpriteState();
 
    bool is_on_ground() const { return is_on_ground_; }
@@ -66,6 +85,7 @@ private:
    Vector<double> velocity_;
    Vector<double> acceleration_;
    HorizontalFacing horizontal_facing_;
+   VerticalFacing vertical_facing_;
    bool is_on_ground_;
    Jump jump_;
 
