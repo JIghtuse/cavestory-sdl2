@@ -42,8 +42,11 @@ SDL_Texture* Graphics::loadImage(const std::string& file_path)
 {
     // spritesheet not loaded
     if (sprite_sheets_.count(file_path) == 0) {
-        sprite_sheets_[file_path] = IMG_LoadTexture(sdlRenderer,
-                file_path.c_str());
+        SDL_Texture* t = IMG_LoadTexture(sdlRenderer, file_path.c_str());
+        if (t == nullptr) {
+            throw std::runtime_error("Cannot load texture!");
+        }
+        sprite_sheets_[file_path] = t;
     }
     return sprite_sheets_[file_path];
 }
@@ -74,7 +77,7 @@ void Graphics::renderTexture(
         dst.w = clip->w;
         dst.h = clip->h;
     } else {
-        SDL_QueryTexture(tex, NULL, NULL, &dst.w, &dst.h);
+        SDL_QueryTexture(tex, nullptr, nullptr, &dst.w, &dst.h);
     }
     renderTexture(tex, dst, clip);
 }
