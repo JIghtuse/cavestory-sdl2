@@ -18,7 +18,7 @@ const auto kJumpTime = std::chrono::milliseconds(275);
 // Sprites
 const std::string kSpriteFilePath("content/MyChar.bmp");
 // Sprite Frames
-const int kCharacterFrame = 10;
+const int kCharacterFrame = 0;
 
 const int kWalkFrame = 0;
 const int kStandFrame = 0;
@@ -141,9 +141,9 @@ void Player::initializeSprite(Graphics& graphics,
 {
     int source_y;
     if (sprite_state.horizontal_facing == HorizontalFacing::LEFT) {
-        source_y = kCharacterFrame * Game::kTileSize;
+        source_y = 2 * kCharacterFrame * Game::kTileSize;
     } else {
-        source_y = (1 + kCharacterFrame) * Game::kTileSize;
+        source_y = (1 + 2 * kCharacterFrame) * Game::kTileSize;
     }
 
     int source_x{0};
