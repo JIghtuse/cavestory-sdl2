@@ -91,10 +91,8 @@ void Game::runEventLoop() {
         auto elapsed_time = duration_cast<milliseconds>(end_time - start_time);
 
         auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
-        if (delay_duration.count() < 0)
-            delay_duration = milliseconds(0);
-
-        SDL_Delay(delay_duration.count());
+        if (delay_duration.count() >= 0)
+            SDL_Delay(delay_duration.count());
     }
 }
 
