@@ -6,31 +6,31 @@
 #include "game.h"
 
 // Walk Motion
-const double kSlowdownFactor = 0.8;
-const double kWalkingAcceleration = 0.0012; // (pixels/ms) / ms
-const double kMaxSpeedX = 0.325;            // pixels / ms
+const double kSlowdownFactor{0.8};
+const double kWalkingAcceleration{0.0012}; // (pixels/ms) / ms
+const double kMaxSpeedX{0.325};            // pixels / ms
 // Fall Motion
-const double kMaxSpeedY = 0.325;            // pixels / ms
-const double kGravity = 0.0012;             // (pixels / ms) / ms
+const double kMaxSpeedY{0.325};            // pixels / ms
+const double kGravity{0.0012};             // (pixels / ms) / ms
 // Jump Motion
-const double kJumpSpeed = 0.325;            // pixels / ms
+const double kJumpSpeed{0.325};            // pixels / ms
 const auto kJumpTime = std::chrono::milliseconds(275);
 // Sprites
-const std::string kSpriteFilePath("content/MyChar.bmp");
+const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
-const int kCharacterFrame = 0;
+const int kCharacterFrame{0};
 
-const int kWalkFrame = 0;
-const int kStandFrame = 0;
-const int kJumpFrame = 1;
-const int kFallFrame = 2;
+const int kWalkFrame{0};
+const int kStandFrame{0};
+const int kJumpFrame{1};
+const int kFallFrame{2};
 
-const int kUpFrameOffset = 3;
-const int kDownFrame = 6;
-const int kBackFrame = 7;
+const int kUpFrameOffset{3};
+const int kDownFrame{6};
+const int kBackFrame{7};
 // Walk Anumation
-const int kNumWalkFrames = 3;
-const int kWalkFps = 15;
+const int kNumWalkFrames{3};
+const int kWalkFps{15};
 
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {

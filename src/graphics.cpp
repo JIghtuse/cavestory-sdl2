@@ -2,8 +2,8 @@
 #include <stdexcept>
 #include "graphics.h"
 
-const int kScreenWidth = 640;
-const int kScreenHeight = 480;
+const int kScreenWidth{640};
+const int kScreenHeight{480};
 
 Graphics::Graphics() :
     sdlWindow {SDL_CreateWindow(

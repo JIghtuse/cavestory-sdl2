@@ -2,7 +2,7 @@
 #include "input.h"
 #include "player.h"
 
-const double kFps = 60.0;
+const double kFps{60.0};
 
 int Game::kTileSize = 32;
 
