@@ -6,6 +6,7 @@
 #include "sdlengine.h"
 #include "graphics.h"
 
+struct Map;
 struct Player;
 
 struct Game {
@@ -21,6 +22,7 @@ private:
     SDLEngine sdlEngine_;
     Graphics graphics_;
     std::unique_ptr<Player> player_;
+    std::unique_ptr<Map> map_;
 };
 
 #endif /* GAME_H */

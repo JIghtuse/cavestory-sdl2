@@ -4,11 +4,40 @@
 #include "sprite.h"
 #include "vector.h"
 
+const std::string kMapSpriteFilePath{"content/PrtCave.bmp"};
+
 Map::Map() :
     foreground_sprites_()
 {}
 
 Map::~Map() {}
+
+Map* Map::createTestMap(Graphics& graphics)
+{
+    using std::vector;
+    Map* map = new Map();
+
+    const int num_rows{15}; // 15 * 32 == 480
+    const int num_cols{20}; // 20 * 32 == 640
+    // Ensure foreground_sprites_ is num_rows x num_cols in size
+    map->foreground_sprites_ = vector<vector<std::shared_ptr<Sprite> > >(
+            num_rows, vector<std::shared_ptr<Sprite> >(
+                num_cols, std::shared_ptr<Sprite>()));
+
+    std::shared_ptr<Sprite> sprite{new Sprite(
+            graphics,
+            kMapSpriteFilePath,
+            Game::kTileSize, 0,
+            Game::kTileSize, Game::kTileSize
+            )};
+    const int floor_row_idx{11};
+    for (auto col = 0; col < num_cols; ++col) {
+        map->foreground_sprites_[floor_row_idx][col] = sprite;
+    }
+    map->foreground_sprites_[10][5] = sprite;
+
+    return map;
+}
 
 void Map::update(std::chrono::milliseconds elapsed_time)
 {

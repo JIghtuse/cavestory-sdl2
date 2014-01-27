@@ -1,5 +1,6 @@
 #include "game.h"
 #include "input.h"
+#include "map.h"
 #include "player.h"
 
 const double kFps{60.0};
@@ -9,7 +10,8 @@ int Game::kTileSize = 32;
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    player_{new Player(graphics_, Vector<int>{320, 240})}
+    player_{new Player(graphics_, Vector<int>{320, 240})},
+    map_{Map::createTestMap(graphics_)}
 {
     runEventLoop();
 }
@@ -99,10 +101,12 @@ void Game::runEventLoop() {
 void Game::update(std::chrono::milliseconds elapsed_time)
 {
     player_->update(elapsed_time);
+    map_->update(elapsed_time);
 }
 
 void Game::draw(Graphics& graphics)
 {
     player_->draw(graphics);
+    map_->draw(graphics);
     graphics.flip();
 }
