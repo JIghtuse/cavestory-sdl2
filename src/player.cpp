@@ -12,6 +12,8 @@ const double kMaxSpeedY = 0.325;            // pixels / ms
 const double kGravity = 0.0012;             // (pixels / ms) / ms
 const double kJumpSpeed = 0.325;            // pixels / ms
 const auto kJumpTime = std::chrono::milliseconds(275);
+const int kJumpFrame = 1;
+const int kFallFrame = 2;
 
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
@@ -114,6 +116,19 @@ void Player::initializeSprites(Graphics& graphics)
                 "content/MyChar.bmp",
                 0, 0, Game::kTileSize, Game::kTileSize,
                 15, 3)};
+    sprites_[SpriteState(MotionType::JUMPING, HorizontalFacing::LEFT)] =
+        std::unique_ptr<Sprite>{new Sprite(
+                graphics,
+                "content/MyChar.bmp",
+                kJumpFrame*Game::kTileSize, 0,
+                Game::kTileSize, Game::kTileSize)};
+    sprites_[SpriteState(MotionType::FALLING, HorizontalFacing::LEFT)] =
+        std::unique_ptr<Sprite>{new Sprite(
+                graphics,
+                "content/MyChar.bmp",
+                kFallFrame*Game::kTileSize, 0,
+                Game::kTileSize, Game::kTileSize)};
+
     sprites_[SpriteState(MotionType::STANDING, HorizontalFacing::RIGHT)] =
         std::unique_ptr<Sprite>{new Sprite(
                 graphics,
@@ -125,14 +140,31 @@ void Player::initializeSprites(Graphics& graphics)
                 "content/MyChar.bmp",
                 0, Game::kTileSize, Game::kTileSize, Game::kTileSize,
                 15, 3)};
+    sprites_[SpriteState(MotionType::JUMPING, HorizontalFacing::RIGHT)] =
+        std::unique_ptr<Sprite>{new Sprite(
+                graphics,
+                "content/MyChar.bmp",
+                kJumpFrame*Game::kTileSize, Game::kTileSize,
+                Game::kTileSize, Game::kTileSize)};
+    sprites_[SpriteState(MotionType::FALLING, HorizontalFacing::RIGHT)] =
+        std::unique_ptr<Sprite>{new Sprite(
+                graphics,
+                "content/MyChar.bmp",
+                kFallFrame*Game::kTileSize, Game::kTileSize,
+                Game::kTileSize, Game::kTileSize)};
 }
 
 Player::SpriteState Player::getSpriteState()
 {
-    return SpriteState(
-            acceleration_.x == 0.0 ? MotionType::STANDING
-                                   : MotionType::WALKING,
-            horizontal_facing_);
+    MotionType motion;
+    if (is_on_ground()) {
+        motion = acceleration_.x == 0.0 ? MotionType::STANDING
+                                        : MotionType::WALKING;
+    } else {
+        motion = velocity_.y < 0.0 ? MotionType::JUMPING
+                                   : MotionType::FALLING;
+    }
+    return SpriteState(motion, horizontal_facing_);
 }
 
 void Player::Jump::reset()

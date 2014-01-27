@@ -26,7 +26,9 @@ struct Player {
 private:
    enum class MotionType {
        STANDING,
-       WALKING
+       WALKING,
+       JUMPING,
+       FALLING
    };
    enum class HorizontalFacing {
        LEFT,
