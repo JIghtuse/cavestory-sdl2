@@ -19,6 +19,7 @@ struct Graphics
     void renderTexture(SDL_Texture *tex, int x, int y, SDL_Rect *clip=nullptr);
 
     void flip();
+    void clear();
 
 private:
     SDL_Window *sdlWindow;

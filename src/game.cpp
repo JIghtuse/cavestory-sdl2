@@ -106,6 +106,7 @@ void Game::update(std::chrono::milliseconds elapsed_time)
 
 void Game::draw(Graphics& graphics)
 {
+    graphics.clear();
     player_->draw(graphics);
     map_->draw(graphics);
     graphics.flip();

@@ -56,7 +56,6 @@ void Graphics::renderTexture(
         SDL_Rect dst,
         SDL_Rect *clip)
 {
-    SDL_RenderClear(sdlRenderer);
     SDL_RenderCopy(sdlRenderer, tex, clip, &dst);
 }
 
@@ -85,4 +84,9 @@ void Graphics::renderTexture(
 void Graphics::flip()
 {
     SDL_RenderPresent(sdlRenderer);
+}
+
+void Graphics::clear()
+{
+    SDL_RenderClear(sdlRenderer);
 }
