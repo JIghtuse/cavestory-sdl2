@@ -17,7 +17,21 @@ struct Map {
    void update(std::chrono::milliseconds elapsed_time);
    void draw(Graphics& graphics) const;
 private:
-   std::vector<std::vector<std::shared_ptr<Sprite> > >foreground_sprites_;
+   enum class TileType {
+       AIR,
+       WALL
+   };
+   struct Tile {
+       Tile(TileType tile_type=TileType::AIR,
+               std::shared_ptr<Sprite> sprite=std::shared_ptr<Sprite>()) :
+           tile_type(tile_type),
+           sprite(sprite)
+       {}
+
+       TileType tile_type;
+       std::shared_ptr<Sprite> sprite;
+   };
+   std::vector<std::vector<Tile> >tiles_;
 };
 
 #endif /* MAP_H_ */
