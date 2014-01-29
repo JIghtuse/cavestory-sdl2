@@ -3,10 +3,10 @@
 
 struct Rectangle {
    Rectangle(int x, int y, int width, int height) :
-       x_(x),
-       y_(y),
-       width_(width),
-       height_(height)
+       x_{x},
+       y_{y},
+       width_{width},
+       height_{height}
     {}
 
    int getLeft() const { return x_; }
