@@ -8,12 +8,14 @@
 #include "vector.h"
 
 struct Graphics;
+struct Map;
+struct Rectangle;
 
 struct Player {
    Player(Graphics& graphics, Vector<int> pos);
    ~Player();
 
-   void update(std::chrono::milliseconds elapsed_time);
+   void update(std::chrono::milliseconds elapsed_time, const Map& map);
    void draw(Graphics& graphics);
 
    void startMovingLeft();
@@ -80,6 +82,11 @@ private:
    void initializeSprites(Graphics& graphics);
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    SpriteState getSpriteState();
+
+   Rectangle leftCollision(int delta) const;
+   Rectangle rightCollision(int delta) const;
+   Rectangle topCollision(int delta) const;
+   Rectangle bottomCollision(int delta) const;
 
    bool is_on_ground() const { return is_on_ground_; }
 

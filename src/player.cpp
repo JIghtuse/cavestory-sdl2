@@ -1,9 +1,12 @@
+#include <cassert>
 #include <cmath>
 
 #include "player.h"
 #include "animated_sprite.h"
 #include "graphics.h"
 #include "game.h"
+#include "map.h"
+#include "rectangle.h"
 
 // Walk Motion
 const double kSlowdownFactor{0.8};
@@ -32,6 +35,10 @@ const int kBackFrame{7};
 const int kNumWalkFrames{3};
 const int kWalkFps{15};
 
+//Collision rectangle
+const Rectangle kCollisionX{6, 10, 20, 12};
+const Rectangle kCollisionY{10, 2, 12, 30};
+
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
     return std::tie(a.motion_type, a.horizontal_facing, a.vertical_facing) <
@@ -56,7 +63,7 @@ Player::~Player()
     ;
 }
 
-void Player::update(std::chrono::milliseconds elapsed_time)
+void Player::update(std::chrono::milliseconds elapsed_time, const Map&)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
     jump_.update(elapsed_time);
@@ -237,6 +244,50 @@ Player::SpriteState Player::getSpriteState()
             : MotionType::FALLING;
     }
     return SpriteState(motion, horizontal_facing_, vertical_facing_);
+}
+
+Rectangle Player::leftCollision(int delta) const
+{
+    assert(delta <= 0);
+    return Rectangle(
+            pos_.x + kCollisionX.getLeft() + delta,
+            pos_.y + kCollisionX.getTop(),
+            kCollisionX.getWidth() / 2 - delta,
+            kCollisionX.getHeight()
+            );
+}
+
+Rectangle Player::rightCollision(int delta) const
+{
+    assert(delta >= 0);
+    return Rectangle(
+            pos_.x + kCollisionX.getLeft() + kCollisionX.getWidth() / 2,
+            pos_.y + kCollisionX.getTop(),
+            kCollisionX.getWidth() / 2 + delta,
+            kCollisionX.getHeight()
+            );
+}
+
+Rectangle Player::topCollision(int delta) const
+{
+    assert(delta <= 0);
+    return Rectangle(
+            pos_.x + kCollisionY.getLeft(),
+            pos_.y + kCollisionY.getTop() + delta,
+            kCollisionY.getWidth(),
+            kCollisionY.getHeight() / 2 - delta
+            );
+}
+
+Rectangle Player::bottomCollision(int delta) const
+{
+    assert(delta >= 0);
+    return Rectangle(
+            pos_.x + kCollisionY.getLeft(),
+            pos_.y + kCollisionY.getTop() + kCollisionY.getHeight() / 2,
+            kCollisionY.getWidth(),
+            kCollisionY.getHeight() / 2 + delta
+            );
 }
 
 void Player::Jump::reset()

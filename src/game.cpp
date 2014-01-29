@@ -100,7 +100,7 @@ void Game::runEventLoop() {
 
 void Game::update(std::chrono::milliseconds elapsed_time)
 {
-    player_->update(elapsed_time);
+    player_->update(elapsed_time, *map_);
     map_->update(elapsed_time);
 }
 
