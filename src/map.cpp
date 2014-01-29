@@ -1,6 +1,7 @@
 #include "map.h"
 #include "game.h"
 #include "graphics.h"
+#include "rectangle.h"
 #include "sprite.h"
 #include "vector.h"
 
@@ -41,6 +42,26 @@ Map* Map::createTestMap(Graphics& graphics)
     map->tiles_[10][3] = tile;
 
     return map;
+}
+
+
+std::vector<Map::CollisionTile>
+Map::getCollidingTiles(const Rectangle& rect) const
+{
+    const int first_row = rect.getTop() / Game::kTileSize;
+    const int last_row = rect.getBottom() / Game::kTileSize;
+    const int first_col = rect.getLeft() / Game::kTileSize;
+    const int last_col = rect.getRight() / Game::kTileSize;
+    std::vector<CollisionTile> collision_tiles;
+
+    for (int row = first_row; row <= last_row; ++row) {
+        for (int col = first_col; col <= last_col; ++col) {
+            collision_tiles.push_back(
+                    CollisionTile(row, col, tiles_[row][col].tile_type));
+        }
+    }
+
+    return collision_tiles;
 }
 
 void Map::update(std::chrono::milliseconds elapsed_time)

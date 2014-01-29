@@ -21,7 +21,3 @@ Map class:
     - last row = bottom() / tileSize (truncating)
     - first col = left() / tileSize (truncating)
     - last col = right() / tileSize (truncating)
-
-Player class:
-
-  - Create our X-collision rectangle and Y-collision rectangle
