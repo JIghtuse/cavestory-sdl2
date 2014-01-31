@@ -8,7 +8,7 @@ struct SDLEngine
 {
     SDLEngine()
     {
-        if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             throw std::runtime_error("SDL_Init");
         }
         if (SDL_ShowCursor(SDL_DISABLE) < 0) {
