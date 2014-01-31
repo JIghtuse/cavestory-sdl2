@@ -1,7 +1,7 @@
-CXX := g++
+CXX ?= g++
 MKDIR := mkdir -p
-CXXFLAGS := -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++11
-LDFLAGS := -lSDL2 -lSDL2_image
+CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image` -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++11
+LDFLAGS += `pkg-config --libs sdl2 SDL2_image`
 PROGS := bin/cave
 OBJS := $(patsubst src/%.cpp,obj/%.o, $(wildcard src/*.cpp))
 
