@@ -88,6 +88,9 @@ private:
    Rectangle topCollision(int delta) const;
    Rectangle bottomCollision(int delta) const;
 
+   void updateX(std::chrono::milliseconds elapsed_time, const Map& map);
+   void updateY(std::chrono::milliseconds elapsed_time, const Map& map);
+
    bool is_on_ground() const { return is_on_ground_; }
 
    Vector<int> pos_;
