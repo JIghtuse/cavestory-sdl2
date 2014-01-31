@@ -52,6 +52,7 @@ Map::getCollidingTiles(const Rectangle& rect) const
     const int last_row = rect.getBottom() / Game::kTileSize;
     const int first_col = rect.getLeft() / Game::kTileSize;
     const int last_col = rect.getRight() / Game::kTileSize;
+    // TODO: throw exception if we fall off the screen
     std::vector<CollisionTile> collision_tiles;
 
     for (int row = first_row; row <= last_row; ++row) {
