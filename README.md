@@ -12,6 +12,8 @@ Keys to play
 ------------
 * &larr; go left
 * &rarr; go right
+* &darr; look down / interact
+* &uarr; look up
 * Z jump
 
 Used materials
