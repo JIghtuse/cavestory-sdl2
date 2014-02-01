@@ -16,6 +16,7 @@ const double kMaxSpeedX{0.325};            // pixels / ms
 const double kMaxSpeedY{0.2998046875};     // pixels / ms
 const double kGravity{0.00078125};         // (pixels / ms) / ms
 // Jump Motion
+const double kAirAcceleration{0.0003125};  // pixels / ms / ms
 const double kJumpSpeed{0.25};             // pixels / ms
 const double kJumpGravity{0.0003125};      // pixels / ms / ms
 // Sprites
@@ -69,7 +70,7 @@ bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 Player::Player(Graphics& graphics, Vector<int> pos) :
     pos_(pos),
     velocity_{0.0, 0.0},
-    acceleration_{0.0, 0.0},
+    acceleration_x_direction_{0},
     horizontal_facing_{HorizontalFacing::LEFT},
     vertical_facing_{VerticalFacing::HORIZONTAL},
     is_on_ground_{false},
@@ -100,18 +101,18 @@ void Player::draw(Graphics& graphics)
 void Player::startMovingLeft()
 {
     horizontal_facing_ = HorizontalFacing::LEFT;
-    acceleration_.x = -kWalkingAcceleration;
+    acceleration_x_direction_ = -1;
 }
 
 void Player::startMovingRight()
 {
     horizontal_facing_ = HorizontalFacing::RIGHT;
-    acceleration_.x = kWalkingAcceleration;
+    acceleration_x_direction_ = 1;
 }
 
 void Player::stopMoving()
 {
-    acceleration_.x = 0.0;
+    acceleration_x_direction_ = 0;
 }
 
 void Player::lookUp()
@@ -234,7 +235,7 @@ Player::SpriteState Player::getSpriteState()
 {
     MotionType motion;
     if (is_on_ground()) {
-        motion = acceleration_.x == 0.0
+        motion = acceleration_x_direction_ == 0
             ? MotionType::STANDING
             : MotionType::WALKING;
     } else {
@@ -292,10 +293,22 @@ Rectangle Player::bottomCollision(int delta) const
 void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
 {
     // Update velocity
-    velocity_.x += acceleration_.x * elapsed_time.count();
-    if (acceleration_.x < 0.0) {
+    double acceleration_x{0.0};
+    if (acceleration_x_direction_ < 0) {
+        acceleration_x = is_on_ground()
+            ? -kWalkingAcceleration
+            : -kAirAcceleration;
+    } else if (acceleration_x_direction_ > 0) {
+        acceleration_x = is_on_ground()
+            ? kWalkingAcceleration
+            : kAirAcceleration;
+    }
+
+    velocity_.x += acceleration_x * elapsed_time.count();
+
+    if (acceleration_x_direction_ < 0) {
         velocity_.x = std::max(velocity_.x, -kMaxSpeedX);
-    } else if (acceleration_.x > 0.0) {
+    } else if (acceleration_x_direction_ > 0) {
         velocity_.x = std::min(velocity_.x, kMaxSpeedX);
     } else if (is_on_ground()) {
         velocity_.x *= kSlowdownFactor;

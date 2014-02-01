@@ -83,7 +83,7 @@ private:
 
    Vector<int> pos_;
    Vector<double> velocity_;
-   Vector<double> acceleration_;
+   int acceleration_x_direction_;
    HorizontalFacing horizontal_facing_;
    VerticalFacing vertical_facing_;
    bool is_on_ground_;
