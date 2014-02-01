@@ -1,14 +1,13 @@
-#include <SDL2/SDL_image.h>
 #include <stdexcept>
+#include <SDL2/SDL_image.h>
 #include "graphics.h"
-
-const int kScreenWidth{640};
-const int kScreenHeight{480};
+#include "game.h"
 
 Graphics::Graphics() :
     sdlWindow {SDL_CreateWindow(
                 "Cave Reconstructed",
-                0, 0, kScreenWidth,kScreenHeight,
+                0, 0,
+                Game::kScreenWidth, Game::kScreenHeight,
                 SDL_WINDOW_FULLSCREEN_DESKTOP
                 )},
     sdlRenderer {SDL_CreateRenderer(

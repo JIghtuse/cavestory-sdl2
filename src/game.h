@@ -14,6 +14,8 @@ struct Game {
     ~Game();
 
     static int kTileSize;
+    static int kScreenWidth;
+    static int kScreenHeight;
 private:
     void runEventLoop();
     void update(std::chrono::milliseconds elapsed_time);
