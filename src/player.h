@@ -33,6 +33,7 @@ private:
    enum class MotionType {
        FIRST_MOTION_TYPE,
        STANDING = FIRST_MOTION_TYPE,
+       INTERACTING,
        WALKING,
        JUMPING,
        FALLING,
@@ -88,6 +89,7 @@ private:
    VerticalFacing vertical_facing_;
    bool is_on_ground_;
    bool is_jump_active_;
+   bool is_interacting_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
    static int kTileSize;

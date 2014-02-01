@@ -75,6 +75,7 @@ Player::Player(Graphics& graphics, Vector<int> pos) :
     vertical_facing_{VerticalFacing::HORIZONTAL},
     is_on_ground_{false},
     is_jump_active_{false},
+    is_interacting_{false},
     sprites_()
 {
     initializeSprites(graphics);
@@ -102,12 +103,14 @@ void Player::startMovingLeft()
 {
     horizontal_facing_ = HorizontalFacing::LEFT;
     acceleration_x_direction_ = -1;
+    is_interacting_ = false;
 }
 
 void Player::startMovingRight()
 {
     horizontal_facing_ = HorizontalFacing::RIGHT;
     acceleration_x_direction_ = 1;
+    is_interacting_ = false;
 }
 
 void Player::stopMoving()
@@ -118,11 +121,14 @@ void Player::stopMoving()
 void Player::lookUp()
 {
     vertical_facing_ = VerticalFacing::UP;
+    is_interacting_ = false;
 }
 
 void Player::lookDown()
 {
+    if (vertical_facing_ == VerticalFacing::DOWN) return;
     vertical_facing_ = VerticalFacing::DOWN;
+    is_interacting_ = is_on_ground();
 }
 
 void Player::lookHorizontal()
@@ -132,6 +138,7 @@ void Player::lookHorizontal()
 
 void Player::startJump()
 {
+    is_interacting_ = false;
     is_jump_active_ = true;
     if (is_on_ground()) {
         velocity_.y = -kJumpSpeed;
@@ -161,6 +168,9 @@ int Player::getFrameX(const SpriteState& s) const
     case MotionType::STANDING:
         source_x = kStandFrame * Game::kTileSize;
         break;
+    case MotionType::INTERACTING:
+        source_x = kBackFrame * Game::kTileSize;
+        break;
     case MotionType::JUMPING:
         source_x = kJumpFrame * Game::kTileSize;
         break;
@@ -173,12 +183,11 @@ int Player::getFrameX(const SpriteState& s) const
 
     if (s.vertical_facing == VerticalFacing::UP) {
         source_x += kUpFrameOffset * Game::kTileSize;
-    } else if (s.vertical_facing == VerticalFacing::DOWN) {
-        source_x = s.motion_type == MotionType::STANDING
-            ? kBackFrame * Game::kTileSize
-            : kDownFrame * Game::kTileSize;
+    } else if (s.vertical_facing == VerticalFacing::DOWN &&
+               (s.motion_type == MotionType::JUMPING
+             || s.motion_type == MotionType::FALLING)) {
+            source_x = kDownFrame * Game::kTileSize;
     }
-
     return source_x;
 }
 
@@ -234,7 +243,9 @@ void Player::initializeSprites(Graphics& graphics)
 Player::SpriteState Player::getSpriteState()
 {
     MotionType motion;
-    if (is_on_ground()) {
+    if (is_interacting_) {
+        motion = MotionType::INTERACTING;
+    } else if (is_on_ground()) {
         motion = acceleration_x_direction_ == 0
             ? MotionType::STANDING
             : MotionType::WALKING;
