@@ -16,6 +16,7 @@ clean:
 
 bin/cave: obj/game.o \
 	obj/main.o \
+	obj/backdrop.o \
 	obj/map.o \
 	obj/graphics.o \
 	obj/sprite.o \
