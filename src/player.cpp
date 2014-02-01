@@ -9,16 +9,16 @@
 #include "rectangle.h"
 
 // Walk Motion
-const double kSlowdownFactor{0.8};
-const double kWalkingAcceleration{0.0012}; // (pixels/ms) / ms
-const double kMaxSpeedX{0.325};            // pixels / ms
+const double kWalkingAcceleration{0.00083007812}; // (pixels/ms) / ms
+const double kMaxSpeedX{0.15859375};              // pixels / ms
+const double kFriction{0.00049804687};
 // Fall Motion
-const double kMaxSpeedY{0.2998046875};     // pixels / ms
-const double kGravity{0.00078125};         // (pixels / ms) / ms
+const double kMaxSpeedY{0.2998046875}; // pixels / ms
+const double kGravity{0.00078125}; // (pixels / ms) / ms
 // Jump Motion
-const double kAirAcceleration{0.0003125};  // pixels / ms / ms
-const double kJumpSpeed{0.25};             // pixels / ms
-const double kJumpGravity{0.0003125};      // pixels / ms / ms
+const double kAirAcceleration{0.0003125}; // pixels / ms / ms
+const double kJumpSpeed{0.25}; // pixels / ms
+const double kJumpGravity{0.0003125}; // pixels / ms / ms
 // Sprites
 const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
@@ -311,7 +311,9 @@ void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
     } else if (acceleration_x_direction_ > 0) {
         velocity_.x = std::min(velocity_.x, kMaxSpeedX);
     } else if (is_on_ground()) {
-        velocity_.x *= kSlowdownFactor;
+        velocity_.x = velocity_.x > 0.0
+            ? std::max(0.0, velocity_.x - kFriction * elapsed_time.count())
+            : std::min(0.0, velocity_.x + kFriction * elapsed_time.count());
     }
     // Calculate delta
     const int delta = (int)round(velocity_.x * elapsed_time.count());
