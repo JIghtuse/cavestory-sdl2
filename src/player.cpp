@@ -13,11 +13,11 @@ const double kSlowdownFactor{0.8};
 const double kWalkingAcceleration{0.0012}; // (pixels/ms) / ms
 const double kMaxSpeedX{0.325};            // pixels / ms
 // Fall Motion
-const double kMaxSpeedY{0.325};            // pixels / ms
-const double kGravity{0.0012};             // (pixels / ms) / ms
+const double kMaxSpeedY{0.2998046875};     // pixels / ms
+const double kGravity{0.00078125};         // (pixels / ms) / ms
 // Jump Motion
-const double kJumpSpeed{0.325};            // pixels / ms
-const auto kJumpTime = std::chrono::milliseconds(275);
+const double kJumpSpeed{0.25};             // pixels / ms
+const double kJumpGravity{0.0003125};      // pixels / ms / ms
 // Sprites
 const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
@@ -73,7 +73,7 @@ Player::Player(Graphics& graphics, Vector<int> pos) :
     horizontal_facing_{HorizontalFacing::LEFT},
     vertical_facing_{VerticalFacing::HORIZONTAL},
     is_on_ground_{false},
-    jump_(),
+    is_jump_active_{false},
     sprites_()
 {
     initializeSprites(graphics);
@@ -87,7 +87,6 @@ Player::~Player()
 void Player::update(std::chrono::milliseconds elapsed_time, const Map& map)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
-    jump_.update(elapsed_time);
 
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
@@ -132,17 +131,15 @@ void Player::lookHorizontal()
 
 void Player::startJump()
 {
+    is_jump_active_ = true;
     if (is_on_ground()) {
-        jump_.reset();
         velocity_.y = -kJumpSpeed;
-    } else if (velocity_.y < 0.0) {
-        jump_.reactivate();
     }
 }
 
 void Player::stopJump()
 {
-    jump_.deactivate();
+    is_jump_active_ = false;
 }
 
 int Player::getFrameY(const SpriteState& s) const
@@ -341,10 +338,11 @@ void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
 void Player::updateY(std::chrono::milliseconds elapsed_time, const Map& map)
 {
     // Update velocity
-    if (!jump_.is_active()) {
-        velocity_.y = std::min(velocity_.y + kGravity * elapsed_time.count(),
+    const double gravity = is_jump_active_ && velocity_.y < 0
+        ? kJumpGravity
+        : kGravity;
+    velocity_.y = std::min(velocity_.y + gravity * elapsed_time.count(),
                 kMaxSpeedY);
-    }
     // Calculate delta
     const int delta = (int)round(velocity_.y * elapsed_time.count());
     if (delta > 0) {
@@ -380,22 +378,6 @@ void Player::updateY(std::chrono::milliseconds elapsed_time, const Map& map)
         if (info.collided) {
             pos_.y = info.row * Game::kTileSize - kCollisionY.getBottom();
             is_on_ground_ = true;
-        }
-    }
-}
-
-void Player::Jump::reset()
-{
-    time_remaining_ = kJumpTime;
-    reactivate();
-}
-
-void Player::Jump::update(std::chrono::milliseconds elapsed_time)
-{
-    if (Player::Jump::active_) {
-        time_remaining_ -= elapsed_time;
-        if (time_remaining_.count() <= 0) {
-            Player::Jump::active_ = false;
         }
     }
 }

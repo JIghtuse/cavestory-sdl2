@@ -67,18 +67,6 @@ private:
    int getFrameX(const SpriteState&) const;
    int getFrameY(const SpriteState&) const;
 
-   struct Jump {
-       Jump() : time_remaining_(0), active_(false) {}
-       void update(std::chrono::milliseconds elapsed_time);
-       void reset();
-       void reactivate() { active_ = time_remaining_.count() > 0; }
-       void deactivate() { active_ = false; }
-       bool is_active() const { return active_; }
-   private:
-       std::chrono::duration<double,std::milli> time_remaining_;
-       bool active_;
-   };
-
    void initializeSprites(Graphics& graphics);
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    SpriteState getSpriteState();
@@ -99,7 +87,7 @@ private:
    HorizontalFacing horizontal_facing_;
    VerticalFacing vertical_facing_;
    bool is_on_ground_;
-   Jump jump_;
+   bool is_jump_active_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
    static int kTileSize;
