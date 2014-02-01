@@ -8,6 +8,7 @@
 const std::string kMapSpriteFilePath{"content/PrtCave.bmp"};
 
 Map::Map() :
+    backdrop_(),
     tiles_()
 {}
 
@@ -17,6 +18,9 @@ Map* Map::createTestMap(Graphics& graphics)
 {
     using std::vector;
     Map* map = new Map();
+
+    const std::string bkPath{"content/bkBlue.bmp"};
+    map->backdrop_.reset(new FixedBackdrop(bkPath, graphics));
 
     const int num_rows{15}; // 15 * 32 == 480
     const int num_cols{20}; // 20 * 32 == 640
@@ -74,6 +78,11 @@ void Map::update(std::chrono::milliseconds elapsed_time)
             }
         }
     }
+}
+
+void Map::drawBackground(Graphics& graphics) const
+{
+    backdrop_->draw(graphics);
 }
 
 void Map::draw(Graphics& graphics) const

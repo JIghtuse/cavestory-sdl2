@@ -4,6 +4,7 @@
 #include <chrono>
 #include <memory>
 #include <vector>
+#include "backdrop.h"
 
 struct Graphics;
 struct Sprite;
@@ -34,6 +35,7 @@ struct Map {
    std::vector<CollisionTile> getCollidingTiles(const Rectangle& rect) const;
 
    void update(std::chrono::milliseconds elapsed_time);
+   void drawBackground(Graphics& graphics) const;
    void draw(Graphics& graphics) const;
 private:
    struct Tile {
@@ -46,6 +48,7 @@ private:
        TileType tile_type;
        std::shared_ptr<Sprite> sprite;
    };
+   std::unique_ptr<Backdrop> backdrop_;
    std::vector<std::vector<Tile> >tiles_;
 };
 
