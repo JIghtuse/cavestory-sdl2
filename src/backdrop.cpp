@@ -1,7 +1,7 @@
 #include "backdrop.h"
 #include "game.h"
 
-const int kBackgroundSize{128}; // pixels
+const int kBackgroundSize{Game::kTileSize * 4}; // pixels
 
 FixedBackdrop::FixedBackdrop(const std::string& path, Graphics& graphics) :
     texture_id_{graphics.loadImage(path)}

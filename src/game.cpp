@@ -5,14 +5,15 @@
 
 const double kFps{60.0};
 
-int Game::kTileSize{32};
-int Game::kScreenWidth{640};
-int Game::kScreenHeight{480};
+int Game::kTileSize{16};
+int Game::kScreenWidth{320};
+int Game::kScreenHeight{240};
 
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    player_{new Player(graphics_, Vector<int>{320, 240})},
+    player_{new Player(graphics_,
+            Vector<int>{Game::kScreenWidth/2,Game::kScreenHeight/2})},
     map_{Map::createTestMap(graphics_)}
 {
     runEventLoop();

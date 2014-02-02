@@ -8,6 +8,13 @@ This project based on Christopher Herbert's ["Reconstructing Cave Story"](https:
 
 I decided to make the same with SDL 2.0 and C++11.
 
+Note on media content
+---------------------
+You can buy CaveStory+ on [Steam](http://store.steampowered.com/app/200900/),
+[Desura](http://www.desura.com/games/cave-story) or [Ubuntu Software
+Centre](https://apps.ubuntu.com/cat/applications/cave-story-plus/) and add 
+bitmaps with higher resolution to content directory.
+
 Keys to play
 ------------
 * &larr; go left
