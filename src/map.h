@@ -49,6 +49,7 @@ private:
        std::shared_ptr<Sprite> sprite;
    };
    std::unique_ptr<Backdrop> backdrop_;
+   std::vector<std::vector<std::shared_ptr<Sprite> > > background_tiles_;
    std::vector<std::vector<Tile> >tiles_;
 };
 
