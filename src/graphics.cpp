@@ -37,11 +37,20 @@ Graphics::~Graphics()
  * Loads SDL_Texture from file_path into sprite cache (sprite_sheets_ map) and
  * returns it. If texture already presents in cache just returns it.
  */
-SDL_Texture* Graphics::loadImage(const std::string& file_path)
+SDL_Texture* Graphics::loadImage(const std::string& file_path,
+        bool black_is_transparent)
 {
     // spritesheet not loaded
     if (sprite_sheets_.count(file_path) == 0) {
-        SDL_Texture* t = IMG_LoadTexture(sdlRenderer, file_path.c_str());
+        SDL_Texture *t;
+        if (black_is_transparent) {
+            SDL_Surface *surface = SDL_LoadBMP(file_path.c_str());
+            SDL_SetColorKey(surface, SDL_TRUE, 0);
+            t = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+            SDL_FreeSurface(surface);
+        } else {
+            t = IMG_LoadTexture(sdlRenderer, file_path.c_str());
+        }
         if (t == nullptr) {
             throw std::runtime_error("Cannot load texture!");
         }

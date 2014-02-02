@@ -13,7 +13,8 @@ struct Graphics
     Graphics(const Graphics&)=delete;
     Graphics& operator=(const Graphics&)=delete;
 
-    SDL_Texture* loadImage(const std::string& file_path);
+    SDL_Texture* loadImage(const std::string& file_path,
+            bool black_is_transparent=false);
 
     void renderTexture(SDL_Texture *tex, SDL_Rect dst, SDL_Rect *clip=nullptr);
     void renderTexture(SDL_Texture *tex, int x, int y, SDL_Rect *clip=nullptr);
