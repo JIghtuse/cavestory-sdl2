@@ -45,6 +45,19 @@ Map* Map::createTestMap(Graphics& graphics)
     map->tiles_[7][2] = tile;
     map->tiles_[10][3] = tile;
 
+    map->tiles_[10][0] = tile;
+    map->tiles_[9][0] = tile;
+    map->tiles_[8][0] = tile;
+    map->tiles_[7][0] = tile;
+    map->tiles_[6][0] = tile;
+    map->tiles_[5][0] = tile;
+    map->tiles_[4][0] = tile;
+    map->tiles_[3][0] = tile;
+    map->tiles_[10][19] = tile;
+    map->tiles_[9][19] = tile;
+    map->tiles_[8][19] = tile;
+    map->tiles_[7][19] = tile;
+
     return map;
 }
 
