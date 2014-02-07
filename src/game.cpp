@@ -5,9 +5,10 @@
 
 const double kFps{60.0};
 
+//static
 int Game::kTileSize{16};
-int Game::kScreenWidth{320};
-int Game::kScreenHeight{240};
+int Game::kScreenWidth{20 * Game::kTileSize};
+int Game::kScreenHeight{15 * Game::kTileSize};
 
 Game::Game() :
     sdlEngine_(),

@@ -16,6 +16,9 @@ struct Game {
     static int kTileSize;
     static int kScreenWidth;
     static int kScreenHeight;
+    template<typename T>
+        static T gameUnitsToPixels(T gameUnits);
+
 private:
     void runEventLoop();
     void update(std::chrono::milliseconds elapsed_time);
@@ -26,5 +29,10 @@ private:
     std::unique_ptr<Player> player_;
     std::unique_ptr<Map> map_;
 };
+
+template<typename T>
+T Game::gameUnitsToPixels(T gameUnits) {
+    return gameUnits * Game::kTileSize / 32;
+}
 
 #endif /* GAME_H */

@@ -9,16 +9,16 @@
 #include "rectangle.h"
 
 // Walk Motion
-const double kWalkingAcceleration{0.00083007812}; // (pixels/ms) / ms
-const double kMaxSpeedX{0.15859375};              // pixels / ms
-const double kFriction{0.00049804687};
+const double kWalkingAcceleration{Game::gameUnitsToPixels(0.00083007812)}; // (pixels/ms) / ms
+const double kMaxSpeedX{Game::gameUnitsToPixels(0.15859375)};              // pixels / ms
+const double kFriction{Game::gameUnitsToPixels(0.00049804687)};
 // Fall Motion
-const double kMaxSpeedY{0.2998046875}; // pixels / ms
-const double kGravity{0.00078125}; // (pixels / ms) / ms
+const double kMaxSpeedY{Game::gameUnitsToPixels(0.2998046875)}; // pixels / ms
+const double kGravity{Game::gameUnitsToPixels(0.00078125)}; // (pixels / ms) / ms
 // Jump Motion
-const double kAirAcceleration{0.0003125}; // pixels / ms / ms
-const double kJumpSpeed{0.25}; // pixels / ms
-const double kJumpGravity{0.0003125}; // pixels / ms / ms
+const double kAirAcceleration{Game::gameUnitsToPixels(0.0003125)}; // pixels / ms / ms
+const double kJumpSpeed{Game::gameUnitsToPixels(0.25)}; // pixels / ms
+const double kJumpGravity{Game::gameUnitsToPixels(0.0003125)}; // pixels / ms / ms
 // Sprites
 const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
@@ -37,8 +37,14 @@ const int kNumWalkFrames{3};
 const int kWalkFps{15};
 
 //Collision rectangle
-const Rectangle kCollisionX{6, 10, 20, 12};
-const Rectangle kCollisionY{10, 2, 12, 30};
+const Rectangle kCollisionX{
+    Game::gameUnitsToPixels(6), Game::gameUnitsToPixels(10),
+    Game::gameUnitsToPixels(20), Game::gameUnitsToPixels(12)
+};
+const Rectangle kCollisionY{
+    Game::gameUnitsToPixels(10), Game::gameUnitsToPixels(2),
+    Game::gameUnitsToPixels(12), Game::gameUnitsToPixels(30)
+};
 
 namespace {
 
