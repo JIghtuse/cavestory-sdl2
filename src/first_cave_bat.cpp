@@ -26,7 +26,7 @@ FirstCaveBat::~FirstCaveBat() {}
 
 void FirstCaveBat::draw(Graphics& graphics) const
 {
-    const auto angle = std::sin(units::degrees_to_radians(flight_angle_));
+    const auto angle = std::sin(units::degreesToRadians(flight_angle_));
     const auto y = pos_.y + kMoveAmplitude * angle;
     auto current_pos = Vector<units::Game> { pos_.x, y };
     sprite_->draw(graphics, current_pos);

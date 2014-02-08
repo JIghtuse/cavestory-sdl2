@@ -21,7 +21,7 @@ namespace units {
         const double kPi{atan(1) * 4};
     }
 
-    inline double degrees_to_radians(Degrees degrees) {
+    inline double degreesToRadians(Degrees degrees) {
         return degrees * kPi / 180.0;
     }
 

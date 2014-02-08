@@ -41,9 +41,9 @@ Map* Map::createTestMap(Graphics& graphics)
             units::tileToPixel(1), units::tileToPixel(1)
             )};
     Tile tile(TileType::WALL, sprite);
-    const int floor_row_idx{11};
+    const units::Tile row{11};
     for (units::Tile col = 0; col < num_cols; ++col) {
-        map->tiles_[floor_row_idx][col] = tile;
+        map->tiles_[row][col] = tile;
     }
     map->tiles_[10][5] = tile;
     map->tiles_[9][4] = tile;
@@ -127,11 +127,11 @@ void Map::drawBackground(Graphics& graphics) const
     backdrop_->draw(graphics);
     for (auto row = 0u; row < background_tiles_.size(); ++row) {
         for (auto col = 0u; col < background_tiles_[row].size(); ++col) {
-            Vector<units::Game> pos{
-                units::tileToGame(col),
-                units::tileToGame(row),
-            };
             if (background_tiles_[row][col] != nullptr) {
+                Vector<units::Game> pos{
+                    units::tileToGame(col),
+                    units::tileToGame(row),
+                };
                 background_tiles_[row][col]->draw(graphics, pos);
             }
         }
