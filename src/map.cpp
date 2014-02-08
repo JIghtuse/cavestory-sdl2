@@ -46,6 +46,7 @@ Map* Map::createTestMap(Graphics& graphics)
         map->tiles_[row][col] = tile;
     }
     map->tiles_[10][5] = tile;
+    map->tiles_[8][5] = tile;
     map->tiles_[9][4] = tile;
     map->tiles_[8][3] = tile;
     map->tiles_[7][2] = tile;
@@ -130,7 +131,7 @@ void Map::drawBackground(Graphics& graphics) const
             if (background_tiles_[row][col] != nullptr) {
                 Vector<units::Game> pos{
                     units::tileToGame(col),
-                    units::tileToGame(row),
+                    units::tileToGame(row)
                 };
                 background_tiles_[row][col]->draw(graphics, pos);
             }
@@ -147,7 +148,6 @@ void Map::draw(Graphics& graphics) const
                     units::tileToGame(col),
                     units::tileToGame(row)
                 };
-
                 tiles_[row][col].sprite->draw(graphics, pos);
             }
         }

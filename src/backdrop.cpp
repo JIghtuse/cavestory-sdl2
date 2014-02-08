@@ -15,7 +15,8 @@ void FixedBackdrop::draw(Graphics& graphics) const
         for (units::Tile y = 0; y < Game::kScreenHeight; y += kBackgroundSize) {
             SDL_Rect destination_rectangle{
                 units::tileToPixel(x), units::tileToPixel(y),
-                kBackgroundSize, kBackgroundSize
+                units::tileToPixel(kBackgroundSize),
+                units::tileToPixel(kBackgroundSize)
             };
             graphics.renderTexture(texture_id_, destination_rectangle);
         }
