@@ -41,6 +41,7 @@ const units::FPS kWalkFps{15};
 const Rectangle kCollisionX{ 6, 10, 20, 12 };
 const Rectangle kCollisionY{ 10, 2, 12, 30 };
 
+const std::chrono::milliseconds kInvincibleFlashTime{50};
 const std::chrono::milliseconds kInvincibleTime{3000};
 
 namespace {
@@ -107,6 +108,8 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
 void Player::draw(Graphics& graphics) const
 {
+    if (is_invincible_ && invincible_time_ / kInvincibleFlashTime % 2 == 0)
+        return;
     sprites_.at(getSpriteState())->draw(graphics, pos_);
 }
 
