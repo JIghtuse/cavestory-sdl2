@@ -12,6 +12,7 @@ const std::string kSpritePath{"content/NpcCemet.bmp"};
 
 FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
     pos_(pos),
+    center_y_{pos_.y},
     facing_{Facing::RIGHT},
     flight_angle_{0.0},
     sprites_()
@@ -23,10 +24,7 @@ FirstCaveBat::~FirstCaveBat() {}
 
 void FirstCaveBat::draw(Graphics& graphics) const
 {
-    const auto angle = std::sin(units::degreesToRadians(flight_angle_));
-    const auto y = pos_.y + kMoveAmplitude * angle;
-    auto current_pos = Vector<units::Game> { pos_.x, y };
-    sprites_.at(getSpriteState())->draw(graphics, current_pos);
+    sprites_.at(getSpriteState())->draw(graphics, pos_);
 }
 
 void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
@@ -37,7 +35,19 @@ void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
     facing_ = pos_.x + units::tileToGame(1) / 2.0 > player_x
         ? Facing::LEFT
         : Facing::RIGHT;
+
+    const auto angle = std::sin(units::degreesToRadians(flight_angle_));
+    pos_.y = center_y_ + units::tileToGame(5) / 2.0 * units::Game(angle);
     sprites_[getSpriteState()]->update(elapsed_time);
+}
+
+const Rectangle FirstCaveBat::getDamageRectangle() const
+{
+    return Rectangle(
+            pos_.x + units::tileToGame(1) / 2.0,
+            pos_.y + units::tileToGame(1) / 2.0,
+            0,
+            0);
 }
 
 void FirstCaveBat::initializeSprites(Graphics& graphics)

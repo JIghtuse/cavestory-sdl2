@@ -151,6 +151,14 @@ void Player::stopJump()
     is_jump_active_ = false;
 }
 
+const Rectangle Player::getDamageRectangle() const
+{
+    return Rectangle(pos_.x + kCollisionX.getLeft(),
+            pos_.y + kCollisionY.getTop(),
+            kCollisionX.getWidth(),
+            kCollisionY.getHeight());
+}
+
 units::Tile Player::getFrameY(const SpriteState& s) const
 {
     units::Tile tile_y = (s.horizontal_facing == HorizontalFacing::LEFT)

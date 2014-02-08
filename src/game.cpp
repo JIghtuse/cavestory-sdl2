@@ -20,8 +20,8 @@ Game::Game() :
     },
     bat_{new FirstCaveBat(graphics_,
             Vector<units::Game>{
-            units::tileToGame(5),
-            units::tileToGame(Game::kScreenHeight/2)}
+            units::tileToGame(7),
+            units::tileToGame(Game::kScreenHeight/2 + 1)}
             )
     },
     map_{Map::createTestMap(graphics_)}
@@ -119,9 +119,13 @@ void Game::runEventLoop() {
 
 void Game::update(const std::chrono::milliseconds elapsed_time)
 {
+    //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
     bat_->update(elapsed_time, player_->getCenterX());
-    map_->update(elapsed_time);
+
+    printf("Checking collisions\n");
+    if (bat_->getDamageRectangle().collidesWith(player_->getDamageRectangle()))
+        printf("Do damage to Quote\n");
 }
 
 void Game::draw(Graphics& graphics) const

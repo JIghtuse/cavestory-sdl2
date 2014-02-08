@@ -6,6 +6,7 @@
 #include <chrono>
 #include "vector.h"
 #include "units.h"
+#include "rectangle.h"
 
 struct Sprite;
 struct Graphics;
@@ -17,6 +18,8 @@ struct FirstCaveBat {
    void draw(Graphics& graphics) const;
    void update(const std::chrono::milliseconds elapsed_time,
            const units::Game player_x);
+
+   const Rectangle getDamageRectangle() const;
 
 private:
    enum class Facing {
@@ -40,6 +43,7 @@ private:
    const SpriteState getSpriteState() const;
 
    Vector<units::Game> pos_;
+   const units::Game center_y_;
    Facing facing_;
    units::Degrees flight_angle_;
    std::map<SpriteState, std::shared_ptr<Sprite> > sprites_;
