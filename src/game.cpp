@@ -4,6 +4,7 @@
 #include "player.h"
 
 const units::FPS kFps{60};
+const auto kMaxFrameTime = std::chrono::milliseconds(5 * 1000 / 60);
 units::Tile Game::kScreenWidth{20};
 units::Tile Game::kScreenHeight{15};
 
@@ -88,7 +89,12 @@ void Game::runEventLoop() {
 
         // update scene and last_updated_time
         const auto current_time = high_resolution_clock::now();
-        update(duration_cast<milliseconds>(current_time - last_updated_time));
+        const auto upd_elapsed_time = current_time - last_updated_time;
+
+        update(std::min(
+                    duration_cast<milliseconds>(upd_elapsed_time),
+                    kMaxFrameTime)
+                );
         last_updated_time = current_time;
 
         draw(graphics_);
