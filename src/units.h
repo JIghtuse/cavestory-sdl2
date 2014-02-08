@@ -8,6 +8,8 @@ namespace units {
     typedef int Pixel;
     typedef unsigned int Tile;
 
+    typedef unsigned int Frame;
+
     typedef unsigned int FPS;
     typedef double Velocity;
     typedef double Acceleration;

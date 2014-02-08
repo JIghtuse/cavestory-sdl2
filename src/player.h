@@ -13,7 +13,7 @@ struct Map;
 struct Rectangle;
 
 struct Player {
-   Player(Graphics& graphics, Vector<int> pos);
+   Player(Graphics& graphics, Vector<units::Game> pos);
    ~Player();
 
    void update(std::chrono::milliseconds elapsed_time, const Map& map);
@@ -66,24 +66,24 @@ private:
        VerticalFacing vertical_facing;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b);
-   int getFrameX(const SpriteState&) const;
-   int getFrameY(const SpriteState&) const;
+   units::Tile getFrameX(const SpriteState&) const;
+   units::Tile getFrameY(const SpriteState&) const;
 
    void initializeSprites(Graphics& graphics);
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    SpriteState getSpriteState();
 
-   Rectangle leftCollision(int delta) const;
-   Rectangle rightCollision(int delta) const;
-   Rectangle topCollision(int delta) const;
-   Rectangle bottomCollision(int delta) const;
+   Rectangle leftCollision(units::Game delta) const;
+   Rectangle rightCollision(units::Game delta) const;
+   Rectangle topCollision(units::Game delta) const;
+   Rectangle bottomCollision(units::Game delta) const;
 
    void updateX(std::chrono::milliseconds elapsed_time, const Map& map);
    void updateY(std::chrono::milliseconds elapsed_time, const Map& map);
 
    bool is_on_ground() const { return is_on_ground_; }
 
-   Vector<int> pos_;
+   Vector<units::Game> pos_;
    Vector<units::Velocity> velocity_;
    int acceleration_x_direction_;
    HorizontalFacing horizontal_facing_;
@@ -93,7 +93,6 @@ private:
    bool is_interacting_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
-   static int kTileSize;
 };
 
 #endif /* SRC/PLAYER_H_ */

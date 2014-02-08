@@ -8,9 +8,9 @@ struct AnimatedSprite : public Sprite {
     AnimatedSprite(
             Graphics& graphics,
             const std::string& file_path,
-            int source_x, int source_y,
-            int width, int height,
-            units::FPS fps, int num_frames
+            units::Pixel source_x, units::Pixel source_y,
+            units::Pixel width, units::Pixel height,
+            units::FPS fps, units::Frame num_frames
             );
 
     ~AnimatedSprite();
@@ -19,8 +19,8 @@ struct AnimatedSprite : public Sprite {
 
 private:
     std::chrono::milliseconds frame_time_;
-    const int num_frames_;
-    int current_frame_;
+    const units::Frame num_frames_;
+    units::Frame current_frame_;
     std::chrono::milliseconds elapsed_time_; // since the last
                                              // frame change
 };

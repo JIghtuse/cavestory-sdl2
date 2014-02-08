@@ -7,7 +7,8 @@ Graphics::Graphics() :
     sdlWindow {SDL_CreateWindow(
                 "Cave Reconstructed",
                 0, 0,
-                Game::kScreenWidth, Game::kScreenHeight,
+                units::tileToPixel(Game::kScreenWidth),
+                units::tileToPixel(Game::kScreenHeight),
                 SDL_WINDOW_FULLSCREEN_DESKTOP
                 )},
     sdlRenderer {SDL_CreateRenderer(

@@ -4,17 +4,18 @@
 #include "player.h"
 
 const units::FPS kFps{60};
-
-//static
-int Game::kTileSize{16};
-int Game::kScreenWidth{20 * Game::kTileSize};
-int Game::kScreenHeight{15 * Game::kTileSize};
+units::Tile Game::kScreenWidth{20};
+units::Tile Game::kScreenHeight{15};
 
 Game::Game() :
     sdlEngine_(),
     graphics_(),
     player_{new Player(graphics_,
-            Vector<int>{Game::kScreenWidth/2,Game::kScreenHeight/2})},
+            Vector<units::Game>{
+            units::tileToGame(Game::kScreenWidth/2),
+            units::tileToGame(Game::kScreenHeight/2)}
+            )
+    },
     map_{Map::createTestMap(graphics_)}
 {
     runEventLoop();

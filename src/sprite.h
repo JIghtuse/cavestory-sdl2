@@ -5,6 +5,7 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include "vector.h"
+#include "units.h"
 
 struct Graphics;
 
@@ -12,8 +13,8 @@ struct Sprite {
     Sprite(
             Graphics& graphics,
             const std::string& file_path,
-            int source_x, int source_y,
-            int width, int height
+            units::Pixel source_x, units::Pixel source_y,
+            units::Pixel width, units::Pixel height
             );
     virtual ~Sprite();
 
@@ -21,7 +22,7 @@ struct Sprite {
     Sprite& operator=(const Sprite&)=delete;
 
     virtual void update(std::chrono::milliseconds) {}
-    void draw(Graphics& graphics, Vector<int>& pos);
+    void draw(Graphics& graphics, Vector<units::Game>& pos);
 
 private:
     SDL_Texture *texture_;

@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "backdrop.h"
+#include "units.h"
 
 struct Graphics;
 struct Sprite;
@@ -20,13 +21,13 @@ struct Map {
    };
 
    struct CollisionTile {
-       CollisionTile(int row, int col, TileType tile_type) :
+       CollisionTile(units::Tile row, units::Tile col, TileType tile_type) :
            row(row),
            col(col),
            tile_type(tile_type)
        {}
-       int row;
-       int col;
+       units::Tile row;
+       units::Tile col;
        TileType tile_type;
    };
 
