@@ -2,14 +2,12 @@
 #define UNITS_H_
 
 #include <cmath>
-#include <chrono>
 
 namespace units {
     typedef double Game; // intrinsic units of position
     typedef int Pixel;
     typedef unsigned int Tile;
 
-    typedef std::chrono::milliseconds Milliseconds;
     typedef unsigned int FPS;
     typedef double Velocity;
     typedef double Acceleration;

@@ -14,14 +14,14 @@ struct AnimatedSprite : public Sprite {
 
     ~AnimatedSprite();
 
-    virtual void update(std::chrono::duration<double,std::milli> elapsed_time);
+    virtual void update(std::chrono::milliseconds elapsed_time);
 
 private:
-    std::chrono::duration<double,std::milli> frame_time_;
+    std::chrono::milliseconds frame_time_;
     const int num_frames_;
     int current_frame_;
-    std::chrono::duration<double,std::milli> elapsed_time_; // since the last
-                                                            // frame change
+    std::chrono::milliseconds elapsed_time_; // since the last
+                                             // frame change
 };
 
 #endif /*  ANIMATED_SPRITE_H */

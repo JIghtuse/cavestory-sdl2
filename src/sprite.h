@@ -20,7 +20,7 @@ struct Sprite {
     Sprite(const Sprite&)=delete;
     Sprite& operator=(const Sprite&)=delete;
 
-    virtual void update(std::chrono::duration<double,std::milli>) {};
+    virtual void update(std::chrono::milliseconds) {}
     void draw(Graphics& graphics, Vector<int>& pos);
 
 private:

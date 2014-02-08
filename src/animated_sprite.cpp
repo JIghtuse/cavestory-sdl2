@@ -21,8 +21,7 @@ AnimatedSprite::~AnimatedSprite()
 {
 }
 
-void AnimatedSprite::update(
-        std::chrono::duration<double,std::milli> elapsed_time)
+void AnimatedSprite::update(std::chrono::milliseconds elapsed_time)
 {
     elapsed_time_ += elapsed_time;
     if (elapsed_time_ > frame_time_) {
