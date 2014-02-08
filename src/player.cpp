@@ -168,7 +168,6 @@ void Player::takeDamage() {
     if (is_invincible_) return;
 
     velocity_.y = std::min(velocity_.y, -kShortJumpSpeed);
-    printf("Do damage to Quote\n");
     is_invincible_ = true;
     invincible_time_ = invincible_time_.zero();
 }
