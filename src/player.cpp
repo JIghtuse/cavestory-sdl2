@@ -34,7 +34,7 @@ const int kDownFrame{6};
 const int kBackFrame{7};
 // Walk Anumation
 const int kNumWalkFrames{3};
-const int kWalkFps{15};
+const units::FPS kWalkFps{15};
 
 //Collision rectangle
 const Rectangle kCollisionX{

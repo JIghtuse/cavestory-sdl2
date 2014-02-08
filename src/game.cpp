@@ -3,7 +3,7 @@
 #include "map.h"
 #include "player.h"
 
-const double kFps{60.0};
+const units::FPS kFps{60};
 
 //static
 int Game::kTileSize{16};

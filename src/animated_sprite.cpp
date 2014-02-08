@@ -7,7 +7,7 @@ AnimatedSprite::AnimatedSprite(
         const std::string& file_path,
         int source_x, int source_y,
         int width, int height,
-        int fps, int num_frames
+        units::FPS fps, int num_frames
         ) :
     Sprite(graphics, file_path, source_x, source_y, width, height),
     frame_time_(1000 / fps),
