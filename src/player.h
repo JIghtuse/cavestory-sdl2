@@ -6,6 +6,7 @@
 #include <memory>
 #include "sprite.h"
 #include "vector.h"
+#include "units.h"
 
 struct Graphics;
 struct Map;
@@ -83,7 +84,7 @@ private:
    bool is_on_ground() const { return is_on_ground_; }
 
    Vector<int> pos_;
-   Vector<double> velocity_;
+   Vector<units::Velocity> velocity_;
    int acceleration_x_direction_;
    HorizontalFacing horizontal_facing_;
    VerticalFacing vertical_facing_;

@@ -9,16 +9,16 @@
 #include "rectangle.h"
 
 // Walk Motion
-const double kWalkingAcceleration{Game::gameUnitsToPixels(0.00083007812)}; // (pixels/ms) / ms
-const double kMaxSpeedX{Game::gameUnitsToPixels(0.15859375)};              // pixels / ms
-const double kFriction{Game::gameUnitsToPixels(0.00049804687)};
+const units::Acceleration kWalkingAcceleration{Game::gameUnitsToPixels(0.00083007812)};
+const units::Acceleration kFriction{Game::gameUnitsToPixels(0.00049804687)};
+const units::Velocity kMaxSpeedX{Game::gameUnitsToPixels(0.15859375)};
 // Fall Motion
-const double kMaxSpeedY{Game::gameUnitsToPixels(0.2998046875)}; // pixels / ms
-const double kGravity{Game::gameUnitsToPixels(0.00078125)}; // (pixels / ms) / ms
+const units::Acceleration kGravity{Game::gameUnitsToPixels(0.00078125)};
+const units::Velocity kMaxSpeedY{Game::gameUnitsToPixels(0.2998046875)};
 // Jump Motion
-const double kAirAcceleration{Game::gameUnitsToPixels(0.0003125)}; // pixels / ms / ms
-const double kJumpSpeed{Game::gameUnitsToPixels(0.25)}; // pixels / ms
-const double kJumpGravity{Game::gameUnitsToPixels(0.0003125)}; // pixels / ms / ms
+const units::Acceleration kAirAcceleration{Game::gameUnitsToPixels(0.0003125)};
+const units::Acceleration kJumpGravity{Game::gameUnitsToPixels(0.0003125)};
+const units::Velocity kJumpSpeed{Game::gameUnitsToPixels(0.25)};
 // Sprites
 const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
@@ -310,7 +310,7 @@ Rectangle Player::bottomCollision(int delta) const
 void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
 {
     // Update velocity
-    double acceleration_x{0.0};
+    units::Acceleration acceleration_x{0.0};
     if (acceleration_x_direction_ < 0) {
         acceleration_x = is_on_ground()
             ? -kWalkingAcceleration
@@ -370,7 +370,7 @@ void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
 void Player::updateY(std::chrono::milliseconds elapsed_time, const Map& map)
 {
     // Update velocity
-    const double gravity = is_jump_active_ && velocity_.y < 0
+    const units::Acceleration gravity = is_jump_active_ && velocity_.y < 0
         ? kJumpGravity
         : kGravity;
     velocity_.y = std::min(velocity_.y + gravity * elapsed_time.count(),
