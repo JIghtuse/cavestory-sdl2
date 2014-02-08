@@ -186,7 +186,7 @@ units::Tile Player::getFrameX(const SpriteState& s) const
     } else if (s.vertical_facing == VerticalFacing::DOWN &&
                (s.motion_type == MotionType::JUMPING
              || s.motion_type == MotionType::FALLING)) {
-            tile_x = kDownFrame;
+        tile_x = kDownFrame;
     }
     return tile_x;
 }

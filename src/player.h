@@ -30,6 +30,8 @@ struct Player {
    void startJump();
    void stopJump();
 
+   units::Game getCenterX() const {return pos_.x + units::tileToGame(1) / 2.0;}
+
 private:
    enum class MotionType {
        FIRST_MOTION_TYPE,

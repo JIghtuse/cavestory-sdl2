@@ -119,7 +119,7 @@ void Game::runEventLoop() {
 void Game::update(std::chrono::milliseconds elapsed_time)
 {
     player_->update(elapsed_time, *map_);
-    bat_->update(elapsed_time);
+    bat_->update(elapsed_time, player_->getCenterX());
     map_->update(elapsed_time);
 }
 
