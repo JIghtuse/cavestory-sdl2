@@ -24,9 +24,13 @@ void AnimatedSprite::update(std::chrono::milliseconds elapsed_time)
 {
     elapsed_time_ += elapsed_time;
     if (elapsed_time_ > frame_time_) {
-        current_frame_ = (current_frame_ + 1) % num_frames_;
-        source_rect_.x = source_rect_.w * current_frame_;
-
+        ++current_frame_;
         elapsed_time_ = elapsed_time_.zero();
+        if (current_frame_ < num_frames_) {
+            source_rect_.x += source_rect_.w;
+        } else {
+            source_rect_.x -= source_rect_.w * (num_frames_ - 1);
+            current_frame_ = 0;
+        }
     }
 }

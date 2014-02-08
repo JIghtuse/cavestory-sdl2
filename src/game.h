@@ -9,6 +9,7 @@
 
 struct Map;
 struct Player;
+struct FirstCaveBat;
 
 struct Game {
     Game();
@@ -25,6 +26,7 @@ private:
     SDLEngine sdlEngine_;
     Graphics graphics_;
     std::unique_ptr<Player> player_;
+    std::unique_ptr<FirstCaveBat> bat_;
     std::unique_ptr<Map> map_;
 };
 

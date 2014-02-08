@@ -1,3 +1,4 @@
+#include "first_cave_bat.h"
 #include "game.h"
 #include "input.h"
 #include "map.h"
@@ -14,6 +15,12 @@ Game::Game() :
     player_{new Player(graphics_,
             Vector<units::Game>{
             units::tileToGame(Game::kScreenWidth/2),
+            units::tileToGame(Game::kScreenHeight/2)}
+            )
+    },
+    bat_{new FirstCaveBat(graphics_,
+            Vector<units::Game>{
+            units::tileToGame(5),
             units::tileToGame(Game::kScreenHeight/2)}
             )
     },
@@ -112,6 +119,7 @@ void Game::runEventLoop() {
 void Game::update(std::chrono::milliseconds elapsed_time)
 {
     player_->update(elapsed_time, *map_);
+    bat_->update(elapsed_time);
     map_->update(elapsed_time);
 }
 
@@ -119,6 +127,7 @@ void Game::draw(Graphics& graphics)
 {
     graphics.clear();
     map_->drawBackground(graphics);
+    bat_->draw(graphics);
     player_->draw(graphics);
     map_->draw(graphics);
     graphics.flip();
