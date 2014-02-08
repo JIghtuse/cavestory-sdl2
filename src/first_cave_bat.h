@@ -13,11 +13,12 @@ struct FirstCaveBat {
    FirstCaveBat(Graphics& graphics, Vector<units::Game> pos);
    ~FirstCaveBat();
 
-   void draw(Graphics& graphics);
-   void update(std::chrono::milliseconds elapsed_time) const;
+   void draw(Graphics& graphics) const;
+   void update(std::chrono::milliseconds elapsed_time);
 
 private:
    Vector<units::Game> pos_;
+   units::Degrees flight_angle_;
    std::shared_ptr<Sprite> sprite_;
 };
 

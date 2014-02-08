@@ -7,15 +7,22 @@ namespace units {
     typedef double Game; // intrinsic units of position
     typedef int Pixel;
     typedef unsigned int Tile;
+    typedef double Degrees;
 
     typedef unsigned int Frame;
 
     typedef unsigned int FPS;
     typedef double Velocity;
     typedef double Acceleration;
+    typedef double AngularVelocity; // Degrees / milliseconds
 
     namespace {
         const Game kTileSize{32.0};
+        const double kPi{atan(1) * 4};
+    }
+
+    inline double degrees_to_radians(Degrees degrees) {
+        return degrees * kPi / 180.0;
     }
 
     inline Pixel gameToPixel(Game game) {
