@@ -123,9 +123,10 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
     player_->update(elapsed_time, *map_);
     bat_->update(elapsed_time, player_->getCenterX());
 
-    printf("Checking collisions\n");
-    if (bat_->getDamageRectangle().collidesWith(player_->getDamageRectangle()))
-        printf("Do damage to Quote\n");
+    const auto batRect = bat_->getDamageRectangle();
+    if (batRect.collidesWith(player_->getDamageRectangle())) {
+        player_->takeDamage();
+    }
 }
 
 void Game::draw(Graphics& graphics) const

@@ -30,6 +30,8 @@ struct Player {
    void startJump();
    void stopJump();
 
+   void takeDamage();
+
    const Rectangle getDamageRectangle() const;
    units::Game getCenterX() const {return pos_.x + units::tileToGame(1) / 2.0;}
 
@@ -94,6 +96,8 @@ private:
    bool is_on_ground_;
    bool is_jump_active_;
    bool is_interacting_;
+   bool is_invincible_;
+   std::chrono::milliseconds invincible_time_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
 };

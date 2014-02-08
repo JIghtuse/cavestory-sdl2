@@ -19,6 +19,7 @@ const units::Velocity kMaxSpeedY{0.2998046875};
 const units::Acceleration kAirAcceleration{0.0003125};
 const units::Acceleration kJumpGravity{0.0003125};
 const units::Velocity kJumpSpeed{0.25};
+const units::Velocity kShortJumpSpeed{kJumpSpeed / 1.5};
 // Sprites
 const std::string kSpriteFilePath{"content/MyChar.bmp"};
 // Sprite Frames
@@ -39,6 +40,8 @@ const units::FPS kWalkFps{15};
 //Collision rectangles
 const Rectangle kCollisionX{ 6, 10, 20, 12 };
 const Rectangle kCollisionY{ 10, 2, 12, 30 };
+
+const std::chrono::milliseconds kInvincibleTime{3000};
 
 namespace {
 
@@ -76,6 +79,8 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_on_ground_{false},
     is_jump_active_{false},
     is_interacting_{false},
+    is_invincible_{false},
+    invincible_time_{0},
     sprites_()
 {
     initializeSprites(graphics);
@@ -90,6 +95,11 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
         const Map& map)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
+
+    if (is_invincible_) {
+        invincible_time_ += elapsed_time;
+        is_invincible_ = invincible_time_ < kInvincibleTime;
+    }
 
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
@@ -149,6 +159,15 @@ void Player::startJump()
 void Player::stopJump()
 {
     is_jump_active_ = false;
+}
+
+void Player::takeDamage() {
+    if (is_invincible_) return;
+
+    velocity_.y = std::min(velocity_.y, -kShortJumpSpeed);
+    printf("Do damage to Quote\n");
+    is_invincible_ = true;
+    invincible_time_ = invincible_time_.zero();
 }
 
 const Rectangle Player::getDamageRectangle() const
