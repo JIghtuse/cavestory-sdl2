@@ -14,13 +14,17 @@ struct Graphics
     Graphics& operator=(const Graphics&)=delete;
 
     SDL_Texture* loadImage(const std::string& file_path,
-            bool black_is_transparent=false);
+            const bool black_is_transparent=false);
 
-    void renderTexture(SDL_Texture *tex, SDL_Rect dst, SDL_Rect *clip=nullptr);
-    void renderTexture(SDL_Texture *tex, int x, int y, SDL_Rect *clip=nullptr);
+    void renderTexture(SDL_Texture *tex,
+            const SDL_Rect dst,
+            const SDL_Rect *clip=nullptr) const;
+    void renderTexture(SDL_Texture *tex,
+            const int x, const int y,
+            const SDL_Rect *clip=nullptr) const;
 
-    void flip();
-    void clear();
+    void flip() const;
+    void clear() const;
 
 private:
     SDL_Window *sdlWindow;

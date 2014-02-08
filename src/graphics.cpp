@@ -39,7 +39,7 @@ Graphics::~Graphics()
  * returns it. If texture already presents in cache just returns it.
  */
 SDL_Texture* Graphics::loadImage(const std::string& file_path,
-        bool black_is_transparent)
+        const bool black_is_transparent)
 {
     // spritesheet not loaded
     if (sprite_sheets_.count(file_path) == 0) {
@@ -62,8 +62,8 @@ SDL_Texture* Graphics::loadImage(const std::string& file_path,
 
 void Graphics::renderTexture(
         SDL_Texture *tex,
-        SDL_Rect dst,
-        SDL_Rect *clip)
+        const SDL_Rect dst,
+        const SDL_Rect *clip) const
 {
     SDL_RenderCopy(sdlRenderer, tex, clip, &dst);
 }
@@ -74,9 +74,9 @@ void Graphics::renderTexture(
  */
 void Graphics::renderTexture(
         SDL_Texture *tex,
-        int x,
-        int y,
-        SDL_Rect *clip)
+        const int x,
+        const int y,
+        const SDL_Rect *clip) const
 {
     SDL_Rect dst;
     dst.x = x;
@@ -90,12 +90,12 @@ void Graphics::renderTexture(
     renderTexture(tex, dst, clip);
 }
 
-void Graphics::flip()
+void Graphics::flip() const
 {
     SDL_RenderPresent(sdlRenderer);
 }
 
-void Graphics::clear()
+void Graphics::clear() const
 {
     SDL_RenderClear(sdlRenderer);
 }

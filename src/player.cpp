@@ -86,7 +86,8 @@ Player::~Player()
     ;
 }
 
-void Player::update(std::chrono::milliseconds elapsed_time, const Map& map)
+void Player::update(const std::chrono::milliseconds elapsed_time,
+        const Map& map)
 {
     sprites_[getSpriteState()]->update(elapsed_time);
 
@@ -94,9 +95,9 @@ void Player::update(std::chrono::milliseconds elapsed_time, const Map& map)
     updateY(elapsed_time, map);
 }
 
-void Player::draw(Graphics& graphics)
+void Player::draw(Graphics& graphics) const
 {
-    sprites_[getSpriteState()]->draw(graphics, pos_);
+    sprites_.at(getSpriteState())->draw(graphics, pos_);
 }
 
 void Player::startMovingLeft()
@@ -241,7 +242,7 @@ void Player::initializeSprites(Graphics& graphics)
             }
 }
 
-Player::SpriteState Player::getSpriteState()
+const Player::SpriteState Player::getSpriteState() const
 {
     MotionType motion;
     if (is_interacting_) {
@@ -258,7 +259,7 @@ Player::SpriteState Player::getSpriteState()
     return SpriteState(motion, horizontal_facing_, vertical_facing_);
 }
 
-Rectangle Player::leftCollision(units::Game delta) const
+const Rectangle Player::leftCollision(units::Game delta) const
 {
     assert(delta <= 0);
     return Rectangle(
@@ -269,7 +270,7 @@ Rectangle Player::leftCollision(units::Game delta) const
             );
 }
 
-Rectangle Player::rightCollision(units::Game delta) const
+const Rectangle Player::rightCollision(units::Game delta) const
 {
     assert(delta >= 0);
     return Rectangle(
@@ -280,7 +281,7 @@ Rectangle Player::rightCollision(units::Game delta) const
             );
 }
 
-Rectangle Player::topCollision(units::Game delta) const
+const Rectangle Player::topCollision(units::Game delta) const
 {
     assert(delta <= 0);
     return Rectangle(
@@ -291,7 +292,7 @@ Rectangle Player::topCollision(units::Game delta) const
             );
 }
 
-Rectangle Player::bottomCollision(units::Game delta) const
+const Rectangle Player::bottomCollision(units::Game delta) const
 {
     assert(delta >= 0);
     return Rectangle(
@@ -302,7 +303,8 @@ Rectangle Player::bottomCollision(units::Game delta) const
             );
 }
 
-void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
+void Player::updateX(const std::chrono::milliseconds elapsed_time,
+        const Map& map)
 {
     // Update velocity
     units::Acceleration acceleration_x{0.0};
@@ -363,7 +365,8 @@ void Player::updateX(std::chrono::milliseconds elapsed_time, const Map& map)
     }
 }
 
-void Player::updateY(std::chrono::milliseconds elapsed_time, const Map& map)
+void Player::updateY(const std::chrono::milliseconds elapsed_time,
+        const Map& map)
 {
     // Update velocity
     const units::Acceleration gravity = is_jump_active_ && velocity_.y < 0

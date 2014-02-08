@@ -29,8 +29,8 @@ void FirstCaveBat::draw(Graphics& graphics) const
     sprites_.at(getSpriteState())->draw(graphics, current_pos);
 }
 
-void FirstCaveBat::update(std::chrono::milliseconds elapsed_time,
-        units::Game player_x)
+void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
+        const units::Game player_x)
 {
     flight_angle_ += kAngularVelocity * elapsed_time.count();
 
@@ -49,7 +49,8 @@ void FirstCaveBat::initializeSprites(Graphics& graphics)
     }
 }
 
-void FirstCaveBat::initializeSprite(Graphics& graphics, const SpriteState& sprite_state)
+void FirstCaveBat::initializeSprite(Graphics& graphics,
+        const SpriteState& sprite_state)
 {
     auto tile_y = sprite_state.facing == Facing::RIGHT ? 3 : 2;
     sprites_[sprite_state] = std::shared_ptr<Sprite>(new AnimatedSprite{
@@ -61,8 +62,7 @@ void FirstCaveBat::initializeSprite(Graphics& graphics, const SpriteState& sprit
             });
 }
 
-FirstCaveBat::SpriteState FirstCaveBat::getSpriteState() const
+const FirstCaveBat::SpriteState FirstCaveBat::getSpriteState() const
 {
     return SpriteState(facing_);
-
 }

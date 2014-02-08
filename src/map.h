@@ -33,9 +33,10 @@ struct Map {
 
    static Map* createTestMap(Graphics& graphics);
 
-   std::vector<CollisionTile> getCollidingTiles(const Rectangle& rect) const;
+   const std::vector<CollisionTile>
+       getCollidingTiles(const Rectangle& rect) const;
 
-   void update(std::chrono::milliseconds elapsed_time);
+   void update(const std::chrono::milliseconds elapsed_time);
    void drawBackground(Graphics& graphics) const;
    void draw(Graphics& graphics) const;
 private:

@@ -108,22 +108,23 @@ void Game::runEventLoop() {
 
         // calculate delay for constant fps
         const auto end_time = high_resolution_clock::now();
-        auto elapsed_time = duration_cast<milliseconds>(end_time - start_time);
+        const auto elapsed_time = duration_cast<milliseconds>(
+                end_time - start_time);
 
-        auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
+        const auto delay_duration = milliseconds(1000) / kFps - elapsed_time;
         if (delay_duration.count() >= 0)
             SDL_Delay(delay_duration.count());
     }
 }
 
-void Game::update(std::chrono::milliseconds elapsed_time)
+void Game::update(const std::chrono::milliseconds elapsed_time)
 {
     player_->update(elapsed_time, *map_);
     bat_->update(elapsed_time, player_->getCenterX());
     map_->update(elapsed_time);
 }
 
-void Game::draw(Graphics& graphics)
+void Game::draw(Graphics& graphics) const
 {
     graphics.clear();
     map_->drawBackground(graphics);

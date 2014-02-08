@@ -20,10 +20,10 @@ struct Game {
 
 private:
     void runEventLoop();
-    void update(std::chrono::milliseconds elapsed_time);
-    void draw(Graphics& graphics);
+    void update(const std::chrono::milliseconds elapsed_time);
+    void draw(Graphics& graphics) const;
 
-    SDLEngine sdlEngine_;
+    const SDLEngine sdlEngine_;
     Graphics graphics_;
     std::unique_ptr<Player> player_;
     std::unique_ptr<FirstCaveBat> bat_;

@@ -13,16 +13,16 @@ struct Sprite {
     Sprite(
             Graphics& graphics,
             const std::string& file_path,
-            units::Pixel source_x, units::Pixel source_y,
-            units::Pixel width, units::Pixel height
+            const units::Pixel source_x, const units::Pixel source_y,
+            const units::Pixel width, const units::Pixel height
             );
     virtual ~Sprite();
 
     Sprite(const Sprite&)=delete;
     Sprite& operator=(const Sprite&)=delete;
 
-    virtual void update(std::chrono::milliseconds) {}
-    void draw(Graphics& graphics, Vector<units::Game>& pos);
+    virtual void update(const std::chrono::milliseconds) {}
+    void draw(Graphics& graphics, const Vector<units::Game>& pos) const;
 
 private:
     SDL_Texture *texture_;

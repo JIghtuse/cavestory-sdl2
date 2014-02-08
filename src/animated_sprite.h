@@ -8,17 +8,17 @@ struct AnimatedSprite : public Sprite {
     AnimatedSprite(
             Graphics& graphics,
             const std::string& file_path,
-            units::Pixel source_x, units::Pixel source_y,
-            units::Pixel width, units::Pixel height,
-            units::FPS fps, units::Frame num_frames
+            const units::Pixel source_x, const units::Pixel source_y,
+            const units::Pixel width, const units::Pixel height,
+            const units::FPS fps, const units::Frame num_frames
             );
 
     ~AnimatedSprite();
 
-    virtual void update(std::chrono::milliseconds elapsed_time);
+    void update(const std::chrono::milliseconds elapsed_time);
 
 private:
-    std::chrono::milliseconds frame_time_;
+    const std::chrono::milliseconds frame_time_;
     const units::Frame num_frames_;
     units::Frame current_frame_;
     std::chrono::milliseconds elapsed_time_; // since the last

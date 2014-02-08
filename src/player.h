@@ -16,8 +16,8 @@ struct Player {
    Player(Graphics& graphics, Vector<units::Game> pos);
    ~Player();
 
-   void update(std::chrono::milliseconds elapsed_time, const Map& map);
-   void draw(Graphics& graphics);
+   void update(const std::chrono::milliseconds elapsed_time, const Map& map);
+   void draw(Graphics& graphics) const;
 
    void startMovingLeft();
    void startMovingRight();
@@ -73,15 +73,15 @@ private:
 
    void initializeSprites(Graphics& graphics);
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
-   SpriteState getSpriteState();
+   const SpriteState getSpriteState() const;
 
-   Rectangle leftCollision(units::Game delta) const;
-   Rectangle rightCollision(units::Game delta) const;
-   Rectangle topCollision(units::Game delta) const;
-   Rectangle bottomCollision(units::Game delta) const;
+   const Rectangle leftCollision(units::Game delta) const;
+   const Rectangle rightCollision(units::Game delta) const;
+   const Rectangle topCollision(units::Game delta) const;
+   const Rectangle bottomCollision(units::Game delta) const;
 
-   void updateX(std::chrono::milliseconds elapsed_time, const Map& map);
-   void updateY(std::chrono::milliseconds elapsed_time, const Map& map);
+   void updateX(const std::chrono::milliseconds elapsed_time, const Map& map);
+   void updateY(const std::chrono::milliseconds elapsed_time, const Map& map);
 
    bool is_on_ground() const { return is_on_ground_; }
 

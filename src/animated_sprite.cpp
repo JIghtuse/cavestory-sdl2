@@ -4,9 +4,9 @@
 AnimatedSprite::AnimatedSprite(
         Graphics& graphics,
         const std::string& file_path,
-        units::Pixel source_x, units::Pixel source_y,
-        units::Pixel width, units::Pixel height,
-        units::FPS fps, units::Frame num_frames
+        const units::Pixel source_x, const units::Pixel source_y,
+        const units::Pixel width, const units::Pixel height,
+        const units::FPS fps, const units::Frame num_frames
         ) :
     Sprite(graphics, file_path, source_x, source_y, width, height),
     frame_time_(1000 / fps),

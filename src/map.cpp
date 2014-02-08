@@ -92,7 +92,7 @@ Map* Map::createTestMap(Graphics& graphics)
 }
 
 
-std::vector<Map::CollisionTile>
+const std::vector<Map::CollisionTile>
 Map::getCollidingTiles(const Rectangle& rect) const
 {
     const units::Tile first_row = units::gameToTile(rect.getTop());
@@ -112,7 +112,7 @@ Map::getCollidingTiles(const Rectangle& rect) const
     return collision_tiles;
 }
 
-void Map::update(std::chrono::milliseconds elapsed_time)
+void Map::update(const std::chrono::milliseconds elapsed_time)
 {
     for (auto &row : tiles_) {
         for (auto &col: row) {

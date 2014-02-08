@@ -15,7 +15,8 @@ struct FirstCaveBat {
    ~FirstCaveBat();
 
    void draw(Graphics& graphics) const;
-   void update(std::chrono::milliseconds elapsed_time, units::Game player_x);
+   void update(const std::chrono::milliseconds elapsed_time,
+           const units::Game player_x);
 
 private:
    enum class Facing {
@@ -36,7 +37,7 @@ private:
 
    void initializeSprites(Graphics& graphics);
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
-   SpriteState getSpriteState() const;
+   const SpriteState getSpriteState() const;
 
    Vector<units::Game> pos_;
    Facing facing_;
