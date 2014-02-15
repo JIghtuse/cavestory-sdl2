@@ -37,3 +37,4 @@ Resources
 * [/r/reconstructcavestory](http://www.reddit.com/r/reconstructcavestory)
 * [PyGame translation](https://github.com/ilogik/cavestory-python)
 * [LÖVE and MoonScript translation](https://github.com/Kingdaro/cavestory-love2d)
+* [Rust translation](https://github.com/drbawb/rust-story)
