@@ -3,6 +3,7 @@
 
 #include "player.h"
 #include "animated_sprite.h"
+#include "number_sprite.h"
 #include "graphics.h"
 #include "game.h"
 #include "map.h"
@@ -104,7 +105,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     sprites_(),
     health_bar_sprite_(),
     health_fill_bar_sprite_(),
-    three_()
+    health_number_sprite_()
 {
     initializeSprites(graphics);
 }
@@ -139,11 +140,11 @@ void Player::drawHUD(Graphics& graphics) const
     health_bar_sprite_->draw(graphics, kHealthBarPos);
     health_fill_bar_sprite_->draw(graphics, kFillHealthBarPos);
 
-    const Vector<units::Game> three_pos{
+    const Vector<units::Game> number_pos{
         units::tileToGame(2),
             units::tileToGame(2)
     };
-    three_->draw(graphics, three_pos);
+    health_number_sprite_->draw(graphics, number_pos);
 }
 
 void Player::startMovingLeft()
@@ -300,14 +301,7 @@ void Player::initializeSprites(Graphics& graphics)
                 units::gameToPixel(5 * units::kHalfTile - 2.0),
                 units::gameToPixel(kFillHealthBarSourceHeight)
                 ));
-   three_.reset(new Sprite(
-                graphics,
-                kHealthSpriteFilePath,
-                units::gameToPixel(3 * units::kHalfTile),
-                units::gameToPixel(7 * units::kHalfTile),
-                units::gameToPixel(units::kHalfTile),
-                units::gameToPixel(units::kHalfTile)
-               ));
+    health_number_sprite_.reset(new NumberSprite(graphics, 2));
     for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
             m < (int)(MotionType::LAST_MOTION_TYPE);
             ++m)

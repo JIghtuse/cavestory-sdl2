@@ -20,6 +20,7 @@ bin/cave: obj/game.o \
 	obj/first_cave_bat.o \
 	obj/map.o \
 	obj/graphics.o \
+	obj/number_sprite.o \
 	obj/sprite.o \
 	obj/input.o \
 	obj/player.o \

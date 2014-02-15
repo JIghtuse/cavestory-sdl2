@@ -4,12 +4,14 @@
 #include <chrono>
 #include <map>
 #include <memory>
+#include "number_sprite.h"
 #include "sprite.h"
 #include "vector.h"
 #include "units.h"
 
 struct Graphics;
 struct Map;
+struct NumberSprite;
 struct Rectangle;
 
 struct Player {
@@ -105,7 +107,7 @@ private:
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
    std::unique_ptr<Sprite> health_bar_sprite_;
    std::unique_ptr<Sprite> health_fill_bar_sprite_;
-   std::unique_ptr<Sprite> three_;
+   std::unique_ptr<NumberSprite> health_number_sprite_;
 };
 
 #endif /* SRC/PLAYER_H_ */
