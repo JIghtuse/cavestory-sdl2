@@ -1,0 +1,6 @@
+before_install:
+  - sudo apt-get update
+install:
+  - sudo apt-get install libsdl2-dev libsdl2-image-dev
+script:
+  - make
