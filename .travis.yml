@@ -4,6 +4,6 @@ before_install:
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev gcc-4.8
-    if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 script:
   - make
