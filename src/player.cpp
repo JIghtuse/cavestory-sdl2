@@ -64,6 +64,12 @@ const units::Game kFillHealthBarSourceX{0};
 const units::Game kFillHealthBarSourceY{3 * units::kHalfTile};
 const units::Game kFillHealthBarSourceHeight{units::kHalfTile};
 
+const Vector<units::Game> kHealthNumberPos{
+    units::tileToGame(3) / 2,
+    units::tileToGame(2)
+};
+const int kHealthNumDigits = 2;
+
 namespace {
 
 struct CollisionInfo {
@@ -139,12 +145,7 @@ void Player::drawHUD(Graphics& graphics) const
 
     health_bar_sprite_->draw(graphics, kHealthBarPos);
     health_fill_bar_sprite_->draw(graphics, kFillHealthBarPos);
-
-    const Vector<units::Game> number_pos{
-        units::tileToGame(2),
-            units::tileToGame(2)
-    };
-    health_number_sprite_->draw(graphics, number_pos);
+    health_number_sprite_->draw(graphics, kHealthNumberPos);
 }
 
 void Player::startMovingLeft()
@@ -301,7 +302,9 @@ void Player::initializeSprites(Graphics& graphics)
                 units::gameToPixel(5 * units::kHalfTile - 2.0),
                 units::gameToPixel(kFillHealthBarSourceHeight)
                 ));
-    health_number_sprite_.reset(new NumberSprite(graphics, 2));
+    health_number_sprite_.reset(
+            new NumberSprite(graphics, 2, kHealthNumDigits)
+            );
     for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
             m < (int)(MotionType::LAST_MOTION_TYPE);
             ++m)
