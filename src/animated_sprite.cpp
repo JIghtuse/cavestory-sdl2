@@ -9,10 +9,9 @@ AnimatedSprite::AnimatedSprite(
         const units::FPS fps, const units::Frame num_frames
         ) :
     Sprite(graphics, file_path, source_x, source_y, width, height),
-    frame_time_(1000 / fps),
+    frame_timer_{std::chrono::milliseconds{1000 / fps}},
     num_frames_(num_frames),
-    current_frame_(0),
-    elapsed_time_()
+    current_frame_(0)
 {
 }
 
@@ -20,12 +19,11 @@ AnimatedSprite::~AnimatedSprite()
 {
 }
 
-void AnimatedSprite::update(std::chrono::milliseconds elapsed_time)
+void AnimatedSprite::update()
 {
-    elapsed_time_ += elapsed_time;
-    if (elapsed_time_ > frame_time_) {
+    if (frame_timer_.is_expired()) {
         ++current_frame_;
-        elapsed_time_ = elapsed_time_.zero();
+        frame_timer_.reset();
         if (current_frame_ < num_frames_) {
             source_rect_.x += source_rect_.w;
         } else {

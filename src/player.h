@@ -7,6 +7,7 @@
 #include "number_sprite.h"
 #include "varying_width_sprite.h"
 #include "sprite.h"
+#include "timer.h"
 #include "vector.h"
 #include "units.h"
 
@@ -84,14 +85,14 @@ private:
 
    struct Health {
        Health(Graphics& graphics);
-       void update(std::chrono::milliseconds elapsed_time);
+       void update();
        void draw(Graphics& graphics) const;
        // returns true if we have died
        bool takeDamage(units::HP damage);
    private:
        units::Game fillOffset(units::HP health) const;
        units::HP damage_;
-       std::chrono::milliseconds damage_time_;
+       Timer damage_timer_;
 
        units::HP max_health_;
        units::HP current_health_;
@@ -122,8 +123,7 @@ private:
    bool is_interacting_;
 
    Health health_;
-   bool is_invincible_;
-   std::chrono::milliseconds invincible_time_;
+   Timer invincible_timer_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
 };

@@ -38,7 +38,7 @@ void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
 
     const auto angle = std::sin(units::degreesToRadians(flight_angle_));
     pos_.y = center_y_ + kFlightAmplitude * units::Game(angle);
-    sprites_[getSpriteState()]->update(elapsed_time);
+    sprites_[getSpriteState()]->update();
 }
 
 const Rectangle FirstCaveBat::getDamageRectangle() const

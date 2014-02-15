@@ -1,6 +1,7 @@
 CXX ?= g++-4.8
 MKDIR := mkdir -p
-CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image` -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++0x
+CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image`
+CXXFLAGS += -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++0x
 LDFLAGS += `pkg-config --libs sdl2 SDL2_image`
 PROGS := bin/cave
 OBJS := $(patsubst src/%.cpp,obj/%.o, $(wildcard src/*.cpp))
@@ -26,6 +27,7 @@ bin/cave: obj/game.o \
 	obj/input.o \
 	obj/player.o \
 	obj/player_health.o \
+	obj/timer.o \
 	obj/animated_sprite.o
 
 $(PROGS):

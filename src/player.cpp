@@ -82,8 +82,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_jump_active_{false},
     is_interacting_{false},
     health_(graphics),
-    is_invincible_{false},
-    invincible_time_{0},
+    invincible_timer_{kInvincibleTime},
     sprites_()
 {
     initializeSprites(graphics);
@@ -94,13 +93,9 @@ Player::~Player() {}
 void Player::update(const std::chrono::milliseconds elapsed_time,
         const Map& map)
 {
-    sprites_[getSpriteState()]->update(elapsed_time);
+    sprites_[getSpriteState()]->update();
 
-    if (is_invincible_) {
-        invincible_time_ += elapsed_time;
-        is_invincible_ = invincible_time_ < kInvincibleTime;
-    }
-    health_.update(elapsed_time);
+    health_.update();
 
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
@@ -171,11 +166,10 @@ void Player::stopJump()
 }
 
 void Player::takeDamage() {
-    if (is_invincible_) return;
+    if (invincible_timer_.is_active()) return;
 
     velocity_.y = std::min(velocity_.y, -kShortJumpSpeed);
-    is_invincible_ = true;
-    invincible_time_ = invincible_time_.zero();
+    invincible_timer_.reset();
     health_.takeDamage(2);
 }
 
@@ -451,6 +445,6 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
 
 bool Player::spriteIsVisible() const
 {
-    return !(is_invincible_
-            && invincible_time_ / kInvincibleFlashTime % 2 == 0);
+    return !(invincible_timer_.is_active() &&
+            invincible_timer_.current_time() / kInvincibleFlashTime % 2 == 0);
 }

@@ -112,12 +112,12 @@ Map::getCollidingTiles(const Rectangle& rect) const
     return collision_tiles;
 }
 
-void Map::update(const std::chrono::milliseconds elapsed_time)
+void Map::update()
 {
     for (auto &row : tiles_) {
         for (auto &col: row) {
             if (col.sprite != nullptr) {
-                col.sprite->update(elapsed_time);
+                col.sprite->update();
             }
         }
     }

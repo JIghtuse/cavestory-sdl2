@@ -3,6 +3,7 @@
 #include "input.h"
 #include "map.h"
 #include "player.h"
+#include "timer.h"
 
 const units::FPS kFps{60};
 const auto kMaxFrameTime = std::chrono::milliseconds{5 * 1000 / 60};
@@ -119,6 +120,7 @@ void Game::runEventLoop() {
 
 void Game::update(const std::chrono::milliseconds elapsed_time)
 {
+    Timer::updateAll(elapsed_time);
     //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
     bat_->update(elapsed_time, player_->getCenterX());

@@ -36,7 +36,7 @@ struct Map {
    const std::vector<CollisionTile>
        getCollidingTiles(const Rectangle& rect) const;
 
-   void update(const std::chrono::milliseconds elapsed_time);
+   void update();
    void drawBackground(Graphics& graphics) const;
    void draw(Graphics& graphics) const;
 private:

@@ -38,7 +38,7 @@ const std::chrono::milliseconds kDamageDelay{1500};
 
 Player::Health::Health(Graphics& graphics) :
     damage_{0},
-    damage_time_{0},
+    damage_timer_{kDamageDelay},
     max_health_{6},
     current_health_{6},
     health_bar_sprite_(
@@ -67,14 +67,11 @@ Player::Health::Health(Graphics& graphics) :
             )
 {}
 
-void Player::Health::update(std::chrono::milliseconds elapsed_time)
+void Player::Health::update()
 {
-    if (damage_ > 0) {
-        damage_time_ += elapsed_time;
-        if (damage_time_ > kDamageDelay) {
-            current_health_ -= damage_;
-            damage_ = 0;
-        }
+    if (damage_ > 0 && damage_timer_.is_expired()) {
+        current_health_ -= damage_;
+        damage_ = 0;
     }
 }
 
@@ -98,7 +95,7 @@ void Player::Health::draw(Graphics& graphics) const
 bool Player::Health::takeDamage(units::HP damage)
 {
     damage_ = damage;
-    damage_time_ = damage_time_.zero();
+    damage_timer_.reset();
 
     const auto offset = fillOffset(current_health_ - damage);
     health_fill_bar_sprite_.set_width(units::gameToPixel(offset));
