@@ -21,7 +21,8 @@ const units::Acceleration kJumpGravity{0.0003125};
 const units::Velocity kJumpSpeed{0.25};
 const units::Velocity kShortJumpSpeed{kJumpSpeed / 1.5};
 // Sprites
-const std::string kSpriteFilePath{"content/MyChar.bmp"};
+const std::string kPlayerSpriteFilePath{"content/MyChar.bmp"};
+const std::string kHealthSpriteFilePath{"content/TextBox.bmp"};
 // Sprite Frames
 const units::Frame kCharacterFrame{0};
 
@@ -82,15 +83,13 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_interacting_{false},
     is_invincible_{false},
     invincible_time_{0},
-    sprites_()
+    sprites_(),
+    health_bar_sprite_()
 {
     initializeSprites(graphics);
 }
 
-Player::~Player()
-{
-    ;
-}
+Player::~Player() {}
 
 void Player::update(const std::chrono::milliseconds elapsed_time,
         const Map& map)
@@ -111,6 +110,12 @@ void Player::draw(Graphics& graphics) const
     if (is_invincible_ && invincible_time_ / kInvincibleFlashTime % 2 == 0)
         return;
     sprites_.at(getSpriteState())->draw(graphics, pos_);
+}
+
+void Player::drawHUD(Graphics& graphics) const
+{
+    Vector<units::Game> pos{ units::tileToGame(1), units::tileToGame(2) };
+    health_bar_sprite_->draw(graphics, pos);
 }
 
 void Player::startMovingLeft()
@@ -231,7 +236,7 @@ void Player::initializeSprite(Graphics& graphics,
         sprites_[sprite_state] = std::unique_ptr<Sprite>{
             new AnimatedSprite(
                     graphics,
-                    kSpriteFilePath,
+                    kPlayerSpriteFilePath,
                     units::tileToPixel(tile_x), units::tileToPixel(tile_y),
                     units::tileToPixel(1), units::tileToPixel(1),
                     kWalkFps, kNumWalkFrames
@@ -241,7 +246,7 @@ void Player::initializeSprite(Graphics& graphics,
         sprites_[sprite_state] = std::unique_ptr<Sprite>{
             new Sprite(
                     graphics,
-                    kSpriteFilePath,
+                    kPlayerSpriteFilePath,
                     units::tileToPixel(tile_x), units::tileToPixel(tile_y),
                     units::tileToPixel(1), units::tileToPixel(1)
                     )
@@ -251,6 +256,14 @@ void Player::initializeSprite(Graphics& graphics,
 
 void Player::initializeSprites(Graphics& graphics)
 {
+    health_bar_sprite_.reset(new Sprite(
+                graphics,
+                kHealthSpriteFilePath,
+                units::gameToPixel(0),
+                units::gameToPixel(5 * units::kHalfTile),
+                units::tileToPixel(4),
+                units::gameToPixel(units::kHalfTile)
+                ));
     for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
             m < (int)(MotionType::LAST_MOTION_TYPE);
             ++m)

@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "graphics.h"
 #include "game.h"
@@ -46,7 +47,8 @@ SDL_Texture* Graphics::loadImage(const std::string& file_path,
         SDL_Texture *t;
         if (black_is_transparent) {
             SDL_Surface *surface = SDL_LoadBMP(file_path.c_str());
-            SDL_SetColorKey(surface, SDL_TRUE, 0);
+            const Uint32 black_color = SDL_MapRGB(surface->format, 0, 0, 0);
+            SDL_SetColorKey(surface, SDL_TRUE, black_color);
             t = SDL_CreateTextureFromSurface(sdlRenderer, surface);
             SDL_FreeSurface(surface);
         } else {

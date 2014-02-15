@@ -18,6 +18,7 @@ struct Player {
 
    void update(const std::chrono::milliseconds elapsed_time, const Map& map);
    void draw(Graphics& graphics) const;
+   void drawHUD(Graphics& graphics) const;
 
    void startMovingLeft();
    void startMovingRight();
@@ -100,6 +101,7 @@ private:
    std::chrono::milliseconds invincible_time_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
+   std::unique_ptr<Sprite> health_bar_sprite_;
 };
 
 #endif /* SRC/PLAYER_H_ */
