@@ -6,7 +6,7 @@
 const units::Frame kNumFlyFrames{3};
 const units::FPS kFlyFps{13};
 const units::AngularVelocity kAngularVelocity{120.0 / 1000.0};
-const units::Game kMoveAmplitude{units::tileToGame(5) / 2.0};
+const units::Game kFlightAmplitude{5 * units::kHalfTile};
 
 const std::string kSpritePath{"content/NpcCemet.bmp"};
 
@@ -32,20 +32,20 @@ void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
 {
     flight_angle_ += kAngularVelocity * elapsed_time.count();
 
-    facing_ = pos_.x + units::tileToGame(1) / 2.0 > player_x
+    facing_ = pos_.x + units::kHalfTile > player_x
         ? Facing::LEFT
         : Facing::RIGHT;
 
     const auto angle = std::sin(units::degreesToRadians(flight_angle_));
-    pos_.y = center_y_ + units::tileToGame(5) / 2.0 * units::Game(angle);
+    pos_.y = center_y_ + kFlightAmplitude * units::Game(angle);
     sprites_[getSpriteState()]->update(elapsed_time);
 }
 
 const Rectangle FirstCaveBat::getDamageRectangle() const
 {
     return Rectangle(
-            pos_.x + units::tileToGame(1) / 2.0,
-            pos_.y + units::tileToGame(1) / 2.0,
+            pos_.x + units::kHalfTile,
+            pos_.y + units::kHalfTile,
             0,
             0);
 }

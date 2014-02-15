@@ -33,7 +33,7 @@ struct Player {
    void takeDamage();
 
    const Rectangle getDamageRectangle() const;
-   units::Game getCenterX() const {return pos_.x + units::tileToGame(1) / 2.0;}
+   units::Game getCenterX() const {return pos_.x + units::kHalfTile;}
 
 private:
    enum class MotionType {

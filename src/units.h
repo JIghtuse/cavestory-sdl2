@@ -38,6 +38,8 @@ namespace units {
     inline Pixel tileToPixel(Tile tile) {
         return gameToPixel(tileToGame(tile));
     }
+
+    const Game kHalfTile{tileToGame(1) / 2.0};
 } // units
 
 #endif /* UNITS_H_ */
