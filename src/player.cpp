@@ -45,6 +45,24 @@ const Rectangle kCollisionY{ 10, 2, 12, 30 };
 const std::chrono::milliseconds kInvincibleFlashTime{50};
 const std::chrono::milliseconds kInvincibleTime{3000};
 
+// HUD constants
+const Vector<units::Game> kHealthBarPos{
+    units::tileToGame(1),
+    units::tileToGame(2)
+};
+const units::Game kHealthBarSourceX{0};
+const units::Game kHealthBarSourceY{5 * units::kHalfTile};
+const units::Game kHealthBarSourceWidth{units::tileToGame(4)};
+const units::Game kHealthBarSourceHeight{units::kHalfTile};
+
+const Vector<units::Game> kFillHealthBarPos{
+    5 * units::kHalfTile,
+    units::tileToGame(2)
+};
+const units::Game kFillHealthBarSourceX{0};
+const units::Game kFillHealthBarSourceY{3 * units::kHalfTile};
+const units::Game kFillHealthBarSourceHeight{units::kHalfTile};
+
 namespace {
 
 struct CollisionInfo {
@@ -84,7 +102,9 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_invincible_{false},
     invincible_time_{0},
     sprites_(),
-    health_bar_sprite_()
+    health_bar_sprite_(),
+    health_fill_bar_sprite_(),
+    three_()
 {
     initializeSprites(graphics);
 }
@@ -107,15 +127,23 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
 void Player::draw(Graphics& graphics) const
 {
-    if (is_invincible_ && invincible_time_ / kInvincibleFlashTime % 2 == 0)
-        return;
-    sprites_.at(getSpriteState())->draw(graphics, pos_);
+    if (spriteIsVisible())
+        sprites_.at(getSpriteState())->draw(graphics, pos_);
 }
 
 void Player::drawHUD(Graphics& graphics) const
 {
-    Vector<units::Game> pos{ units::tileToGame(1), units::tileToGame(2) };
-    health_bar_sprite_->draw(graphics, pos);
+    if (!spriteIsVisible())
+        return;
+
+    health_bar_sprite_->draw(graphics, kHealthBarPos);
+    health_fill_bar_sprite_->draw(graphics, kFillHealthBarPos);
+
+    const Vector<units::Game> three_pos{
+        units::tileToGame(2),
+            units::tileToGame(2)
+    };
+    three_->draw(graphics, three_pos);
 }
 
 void Player::startMovingLeft()
@@ -259,11 +287,27 @@ void Player::initializeSprites(Graphics& graphics)
     health_bar_sprite_.reset(new Sprite(
                 graphics,
                 kHealthSpriteFilePath,
-                units::gameToPixel(0),
-                units::gameToPixel(5 * units::kHalfTile),
-                units::tileToPixel(4),
-                units::gameToPixel(units::kHalfTile)
+                units::gameToPixel(kHealthBarSourceX),
+                units::gameToPixel(kHealthBarSourceY),
+                units::gameToPixel(kHealthBarSourceWidth),
+                units::gameToPixel(kHealthBarSourceHeight)
                 ));
+    health_fill_bar_sprite_.reset(new Sprite(
+                graphics,
+                kHealthSpriteFilePath,
+                units::gameToPixel(kFillHealthBarSourceX),
+                units::gameToPixel(kFillHealthBarSourceY),
+                units::gameToPixel(5 * units::kHalfTile - 2.0),
+                units::gameToPixel(kFillHealthBarSourceHeight)
+                ));
+   three_.reset(new Sprite(
+                graphics,
+                kHealthSpriteFilePath,
+                units::gameToPixel(3 * units::kHalfTile),
+                units::gameToPixel(7 * units::kHalfTile),
+                units::gameToPixel(units::kHalfTile),
+                units::gameToPixel(units::kHalfTile)
+               ));
     for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
             m < (int)(MotionType::LAST_MOTION_TYPE);
             ++m)
@@ -453,4 +497,10 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
             is_on_ground_ = true;
         }
     }
+}
+
+bool Player::spriteIsVisible() const
+{
+    return !(is_invincible_
+            && invincible_time_ / kInvincibleFlashTime % 2 == 0);
 }

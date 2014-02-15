@@ -87,6 +87,8 @@ private:
    void updateX(const std::chrono::milliseconds elapsed_time, const Map& map);
    void updateY(const std::chrono::milliseconds elapsed_time, const Map& map);
 
+   bool spriteIsVisible() const;
+
    bool is_on_ground() const { return is_on_ground_; }
 
    Vector<units::Game> pos_;
@@ -102,6 +104,8 @@ private:
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
    std::unique_ptr<Sprite> health_bar_sprite_;
+   std::unique_ptr<Sprite> health_fill_bar_sprite_;
+   std::unique_ptr<Sprite> three_;
 };
 
 #endif /* SRC/PLAYER_H_ */
