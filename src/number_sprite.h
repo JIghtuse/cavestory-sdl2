@@ -11,13 +11,38 @@ struct Graphics;
 
 struct NumberSprite {
 public:
-   NumberSprite(Graphics& graphics, int number, int num_digits=0);
+    static NumberSprite HUDNumber(Graphics& graphics,
+            int number,
+            int num_digits);
+    static NumberSprite DamageNumber(Graphics& graphics, int number);
+    static NumberSprite ExperienceNumber(Graphics& graphics, int number);
    ~NumberSprite();
 
    void draw(Graphics& graphics, Vector<units::Game> pos);
+
+   units::Game getWidth() const;
+   units::Game getHeight() const;
+
 private:
+   enum class ColorType {
+       RED,
+       WHITE
+   };
+   enum class OperatorType {
+       PLUS,
+       MINUS,
+       NONE
+   };
+   NumberSprite(Graphics& graphics,
+           int number,
+           int num_digits,
+           ColorType color,
+           OperatorType op
+           );
+
+   OperatorType op_;
    units::Game padding_;
-   std::vector<std::shared_ptr<Sprite> > reversed_digits_;
+   std::vector<std::shared_ptr<Sprite> > reversed_sprites_;
 };
 
 #endif /* NUMBER_SPRITE_H_ */

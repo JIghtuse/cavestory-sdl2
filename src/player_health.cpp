@@ -91,7 +91,7 @@ void Player::Health::draw(Graphics& graphics) const
         damage_fill_sprite_.draw(graphics, pos);
     }
 
-    auto s = NumberSprite(graphics, current_health_, kHealthNumDigits);
+    auto s = NumberSprite::HUDNumber(graphics, current_health_, kHealthNumDigits);
     s.draw(graphics, kHealthBarPos);
 }
 
