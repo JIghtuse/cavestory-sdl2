@@ -27,9 +27,9 @@ bin/cave: obj/game.o \
 
 $(PROGS):
 	@$(MKDIR) $(dir $@)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^
+	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
 
 obj/%.o : src/%.cpp
 	@$(MKDIR) $(dir $@)
-	$(CXX) $(CXXFLAGS) -c -MD -o $@ $<
+	$(CXX) $< $(CXXFLAGS) -c -MD -o $@
 
