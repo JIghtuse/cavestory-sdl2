@@ -5,6 +5,7 @@
 #include <map>
 #include <memory>
 #include "number_sprite.h"
+#include "varying_width_sprite.h"
 #include "sprite.h"
 #include "vector.h"
 #include "units.h"
@@ -88,13 +89,15 @@ private:
        // returns true if we have died
        bool takeDamage(units::HP damage);
    private:
+       units::Game fillOffset(units::HP health) const;
        units::HP damage_;
        std::chrono::milliseconds damage_time_;
 
        units::HP max_health_;
        units::HP current_health_;
        Sprite health_bar_sprite_;
-       Sprite health_fill_bar_sprite_;
+       VaryingWidthSprite health_fill_bar_sprite_;
+       VaryingWidthSprite damage_fill_sprite_;
    };
 
    const Rectangle leftCollision(units::Game delta) const;
