@@ -4,6 +4,8 @@
 #include <cmath>
 
 namespace units {
+    typedef int HP;
+
     typedef double Game; // intrinsic units of position
     typedef int Pixel;
     typedef unsigned int Tile;

@@ -24,6 +24,7 @@ bin/cave: obj/game.o \
 	obj/sprite.o \
 	obj/input.o \
 	obj/player.o \
+	obj/player_health.o \
 	obj/animated_sprite.o
 
 $(PROGS):

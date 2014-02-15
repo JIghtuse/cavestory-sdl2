@@ -5,7 +5,7 @@
 #include "player.h"
 
 const units::FPS kFps{60};
-const auto kMaxFrameTime = std::chrono::milliseconds(5 * 1000 / 60);
+const auto kMaxFrameTime = std::chrono::milliseconds{5 * 1000 / 60};
 units::Tile Game::kScreenWidth{20};
 units::Tile Game::kScreenHeight{15};
 

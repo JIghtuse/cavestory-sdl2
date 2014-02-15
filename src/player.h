@@ -81,6 +81,22 @@ private:
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    const SpriteState getSpriteState() const;
 
+   struct Health {
+       Health(Graphics& graphics);
+       void update(std::chrono::milliseconds elapsed_time);
+       void draw(Graphics& graphics) const;
+       // returns true if we have died
+       bool takeDamage(units::HP damage);
+   private:
+       units::HP damage_;
+       std::chrono::milliseconds damage_time_;
+
+       units::HP max_health_;
+       units::HP current_health_;
+       Sprite health_bar_sprite_;
+       Sprite health_fill_bar_sprite_;
+   };
+
    const Rectangle leftCollision(units::Game delta) const;
    const Rectangle rightCollision(units::Game delta) const;
    const Rectangle topCollision(units::Game delta) const;
@@ -101,13 +117,12 @@ private:
    bool is_on_ground_;
    bool is_jump_active_;
    bool is_interacting_;
+
+   Health health_;
    bool is_invincible_;
    std::chrono::milliseconds invincible_time_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
-   std::unique_ptr<Sprite> health_bar_sprite_;
-   std::unique_ptr<Sprite> health_fill_bar_sprite_;
-   std::unique_ptr<NumberSprite> health_number_sprite_;
 };
 
 #endif /* SRC/PLAYER_H_ */
