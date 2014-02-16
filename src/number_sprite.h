@@ -18,10 +18,8 @@ public:
     static NumberSprite ExperienceNumber(Graphics& graphics, int number);
    ~NumberSprite();
 
-   void draw(Graphics& graphics, Vector<units::Game> pos);
-
-   units::Game getWidth() const;
-   units::Game getHeight() const;
+   void draw(Graphics& graphics, Vector<units::Game> pos) const;
+   void drawCentered(Graphics& graphics, Vector<units::Game> pos) const;
 
 private:
    enum class ColorType {
@@ -39,6 +37,9 @@ private:
            ColorType color,
            OperatorType op
            );
+
+   units::Game getWidth() const;
+   units::Game getHeight() const;
 
    OperatorType op_;
    units::Game padding_;

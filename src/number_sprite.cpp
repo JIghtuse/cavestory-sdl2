@@ -114,7 +114,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
 
 NumberSprite::~NumberSprite() {}
 
-void NumberSprite::draw(Graphics& graphics, Vector<units::Game> pos)
+void NumberSprite::draw(Graphics& graphics, Vector<units::Game> pos) const
 {
     for (size_t i = 0; i < reversed_glyphs_.size(); ++i) {
         const units::Game offset = units::kHalfTile *
@@ -122,6 +122,16 @@ void NumberSprite::draw(Graphics& graphics, Vector<units::Game> pos)
         Vector<units::Game> digit_pos{pos.x + offset + padding_, pos.y};
         reversed_glyphs_[i]->draw(graphics, digit_pos);
     }
+}
+
+void NumberSprite::drawCentered(
+        Graphics& graphics,
+       Vector<units::Game> pos) const
+{
+    pos.x -= getWidth() / 2;
+    pos.y -= getHeight() / 2;
+
+    draw(graphics, pos);
 }
 
 units::Game NumberSprite::getWidth() const

@@ -21,6 +21,7 @@ bin/cave: obj/game.o \
 	obj/first_cave_bat.o \
 	obj/map.o \
 	obj/graphics.o \
+	obj/damage_text.o \
 	obj/number_sprite.o \
 	obj/varying_width_sprite.o \
 	obj/sprite.o \

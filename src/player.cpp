@@ -83,6 +83,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_interacting_{false},
     health_(graphics),
     invincible_timer_{kInvincibleTime},
+    damage_text_(),
     sprites_()
 {
     initializeSprites(graphics);
@@ -105,6 +106,8 @@ void Player::draw(Graphics& graphics) const
 {
     if (spriteIsVisible())
         sprites_.at(getSpriteState())->draw(graphics, pos_);
+    auto center_pos = Vector<units::Game>{getCenterX(), getCenterY()};
+    damage_text_.draw(graphics, center_pos);
 }
 
 void Player::drawHUD(Graphics& graphics) const

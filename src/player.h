@@ -4,6 +4,7 @@
 #include <chrono>
 #include <map>
 #include <memory>
+#include "damage_text.h"
 #include "number_sprite.h"
 #include "varying_width_sprite.h"
 #include "sprite.h"
@@ -39,6 +40,7 @@ struct Player {
 
    const Rectangle getDamageRectangle() const;
    units::Game getCenterX() const {return pos_.x + units::kHalfTile;}
+   units::Game getCenterY() const {return pos_.y + units::kHalfTile;}
 
 private:
    enum class MotionType {
@@ -124,6 +126,7 @@ private:
 
    Health health_;
    Timer invincible_timer_;
+   DamageText damage_text_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
 };
