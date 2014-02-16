@@ -42,7 +42,7 @@ private:
 
    OperatorType op_;
    units::Game padding_;
-   std::vector<std::shared_ptr<Sprite> > reversed_sprites_;
+   std::vector<std::shared_ptr<Sprite> > reversed_glyphs_;
 };
 
 #endif /* NUMBER_SPRITE_H_ */

@@ -14,6 +14,8 @@ const units::Game kMinusSourceX{5 * units::kHalfTile};
 const units::Game kSourceHeight{units::kHalfTile};
 const units::Game kSourceWidth{units::kHalfTile};
 
+const int kRadix{10};
+
 NumberSprite NumberSprite::HUDNumber(Graphics& graphics,
         int number,
         int num_digits)
@@ -54,7 +56,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
         ) :
     op_(op),
     padding_{0.0},
-    reversed_sprites_()
+    reversed_glyphs_()
 {
     assert(number >= 0);
 
@@ -63,8 +65,8 @@ NumberSprite::NumberSprite(Graphics& graphics,
         : kSourceWhiteY;
     int digit_count = 0;
     do {
-        const int digit = number % 10;
-        reversed_sprites_.push_back(
+        const int digit = number % kRadix;
+        reversed_glyphs_.push_back(
                 std::shared_ptr<Sprite>{new Sprite(
                     graphics,
                     kNumberSpritePath,
@@ -73,7 +75,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
                     units::gameToPixel(kSourceWidth),
                     units::gameToPixel(kSourceHeight)
                     )});
-        number /= 10;
+        number /= kRadix;
         ++digit_count;
     } while (number != 0);
     assert(num_digits == 0 || num_digits >= digit_count);
@@ -84,7 +86,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
 
     switch(op) {
     case OperatorType::MINUS:
-        reversed_sprites_.push_back(
+        reversed_glyphs_.push_back(
                 std::shared_ptr<Sprite>{new Sprite(
                     graphics,
                     kNumberSpritePath,
@@ -95,7 +97,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
                     )});
         break;
     case OperatorType::PLUS:
-        reversed_sprites_.push_back(
+        reversed_glyphs_.push_back(
                 std::shared_ptr<Sprite>{new Sprite(
                     graphics,
                     kNumberSpritePath,
@@ -114,17 +116,17 @@ NumberSprite::~NumberSprite() {}
 
 void NumberSprite::draw(Graphics& graphics, Vector<units::Game> pos)
 {
-    for (size_t i = 0; i < reversed_sprites_.size(); ++i) {
+    for (size_t i = 0; i < reversed_glyphs_.size(); ++i) {
         const units::Game offset = units::kHalfTile *
-            (reversed_sprites_.size() - 1 - i);
+            (reversed_glyphs_.size() - 1 - i);
         Vector<units::Game> digit_pos{pos.x + offset + padding_, pos.y};
-        reversed_sprites_[i]->draw(graphics, digit_pos);
+        reversed_glyphs_[i]->draw(graphics, digit_pos);
     }
 }
 
 units::Game NumberSprite::getWidth() const
 {
-    return units::kHalfTile * reversed_sprites_.size();
+    return units::kHalfTile * reversed_glyphs_.size();
 }
 
 units::Game NumberSprite::getHeight() const
