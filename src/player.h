@@ -36,7 +36,7 @@ struct Player {
    void startJump();
    void stopJump();
 
-   void takeDamage();
+   void takeDamage(units::HP damage);
 
    const Rectangle getDamageRectangle() const;
    units::Game getCenterX() const {return pos_.x + units::kHalfTile;}

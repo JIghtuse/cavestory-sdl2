@@ -21,6 +21,8 @@ struct FirstCaveBat {
 
    const Rectangle getDamageRectangle() const;
 
+   units::HP contactDamage() const;
+
 private:
    enum class Facing {
        FIRST_FACING,

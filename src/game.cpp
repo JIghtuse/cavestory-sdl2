@@ -127,7 +127,7 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
 
     const auto batRect = bat_->getDamageRectangle();
     if (batRect.collidesWith(player_->getDamageRectangle())) {
-        player_->takeDamage();
+        player_->takeDamage(bat_->contactDamage());
     }
 }
 

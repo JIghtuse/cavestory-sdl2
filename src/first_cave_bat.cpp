@@ -10,6 +10,8 @@ const units::Game kFlightAmplitude{5 * units::kHalfTile};
 
 const std::string kSpritePath{"content/NpcCemet.bmp"};
 
+const units::HP kContactDamage{1};
+
 FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
     pos_(pos),
     center_y_{pos_.y},
@@ -48,6 +50,11 @@ const Rectangle FirstCaveBat::getDamageRectangle() const
             pos_.y + units::kHalfTile,
             0,
             0);
+}
+
+units::HP FirstCaveBat::contactDamage() const
+{
+    return kContactDamage;
 }
 
 void FirstCaveBat::initializeSprites(Graphics& graphics)

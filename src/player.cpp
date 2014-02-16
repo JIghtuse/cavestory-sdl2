@@ -97,6 +97,7 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
     sprites_[getSpriteState()]->update();
 
     health_.update();
+    damage_text_.update(elapsed_time);
 
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
@@ -106,8 +107,6 @@ void Player::draw(Graphics& graphics) const
 {
     if (spriteIsVisible())
         sprites_.at(getSpriteState())->draw(graphics, pos_);
-    auto center_pos = Vector<units::Game>{getCenterX(), getCenterY()};
-    damage_text_.draw(graphics, center_pos);
 }
 
 void Player::drawHUD(Graphics& graphics) const
@@ -115,6 +114,8 @@ void Player::drawHUD(Graphics& graphics) const
     if (spriteIsVisible()) {
         health_.draw(graphics);
     }
+    auto center_pos = Vector<units::Game>{getCenterX(), getCenterY()};
+    damage_text_.draw(graphics, center_pos);
 }
 
 void Player::startMovingLeft()
@@ -168,12 +169,13 @@ void Player::stopJump()
     is_jump_active_ = false;
 }
 
-void Player::takeDamage() {
+void Player::takeDamage(units::HP damage) {
     if (invincible_timer_.is_active()) return;
 
     velocity_.y = std::min(velocity_.y, -kShortJumpSpeed);
     invincible_timer_.reset();
-    health_.takeDamage(2);
+    health_.takeDamage(damage);
+    damage_text_.setDamage(damage);
 }
 
 const Rectangle Player::getDamageRectangle() const
