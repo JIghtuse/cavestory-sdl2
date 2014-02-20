@@ -296,7 +296,7 @@ const Player::SpriteState Player::getSpriteState() const
 
 const Rectangle Player::leftCollision(units::Game delta) const
 {
-    assert(delta <= 0);
+    assert(delta <= 0 && "Wrong delta value");
     return Rectangle(
             pos_.x + kCollisionX.getLeft() + delta,
             pos_.y + kCollisionX.getTop(),
@@ -307,7 +307,7 @@ const Rectangle Player::leftCollision(units::Game delta) const
 
 const Rectangle Player::rightCollision(units::Game delta) const
 {
-    assert(delta >= 0);
+    assert(delta >= 0 && "Wrong delta value");
     return Rectangle(
             pos_.x + kCollisionX.getLeft() + kCollisionX.getWidth() / 2,
             pos_.y + kCollisionX.getTop(),
@@ -318,7 +318,7 @@ const Rectangle Player::rightCollision(units::Game delta) const
 
 const Rectangle Player::topCollision(units::Game delta) const
 {
-    assert(delta <= 0);
+    assert(delta <= 0 && "Wrong delta value");
     return Rectangle(
             pos_.x + kCollisionY.getLeft(),
             pos_.y + kCollisionY.getTop() + delta,
@@ -329,7 +329,7 @@ const Rectangle Player::topCollision(units::Game delta) const
 
 const Rectangle Player::bottomCollision(units::Game delta) const
 {
-    assert(delta >= 0);
+    assert(delta >= 0 && "Wrong delta value");
     return Rectangle(
             pos_.x + kCollisionY.getLeft(),
             pos_.y + kCollisionY.getTop() + kCollisionY.getHeight() / 2,

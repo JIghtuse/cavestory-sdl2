@@ -58,7 +58,7 @@ NumberSprite::NumberSprite(Graphics& graphics,
     padding_{0.0},
     reversed_glyphs_()
 {
-    assert(number >= 0);
+    assert(number >= 0 && "NumberSprite cannot show negative numbers!");
 
     const auto source_y = (color == ColorType::RED)
         ? kSourceRedY
@@ -78,7 +78,8 @@ NumberSprite::NumberSprite(Graphics& graphics,
         number /= kRadix;
         ++digit_count;
     } while (number != 0);
-    assert(num_digits == 0 || num_digits >= digit_count);
+    assert((num_digits == 0 || num_digits >= digit_count)
+            && "Wrong digits number");
 
     padding_ = (num_digits == 0)
         ? 0.0
