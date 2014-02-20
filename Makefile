@@ -15,21 +15,22 @@ build: $(PROGS)
 clean:
 	rm -rf $(PROGS) $(OBJS)
 
-bin/cave: obj/game.o \
-	obj/main.o \
+bin/cave: obj/animated_sprite.o \
 	obj/backdrop.o \
-	obj/first_cave_bat.o \
-	obj/map.o \
-	obj/graphics.o \
 	obj/damage_text.o \
-	obj/number_sprite.o \
-	obj/varying_width_sprite.o \
-	obj/sprite.o \
+	obj/first_cave_bat.o \
+	obj/game.o \
+	obj/graphics.o \
 	obj/input.o \
+	obj/main.o \
+	obj/map.o \
+	obj/number_sprite.o \
 	obj/player.o \
 	obj/player_health.o \
+	obj/polar_star.o \
+	obj/sprite.o \
 	obj/timer.o \
-	obj/animated_sprite.o
+	obj/varying_width_sprite.o
 
 $(PROGS):
 	@$(MKDIR) $(dir $@)

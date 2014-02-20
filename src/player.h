@@ -6,11 +6,13 @@
 #include <memory>
 #include "damage_text.h"
 #include "number_sprite.h"
-#include "varying_width_sprite.h"
+#include "polar_star.h"
 #include "sprite.h"
+#include "sprite_state.h"
 #include "timer.h"
-#include "vector.h"
 #include "units.h"
+#include "varying_width_sprite.h"
+#include "vector.h"
 
 struct Graphics;
 struct Map;
@@ -51,19 +53,6 @@ private:
        JUMPING,
        FALLING,
        LAST_MOTION_TYPE
-   };
-   enum class HorizontalFacing {
-       FIRST_HORIZONTAL_FACING,
-       LEFT = FIRST_HORIZONTAL_FACING,
-       RIGHT,
-       LAST_HORIZONTAL_FACING
-   };
-   enum class VerticalFacing {
-       FIRST_VERTICAL_FACING,
-       UP = FIRST_VERTICAL_FACING,
-       DOWN,
-       HORIZONTAL,
-       LAST_VERTICAL_FACING
    };
    struct SpriteState {
        SpriteState(MotionType motion_type=MotionType::STANDING,
@@ -127,6 +116,8 @@ private:
    Health health_;
    Timer invincible_timer_;
    DamageText damage_text_;
+
+   PolarStar polar_star_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;
 };

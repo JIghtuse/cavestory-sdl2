@@ -84,6 +84,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     health_(graphics),
     invincible_timer_{kInvincibleTime},
     damage_text_(),
+    polar_star_(graphics),
     sprites_()
 {
     initializeSprites(graphics);
@@ -105,8 +106,15 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
 void Player::draw(Graphics& graphics) const
 {
-    if (spriteIsVisible())
+    if (spriteIsVisible()) {
+        polar_star_.draw(
+                graphics,
+                horizontal_facing_,
+                vertical_facing_,
+                pos_
+                );
         sprites_.at(getSpriteState())->draw(graphics, pos_);
+    }
 }
 
 void Player::drawHUD(Graphics& graphics) const
