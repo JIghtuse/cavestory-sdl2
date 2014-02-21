@@ -79,9 +79,14 @@ private:
    friend bool operator<(const SpriteState& a, const SpriteState& b);
 
    struct WalkingAnimation {
-       StrideType stride() const {
-           return StrideType::LEFT;
-       }
+       WalkingAnimation();
+
+       StrideType stride() const;
+       void update();
+   private:
+       Timer frame_timer_;
+       int current_index_;
+       bool forward_;
    };
    units::Tile getFrameX(const SpriteState&) const;
    units::Tile getFrameY(const SpriteState&) const;

@@ -27,6 +27,7 @@ bin/cave: obj/animated_sprite.o \
 	obj/number_sprite.o \
 	obj/player.o \
 	obj/player_health.o \
+	obj/player_walking_animation.o \
 	obj/polar_star.o \
 	obj/sprite.o \
 	obj/timer.o \

@@ -34,9 +34,6 @@ const units::Frame kFallFrame{2};
 const units::Frame kUpFrameOffset{3};
 const units::Frame kDownFrame{6};
 const units::Frame kBackFrame{7};
-// Walk Anumation
-const units::Frame kNumWalkFrames{3};
-const units::FPS kWalkFps{15};
 
 //Collision rectangles
 const Rectangle kCollisionX{ 6, 10, 20, 12 };
@@ -68,8 +65,19 @@ CollisionInfo getWallCollisionInfo(const Map& map, const Rectangle& rect) {
 
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
-    return std::tie(a.motion_type, a.horizontal_facing, a.vertical_facing) <
-            std::tie(b.motion_type, b.horizontal_facing, b.vertical_facing);
+    auto atie = std::tie(
+            a.motion_type, 
+            a.horizontal_facing, 
+            a.vertical_facing,
+            a.stride_type
+            );
+    auto btie = std::tie(
+            b.motion_type, 
+            b.horizontal_facing, 
+            b.vertical_facing,
+            b.stride_type
+            );
+    return atie < btie;
 }
 
 Player::Player(Graphics& graphics, Vector<units::Game> pos) :
@@ -100,6 +108,8 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
     health_.update();
     damage_text_.update(elapsed_time);
+
+    walking_animation_.update();
 
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
