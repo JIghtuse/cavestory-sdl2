@@ -56,9 +56,10 @@ private:
        SpriteState(MotionType motion_type=MotionType::STANDING,
                HorizontalFacing horizontal_facing=HorizontalFacing::LEFT,
                VerticalFacing vertical_facing=VerticalFacing::HORIZONTAL) :
-           motion_type(motion_type),
-           horizontal_facing(horizontal_facing),
-           vertical_facing(vertical_facing) {}
+           motion_type{motion_type},
+           horizontal_facing{horizontal_facing},
+           vertical_facing{vertical_facing}
+       {}
 
        MotionType motion_type;
        HorizontalFacing horizontal_facing;

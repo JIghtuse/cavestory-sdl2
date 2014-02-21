@@ -24,7 +24,7 @@ struct FirstCaveBat {
 
 private:
    struct SpriteState {
-       SpriteState(HorizontalFacing facing) : facing(facing) {}
+       SpriteState(HorizontalFacing facing) : facing{facing} {}
        HorizontalFacing facing;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b) {

@@ -21,8 +21,8 @@ private:
                HorizontalFacing horizontal_facing,
                VerticalFacing vertical_facing
                ) :
-           horizontal_facing(horizontal_facing),
-           vertical_facing(vertical_facing)
+           horizontal_facing{horizontal_facing},
+           vertical_facing{vertical_facing}
        {}
 
        HorizontalFacing horizontal_facing;
