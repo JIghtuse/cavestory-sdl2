@@ -6,6 +6,7 @@ const std::string kArmsSpritePath{"content/Arms.bmp"};
 const int kPolarStarIndex{2};
 const units::Game kGunWidth{3 * units::kHalfTile};
 const units::Game kGunHeight{2 * units::kHalfTile};
+const units::Game kGunBob{units::Game(2)};
 
 const units::Tile kHorizontalOffset{0};
 const units::Tile kUpOffset{2};
@@ -25,6 +26,7 @@ PolarStar::~PolarStar() {}
 void PolarStar::draw(
         Graphics& graphics,
         HorizontalFacing horizontal_facing, VerticalFacing vertical_facing,
+        bool gun_up,
         Vector<units::Game> pos) const
 {
     if (horizontal_facing == HorizontalFacing::LEFT) {
@@ -40,6 +42,9 @@ void PolarStar::draw(
     case VerticalFacing::HORIZONTAL:
     case VerticalFacing::LAST_VERTICAL_FACING:
         break;
+    }
+    if (gun_up) {
+        pos.y -= kGunBob;
     }
     const auto state = SpriteState{horizontal_facing, vertical_facing};
     sprite_map_.at(state)->draw(graphics, pos);

@@ -120,10 +120,14 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 void Player::draw(Graphics& graphics) const
 {
     if (spriteIsVisible()) {
+        const bool gun_up = (getMotionType() == MotionType::WALKING)
+            && (walking_animation_.stride() != StrideType::MIDDLE);
+
         polar_star_.draw(
                 graphics,
                 horizontal_facing_,
                 vertical_facing_,
+                gun_up,
                 pos_
                 );
         sprites_.at(getSpriteState())->draw(graphics, pos_);
@@ -298,7 +302,7 @@ void Player::initializeSprites(Graphics& graphics)
     }
 }
 
-const Player::SpriteState Player::getSpriteState() const
+Player::MotionType Player::getMotionType() const
 {
     MotionType motion;
     if (is_interacting_) {
@@ -312,8 +316,13 @@ const Player::SpriteState Player::getSpriteState() const
             ? MotionType::JUMPING
             : MotionType::FALLING;
     }
+    return motion;
+}
+
+const Player::SpriteState Player::getSpriteState() const
+{
     return SpriteState(
-            motion,
+            getMotionType(),
             horizontal_facing_,
             vertical_facing_,
             walking_animation_.stride()

@@ -14,6 +14,7 @@ struct PolarStar {
 
    void draw(Graphics& graphics,
         HorizontalFacing horizontal_facing, VerticalFacing vertical_facing,
+        bool gun_up,
         Vector<units::Game> pos) const;
 private:
    struct SpriteState {

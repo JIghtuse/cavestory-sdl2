@@ -123,6 +123,7 @@ private:
 
    bool spriteIsVisible() const;
 
+   MotionType getMotionType() const;
    bool is_on_ground() const { return is_on_ground_; }
 
    Vector<units::Game> pos_;
