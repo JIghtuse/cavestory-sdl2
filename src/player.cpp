@@ -265,15 +265,10 @@ void Player::initializeSprite(Graphics& graphics,
 
 void Player::initializeSprites(Graphics& graphics)
 {
-    for (int m = (int)(MotionType::FIRST_MOTION_TYPE);
-            m < (int)(MotionType::LAST_MOTION_TYPE);
-            ++m)
-        for (int h = (int)(HorizontalFacing::FIRST_HORIZONTAL_FACING);
-                h < (int)(HorizontalFacing::LAST_HORIZONTAL_FACING);
-                ++h)
-            for (int v = (int)(VerticalFacing::FIRST_VERTICAL_FACING);
-                    v < (int)(VerticalFacing::LAST_VERTICAL_FACING);
-                    ++v) {
+    ENUM_FOREACH(m, MotionType, MOTION_TYPE) {
+        ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
+            ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
+
                 MotionType motion_type = (MotionType)m;
                 HorizontalFacing horiz_facing = (HorizontalFacing)h;
                 VerticalFacing vert_facing = (VerticalFacing)v;
@@ -283,6 +278,8 @@ void Player::initializeSprites(Graphics& graphics)
                         SpriteState(motion_type, horiz_facing, vert_facing)
                         );
             }
+        }
+    }
 }
 
 const Player::SpriteState Player::getSpriteState() const

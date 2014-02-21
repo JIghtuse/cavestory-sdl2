@@ -1,12 +1,11 @@
 #ifndef FIRST_CAVE_BAT_H_
 #define FIRST_CAVE_BAT_H_
 
-#include <map>
-#include <memory>
 #include <chrono>
 #include "vector.h"
 #include "units.h"
 #include "rectangle.h"
+#include "sprite_state.h"
 
 struct Sprite;
 struct Graphics;
@@ -24,17 +23,9 @@ struct FirstCaveBat {
    units::HP contactDamage() const;
 
 private:
-   enum class Facing {
-       FIRST_FACING,
-       LEFT = FIRST_FACING,
-       RIGHT,
-       LAST_FACING
-   };
    struct SpriteState {
-       SpriteState(Facing facing) :
-           facing(facing)
-       {}
-       Facing facing;
+       SpriteState(HorizontalFacing facing) : facing(facing) {}
+       HorizontalFacing facing;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b) {
        return a.facing < b.facing;
@@ -46,7 +37,7 @@ private:
 
    Vector<units::Game> pos_;
    const units::Game center_y_;
-   Facing facing_;
+   HorizontalFacing facing_;
    units::Degrees flight_angle_;
    std::map<SpriteState, std::shared_ptr<Sprite> > sprites_;
 };

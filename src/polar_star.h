@@ -1,8 +1,6 @@
 #ifndef POLAR_STAR_H_
 #define POLAR_STAR_H_
 
-#include <map>
-#include <memory> 
 #include "sprite_state.h"
 #include "units.h"
 #include "vector.h"

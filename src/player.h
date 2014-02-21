@@ -2,8 +2,6 @@
 #define PLAYER_H_
 
 #include <chrono>
-#include <map>
-#include <memory>
 #include "damage_text.h"
 #include "number_sprite.h"
 #include "polar_star.h"

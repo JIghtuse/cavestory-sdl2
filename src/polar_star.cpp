@@ -53,12 +53,8 @@ bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
 
 void PolarStar::initializeSprites(Graphics& graphics)
 {
-    for (int h = (int)(HorizontalFacing::FIRST_HORIZONTAL_FACING);
-            h < (int)(HorizontalFacing::LAST_HORIZONTAL_FACING);
-            ++h) {
-        for (int v = (int)(VerticalFacing::FIRST_VERTICAL_FACING);
-                v < (int)(VerticalFacing::LAST_VERTICAL_FACING);
-                ++v) {
+    ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
+        ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
             HorizontalFacing horiz_facing = (HorizontalFacing)h;
             VerticalFacing vert_facing = (VerticalFacing)v;
             initializeSprite(graphics, SpriteState(horiz_facing, vert_facing));

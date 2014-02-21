@@ -15,7 +15,7 @@ const units::HP kContactDamage{1};
 FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
     pos_(pos),
     center_y_{pos_.y},
-    facing_{Facing::RIGHT},
+    facing_{HorizontalFacing::RIGHT},
     flight_angle_{0.0},
     sprites_()
 {
@@ -35,8 +35,8 @@ void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
     flight_angle_ += kAngularVelocity * elapsed_time.count();
 
     facing_ = pos_.x + units::kHalfTile > player_x
-        ? Facing::LEFT
-        : Facing::RIGHT;
+        ? HorizontalFacing::LEFT
+        : HorizontalFacing::RIGHT;
 
     const auto angle = std::sin(units::degreesToRadians(flight_angle_));
     pos_.y = center_y_ + kFlightAmplitude * units::Game(angle);
@@ -59,17 +59,15 @@ units::HP FirstCaveBat::contactDamage() const
 
 void FirstCaveBat::initializeSprites(Graphics& graphics)
 {
-    for (int facing = (int)Facing::FIRST_FACING;
-            facing < (int)Facing::LAST_FACING;
-            ++facing) {
-        initializeSprite(graphics, SpriteState(Facing(facing)));
+    ENUM_FOREACH(facing, HorizontalFacing, HORIZONTAL_FACING) {
+        initializeSprite(graphics, SpriteState(HorizontalFacing(facing)));
     }
 }
 
 void FirstCaveBat::initializeSprite(Graphics& graphics,
         const SpriteState& sprite_state)
 {
-    auto tile_y = sprite_state.facing == Facing::RIGHT ? 3 : 2;
+    auto tile_y = sprite_state.facing == HorizontalFacing::RIGHT ? 3 : 2;
     sprites_[sprite_state] = std::shared_ptr<Sprite>(new AnimatedSprite{
             graphics,
             kSpritePath,
