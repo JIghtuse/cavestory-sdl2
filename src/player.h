@@ -83,6 +83,7 @@ private:
 
        StrideType stride() const;
        void update();
+       void reset();
    private:
        Timer frame_timer_;
        int current_index_;

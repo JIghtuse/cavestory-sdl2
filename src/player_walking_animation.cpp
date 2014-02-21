@@ -29,6 +29,12 @@ Player::StrideType Player::WalkingAnimation::stride() const
     return StrideType::LEFT;
 }
 
+void Player::WalkingAnimation::reset() {
+    forward_ = true;
+    current_index_ = 0;
+    frame_timer_.reset();
+}
+
 void Player::WalkingAnimation::update()
 {
     if (frame_timer_.is_expired()) {

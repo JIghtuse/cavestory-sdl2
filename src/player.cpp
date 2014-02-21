@@ -145,6 +145,9 @@ void Player::drawHUD(Graphics& graphics) const
 
 void Player::startMovingLeft()
 {
+    if (is_on_ground() && acceleration_x_direction_ == 0) {
+        walking_animation_.reset();
+    }
     horizontal_facing_ = HorizontalFacing::LEFT;
     acceleration_x_direction_ = -1;
     is_interacting_ = false;
@@ -152,6 +155,9 @@ void Player::startMovingLeft()
 
 void Player::startMovingRight()
 {
+    if (is_on_ground() && acceleration_x_direction_ == 0) {
+        walking_animation_.reset();
+    }
     horizontal_facing_ = HorizontalFacing::RIGHT;
     acceleration_x_direction_ = 1;
     is_interacting_ = false;
