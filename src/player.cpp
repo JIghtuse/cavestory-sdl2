@@ -32,6 +32,8 @@ const units::Frame kJumpFrame{1};
 const units::Frame kFallFrame{2};
 
 const units::Frame kUpFrameOffset{3};
+const units::Frame kLeftFrameOffset{1};
+const units::Frame kRightFrameOffset{2};
 const units::Frame kDownFrame{6};
 const units::Frame kBackFrame{7};
 
@@ -219,6 +221,20 @@ units::Tile Player::getFrameX(const SpriteState& s) const
     switch (s.motion_type) {
     case MotionType::WALKING:
         tile_x = kWalkFrame;
+
+        switch (s.stride_type) {
+        case StrideType::MIDDLE:
+            break;
+        case StrideType::LEFT:
+            tile_x += kLeftFrameOffset;
+            break;
+        case StrideType::RIGHT:
+            tile_x += kRightFrameOffset;
+            break;
+        default:
+            break;
+        }
+
         break;
     case MotionType::STANDING:
         tile_x = kStandFrame;
@@ -252,20 +268,6 @@ void Player::initializeSprite(Graphics& graphics,
     units::Tile tile_y = getFrameY(sprite_state);
     units::Tile tile_x = getFrameX(sprite_state);
 
-    if (sprite_state.motion_type == MotionType::WALKING) {
-        switch (sprite_state.stride_type) {
-        case StrideType::MIDDLE:
-            break;
-        case StrideType::LEFT:
-            tile_x += 1;
-            break;
-        case StrideType::RIGHT:
-            tile_x += 2;
-            break;
-        default:
-            break;
-        }
-    }
     sprites_[sprite_state] = std::unique_ptr<Sprite>{
         new Sprite(
                 graphics,
