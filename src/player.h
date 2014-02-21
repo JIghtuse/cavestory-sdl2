@@ -52,20 +52,37 @@ private:
        FALLING,
        LAST_MOTION_TYPE
    };
+   enum StrideType {
+       FIRST_STRIDE_TYPE,
+       MIDDLE = FIRST_STRIDE_TYPE,
+       LEFT,
+       RIGHT,
+       LAST_STRIDE_TYPE
+   };
    struct SpriteState {
        SpriteState(MotionType motion_type=MotionType::STANDING,
                HorizontalFacing horizontal_facing=HorizontalFacing::LEFT,
-               VerticalFacing vertical_facing=VerticalFacing::HORIZONTAL) :
+               VerticalFacing vertical_facing=VerticalFacing::HORIZONTAL,
+               StrideType stride_type=StrideType::MIDDLE
+               ) :
            motion_type{motion_type},
            horizontal_facing{horizontal_facing},
-           vertical_facing{vertical_facing}
+           vertical_facing{vertical_facing},
+           stride_type{stride_type}
        {}
 
        MotionType motion_type;
        HorizontalFacing horizontal_facing;
        VerticalFacing vertical_facing;
+       StrideType stride_type;
    };
    friend bool operator<(const SpriteState& a, const SpriteState& b);
+
+   struct WalkingAnimation {
+       StrideType stride() const {
+           return StrideType::LEFT;
+       }
+   };
    units::Tile getFrameX(const SpriteState&) const;
    units::Tile getFrameY(const SpriteState&) const;
 
@@ -116,6 +133,7 @@ private:
    Timer invincible_timer_;
    DamageText damage_text_;
 
+   WalkingAnimation walking_animation_;
    PolarStar polar_star_;
 
    std::map<SpriteState, std::unique_ptr<Sprite> > sprites_;

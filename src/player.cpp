@@ -84,6 +84,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     health_(graphics),
     invincible_timer_{kInvincibleTime},
     damage_text_(),
+    walking_animation_(),
     polar_star_(graphics),
     sprites_()
 {
@@ -242,25 +243,27 @@ void Player::initializeSprite(Graphics& graphics,
     units::Tile tile_x = getFrameX(sprite_state);
 
     if (sprite_state.motion_type == MotionType::WALKING) {
-        sprites_[sprite_state] = std::unique_ptr<Sprite>{
-            new AnimatedSprite(
-                    graphics,
-                    kPlayerSpriteFilePath,
-                    units::tileToPixel(tile_x), units::tileToPixel(tile_y),
-                    units::tileToPixel(1), units::tileToPixel(1),
-                    kWalkFps, kNumWalkFrames
-                    )
-        };
-    } else {
-        sprites_[sprite_state] = std::unique_ptr<Sprite>{
-            new Sprite(
-                    graphics,
-                    kPlayerSpriteFilePath,
-                    units::tileToPixel(tile_x), units::tileToPixel(tile_y),
-                    units::tileToPixel(1), units::tileToPixel(1)
-                    )
-        };
+        switch (sprite_state.stride_type) {
+        case StrideType::MIDDLE:
+            break;
+        case StrideType::LEFT:
+            tile_x += 1;
+            break;
+        case StrideType::RIGHT:
+            tile_x += 2;
+            break;
+        default:
+            break;
+        }
     }
+    sprites_[sprite_state] = std::unique_ptr<Sprite>{
+        new Sprite(
+                graphics,
+                kPlayerSpriteFilePath,
+                units::tileToPixel(tile_x), units::tileToPixel(tile_y),
+                units::tileToPixel(1), units::tileToPixel(1)
+                )
+    };
 }
 
 void Player::initializeSprites(Graphics& graphics)
@@ -268,15 +271,16 @@ void Player::initializeSprites(Graphics& graphics)
     ENUM_FOREACH(m, MotionType, MOTION_TYPE) {
         ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
             ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
+                ENUM_FOREACH(s, StrideType, STRIDE_TYPE) {
+                    MotionType mtype = (MotionType)m;
+                    HorizontalFacing hfacing = (HorizontalFacing)h;
+                    VerticalFacing vfacing = (VerticalFacing)v;
+                    StrideType stride = (StrideType)s;
 
-                MotionType motion_type = (MotionType)m;
-                HorizontalFacing horiz_facing = (HorizontalFacing)h;
-                VerticalFacing vert_facing = (VerticalFacing)v;
+                    auto sprite = SpriteState(mtype, hfacing, vfacing, stride);
 
-                initializeSprite(
-                        graphics,
-                        SpriteState(motion_type, horiz_facing, vert_facing)
-                        );
+                    initializeSprite(graphics, sprite);
+                }
             }
         }
     }
@@ -296,7 +300,12 @@ const Player::SpriteState Player::getSpriteState() const
             ? MotionType::JUMPING
             : MotionType::FALLING;
     }
-    return SpriteState(motion, horizontal_facing_, vertical_facing_);
+    return SpriteState(
+            motion,
+            horizontal_facing_,
+            vertical_facing_,
+            walking_animation_.stride()
+            );
 }
 
 const Rectangle Player::leftCollision(units::Game delta) const
