@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include "vector.h"
 
-const std::string kMapSpriteFilePath{"content/PrtCave.bmp"};
+const std::string kMapSpriteFilePath{"PrtCave"};
 
 Map::Map() :
     backdrop_(),
@@ -20,7 +20,7 @@ Map* Map::createTestMap(Graphics& graphics)
     using std::vector;
     Map* map = new Map();
 
-    const std::string bkPath{"content/bkBlue.bmp"};
+    const std::string bkPath{"bkBlue"};
     map->backdrop_.reset(new FixedBackdrop(bkPath, graphics));
 
     const units::Tile num_rows{15}; // 15 * 32 == 480

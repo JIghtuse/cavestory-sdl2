@@ -22,7 +22,7 @@ const units::Acceleration kJumpGravity{0.0003125};
 const units::Velocity kJumpSpeed{0.25};
 const units::Velocity kShortJumpSpeed{kJumpSpeed / 1.5};
 // Sprites
-const std::string kPlayerSpriteFilePath{"content/MyChar.bmp"};
+const std::string kPlayerSpriteFilePath{"MyChar"};
 // Sprite Frames
 const units::Frame kCharacterFrame{0};
 

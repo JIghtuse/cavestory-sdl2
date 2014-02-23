@@ -2,7 +2,7 @@
 #include "polar_star.h"
 #include "sprite.h"
 
-const std::string kArmsSpritePath{"content/Arms.bmp"};
+const std::string kArmsSpritePath{"Arms"};
 const int kPolarStarIndex{2};
 const units::Game kGunWidth{3 * units::kHalfTile};
 const units::Game kGunHeight{2 * units::kHalfTile};

@@ -36,12 +36,13 @@ Graphics::~Graphics()
 }
 
 /**
- * Loads SDL_Texture from file_path into sprite cache (sprite_sheets_ map) and
+ * Loads SDL_Texture from file_name into sprite cache (sprite_sheets_ map) and
  * returns it. If texture already presents in cache just returns it.
  */
-SDL_Texture* Graphics::loadImage(const std::string& file_path,
+SDL_Texture* Graphics::loadImage(const std::string& file_name,
         const bool black_is_transparent)
 {
+    const std::string file_path("content/" + file_name + ".bmp");
     // spritesheet not loaded
     if (sprite_sheets_.count(file_path) == 0) {
         SDL_Texture *t;

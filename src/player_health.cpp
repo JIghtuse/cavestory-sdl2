@@ -1,6 +1,6 @@
 #include "player.h"
 
-const std::string kHealthSpriteFilePath{"content/TextBox.bmp"};
+const std::string kHealthSpriteFilePath{"TextBox"};
 // HUD constants
 const Vector<units::Game> kHealthBarPos{
     units::tileToGame(1),

@@ -3,7 +3,7 @@
 #include "number_sprite.h"
 #include "sprite.h"
 
-const std::string kNumberSpritePath{"content/TextBox.bmp"};
+const std::string kNumberSpritePath{"TextBox"};
 const units::Game kSourceWhiteY{7 * units::kHalfTile};
 const units::Game kSourceRedY{8 * units::kHalfTile};
 

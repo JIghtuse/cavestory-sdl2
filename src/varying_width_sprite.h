@@ -5,7 +5,7 @@
 
 struct VaryingWidthSprite : public Sprite {
    VaryingWidthSprite(Graphics& graphics,
-        const std::string& file_path,
+        const std::string& file_name,
         const units::Pixel source_x, const units::Pixel source_y,
         const units::Pixel width, const units::Pixel height);
    ~VaryingWidthSprite();

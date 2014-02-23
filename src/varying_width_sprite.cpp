@@ -1,10 +1,10 @@
 #include "varying_width_sprite.h"
 
 VaryingWidthSprite::VaryingWidthSprite(Graphics& graphics,
-        const std::string& file_path,
+        const std::string& file_name,
         const units::Pixel source_x, const units::Pixel source_y,
         const units::Pixel width, const units::Pixel height) : 
-    Sprite(graphics, file_path, source_x, source_y, width, height)
+    Sprite(graphics, file_name, source_x, source_y, width, height)
 {}
 
 VaryingWidthSprite::~VaryingWidthSprite() {}

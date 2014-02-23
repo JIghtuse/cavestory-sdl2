@@ -8,7 +8,7 @@
 struct AnimatedSprite : public Sprite {
     AnimatedSprite(
             Graphics& graphics,
-            const std::string& file_path,
+            const std::string& file_name,
             const units::Pixel source_x, const units::Pixel source_y,
             const units::Pixel width, const units::Pixel height,
             const units::FPS fps, const units::Frame num_frames

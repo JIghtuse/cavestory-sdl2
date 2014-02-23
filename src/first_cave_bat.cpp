@@ -8,7 +8,7 @@ const units::FPS kFlyFps{13};
 const units::AngularVelocity kAngularVelocity{120.0 / 1000.0};
 const units::Game kFlightAmplitude{5 * units::kHalfTile};
 
-const std::string kSpritePath{"content/NpcCemet.bmp"};
+const std::string kSpritePath{"NpcCemet"};
 
 const units::HP kContactDamage{1};
 

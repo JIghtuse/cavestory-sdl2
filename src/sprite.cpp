@@ -3,10 +3,10 @@
 #include "sprite.h"
 
 Sprite::Sprite(Graphics& graphics,
-        const std::string& file_path,
+        const std::string& file_name,
         const units::Pixel source_x, const units::Pixel source_y,
         const units::Pixel width, const units::Pixel height) :
-    texture_{graphics.loadImage(file_path.c_str(), true)},
+    texture_{graphics.loadImage(file_name.c_str(), true)},
     source_rect_{source_x, source_y, width, height}
 {
 }
