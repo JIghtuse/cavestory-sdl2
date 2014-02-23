@@ -2,6 +2,7 @@
 #define UNITS_H_
 
 #include <cmath>
+#include "config.h"
 
 namespace units {
     typedef int HP;
@@ -28,8 +29,11 @@ namespace units {
     }
 
     inline Pixel gameToPixel(Game game) {
-        // TODO: quit assuming 16x16
-        return Pixel(round(game / 2));
+        if (config::getGraphicsQuality() == config::GraphicsQuality::HIGH) {
+            return Pixel(round(game));
+        } else {
+            return Pixel(round(game) / 2);
+        }
     }
     inline Tile gameToTile(Game game) {
         return Tile(game / kTileSize);

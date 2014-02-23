@@ -42,7 +42,11 @@ Graphics::~Graphics()
 SDL_Texture* Graphics::loadImage(const std::string& file_name,
         const bool black_is_transparent)
 {
-    const std::string file_path("content/" + file_name + ".bmp");
+    const std::string file_path{
+        (config::getGraphicsQuality() == config::GraphicsQuality::ORIGINAL)
+            ? "content/original_graphics/" + file_name + ".pbm"
+            : "content/" + file_name + ".bmp"
+    };
     // spritesheet not loaded
     if (sprite_sheets_.count(file_path) == 0) {
         SDL_Texture *t;

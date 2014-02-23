@@ -17,6 +17,7 @@ clean:
 
 bin/cave: obj/animated_sprite.o \
 	obj/backdrop.o \
+	obj/config.o \
 	obj/damage_text.o \
 	obj/first_cave_bat.o \
 	obj/game.o \
