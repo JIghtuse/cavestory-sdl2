@@ -87,7 +87,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     velocity_{0.0, 0.0},
     acceleration_x_direction_{0},
     horizontal_facing_{HorizontalFacing::LEFT},
-    vertical_facing_{VerticalFacing::HORIZONTAL},
+    intended_vertical_facing_{VerticalFacing::HORIZONTAL},
     is_on_ground_{false},
     is_jump_active_{false},
     is_interacting_{false},
@@ -126,7 +126,7 @@ void Player::draw(Graphics& graphics) const
         polar_star_.draw(
                 graphics,
                 horizontal_facing_,
-                vertical_facing_,
+                vertical_facing(),
                 gun_up,
                 pos_
                 );
@@ -170,20 +170,20 @@ void Player::stopMoving()
 
 void Player::lookUp()
 {
-    vertical_facing_ = VerticalFacing::UP;
+    intended_vertical_facing_ = VerticalFacing::UP;
     is_interacting_ = false;
 }
 
 void Player::lookDown()
 {
-    if (vertical_facing_ == VerticalFacing::DOWN) return;
-    vertical_facing_ = VerticalFacing::DOWN;
+    if (intended_vertical_facing_ == VerticalFacing::DOWN) return;
+    intended_vertical_facing_ = VerticalFacing::DOWN;
     is_interacting_ = is_on_ground();
 }
 
 void Player::lookHorizontal()
 {
-    vertical_facing_ = VerticalFacing::HORIZONTAL;
+    intended_vertical_facing_ = VerticalFacing::HORIZONTAL;
 }
 
 void Player::startJump()
@@ -261,14 +261,19 @@ units::Tile Player::getFrameX(const SpriteState& s) const
     case MotionType::LAST_MOTION_TYPE:
         break;
     }
-
-    if (s.vertical_facing == VerticalFacing::UP) {
+    switch (s.vertical_facing) {
+    case VerticalFacing::HORIZONTAL:
+        break;
+    case VerticalFacing::UP:
         tile_x += kUpFrameOffset;
-    } else if (s.vertical_facing == VerticalFacing::DOWN &&
-               (s.motion_type == MotionType::JUMPING
-             || s.motion_type == MotionType::FALLING)) {
+        break;
+    case VerticalFacing::DOWN:
         tile_x = kDownFrame;
+        break;
+    default:
+        break;
     }
+
     return tile_x;
 }
 
@@ -325,12 +330,26 @@ Player::MotionType Player::getMotionType() const
     return motion;
 }
 
+bool Player::is_on_ground() const
+{
+    return is_on_ground_;
+}
+
+VerticalFacing Player::vertical_facing() const
+{
+    if (is_on_ground() && intended_vertical_facing_ == VerticalFacing::DOWN) {
+        return VerticalFacing::HORIZONTAL;
+    } else {
+        return intended_vertical_facing_;
+    }
+}
+
 const Player::SpriteState Player::getSpriteState() const
 {
     return SpriteState(
             getMotionType(),
             horizontal_facing_,
-            vertical_facing_,
+            vertical_facing(),
             walking_animation_.stride()
             );
 }

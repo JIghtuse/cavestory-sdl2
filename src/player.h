@@ -125,13 +125,14 @@ private:
    bool spriteIsVisible() const;
 
    MotionType getMotionType() const;
-   bool is_on_ground() const { return is_on_ground_; }
+   bool is_on_ground() const;
+   VerticalFacing vertical_facing() const;
 
    Vector<units::Game> pos_;
    Vector<units::Velocity> velocity_;
    int acceleration_x_direction_;
    HorizontalFacing horizontal_facing_;
-   VerticalFacing vertical_facing_;
+   VerticalFacing intended_vertical_facing_;
    bool is_on_ground_;
    bool is_jump_active_;
    bool is_interacting_;
