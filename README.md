@@ -23,7 +23,7 @@ game. Game settings will be improved someday (to change it in game itself).
 For example, if you take the game from the Humble Indie Bundle 7, you can copy
 bitmaps like that:
 
-    cp <game_root>/data/base/{Arms,bkBlue,MyChar,TextBox,Npc/NpcCemet,Stage/PrtCave}.bmp content
+    cp <game_root>/data/base/{Arms,Bullet,bkBlue,MyChar,TextBox,Npc/NpcCemet,Stage/PrtCave}.bmp content
 
 Where &lt;game\_root&gt; is path where you install the game.
 
