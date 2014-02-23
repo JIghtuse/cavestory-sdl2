@@ -15,24 +15,109 @@ const units::Tile kDownOffset{4};
 const units::Tile kLeftOffset{0};
 const units::Tile kRightOffset{1};
 
+// Nozzle Offsets
+const units::Game kNozzleHorizontalY{23};
+const units::Game kNozzleHorizontalLeftX{10};
+const units::Game kNozzleHorizontalRightX{38};
+
+const units::Game kNozzleUpY{4};
+const units::Game kNozzleUpLeftX{27};
+const units::Game kNozzleUpRightX{21};
+
+const units::Game kNozzleDownY{28};
+const units::Game kNozzleDownLeftX{29};
+const units::Game kNozzleDownRightX{19};
+
+// Projectile Sprite
+const units::Tile kProjectileSourceY{2};
+const units::Tile kHorizontalProjectileSourceX{8};
+const units::Tile kVerticalProjectileSourceX{9};
+const units::Tile kProjectileWidth{1};
+const units::Tile kProjectileHeight{1};
+
 PolarStar::PolarStar(Graphics& graphics) :
-    sprite_map_()
+    sprite_map_(),
+    horizontal_projectile_(),
+    vertical_projectile_()
 {
     initializeSprites(graphics);
 }
 
 PolarStar::~PolarStar() {}
 
+const Vector<units::Game> PolarStar::getBulletPos(
+        const Vector<units::Game> pos,
+        const VerticalFacing vfacing,
+        const HorizontalFacing hfacing
+        ) const
+{
+    auto bullet_x = pos.x - units::kHalfTile;
+    auto bullet_y = pos.y - units::kHalfTile;
+
+    switch (vfacing) {
+    case VerticalFacing::HORIZONTAL:
+        bullet_y += kNozzleHorizontalY;
+
+        switch (hfacing) {
+        case HorizontalFacing::LEFT:
+            bullet_x += kNozzleHorizontalLeftX;
+            break;
+        case HorizontalFacing::RIGHT:
+            bullet_x += kNozzleHorizontalRightX;
+            break;
+        default:
+            break;
+        }
+
+        break;
+    case VerticalFacing::UP:
+        bullet_y += kNozzleUpY;
+
+        switch (hfacing) {
+        case HorizontalFacing::LEFT:
+            bullet_x += kNozzleUpLeftX;
+            break;
+        case HorizontalFacing::RIGHT:
+            bullet_x += kNozzleUpRightX;
+            break;
+        default:
+            break;
+        }
+
+        break;
+    case VerticalFacing::DOWN:
+        bullet_y += kNozzleDownY;
+
+        switch (hfacing) {
+        case HorizontalFacing::LEFT:
+            bullet_x += kNozzleDownLeftX;
+            break;
+        case HorizontalFacing::RIGHT:
+            bullet_x += kNozzleDownRightX;
+            break;
+        default:
+            break;
+        }
+
+        break;
+    default:
+        break;
+    }
+
+    return Vector<units::Game>{bullet_x, bullet_y};
+}
+
 void PolarStar::draw(
         Graphics& graphics,
-        HorizontalFacing horizontal_facing, VerticalFacing vertical_facing,
+        const HorizontalFacing hfacing,
+        const VerticalFacing vfacing,
         bool gun_up,
         Vector<units::Game> pos) const
 {
-    if (horizontal_facing == HorizontalFacing::LEFT) {
+    if (hfacing == HorizontalFacing::LEFT) {
         pos.x -= units::kHalfTile;
     }
-    switch (vertical_facing) {
+    switch (vfacing) {
     case VerticalFacing::UP:
         pos.y -= units::kHalfTile / 2;
         break;
@@ -46,18 +131,40 @@ void PolarStar::draw(
     if (gun_up) {
         pos.y -= kGunBob;
     }
-    const auto state = SpriteState{horizontal_facing, vertical_facing};
+    const auto state = SpriteState{hfacing, vfacing};
     sprite_map_.at(state)->draw(graphics, pos);
+
+    const auto bullet_pos = getBulletPos(pos, vfacing, hfacing);
+
+    if (vfacing == VerticalFacing::HORIZONTAL) {
+        horizontal_projectile_->draw(graphics, bullet_pos);
+    } else {
+        vertical_projectile_->draw(graphics, bullet_pos);
+    }
 }
 
 bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
 {
     return std::tie(a.horizontal_facing, a.vertical_facing) <
-            std::tie(b.horizontal_facing, b.vertical_facing);
+        std::tie(b.horizontal_facing, b.vertical_facing);
 }
 
 void PolarStar::initializeSprites(Graphics& graphics)
 {
+    horizontal_projectile_.reset(new Sprite(
+                graphics, "Bullet",
+                units::tileToPixel(kHorizontalProjectileSourceX),
+                units::tileToPixel(kProjectileSourceY),
+                units::tileToPixel(kProjectileWidth),
+                units::tileToPixel(kProjectileHeight)
+                ));
+    vertical_projectile_.reset(new Sprite(
+                graphics, "Bullet",
+                units::tileToPixel(kVerticalProjectileSourceX),
+                units::tileToPixel(kProjectileSourceY),
+                units::tileToPixel(kProjectileWidth),
+                units::tileToPixel(kProjectileHeight)
+                ));
     ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
         ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
             HorizontalFacing horiz_facing = (HorizontalFacing)h;
@@ -92,12 +199,12 @@ void PolarStar::initializeSprite(
     }
     sprite_map_[sprite_state] = std::shared_ptr<Sprite>{
         new Sprite(graphics,
-            kArmsSpritePath,
-            units::gameToPixel(kPolarStarIndex * kGunWidth),
-            units::tileToPixel(tile_y),
-            units::gameToPixel(kGunWidth),
-            units::gameToPixel(kGunHeight)
-            )
+                kArmsSpritePath,
+                units::gameToPixel(kPolarStarIndex * kGunWidth),
+                units::tileToPixel(tile_y),
+                units::gameToPixel(kGunWidth),
+                units::gameToPixel(kGunHeight)
+                )
     };
 }
 
