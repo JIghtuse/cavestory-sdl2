@@ -11,22 +11,19 @@ I decided to make the same with SDL 2.0 and C++11.
 Note on media content
 ---------------------
 Original content from the game was taken from the [CaveStory tribute
-site](http://www.cavestory.org/downloads_game.php). It is located at
-`content/original_graphics`.
+site](http://www.cavestory.org/downloads_game.php). It is located at `content/original_graphics`.
 
 You can buy CaveStory+ on [Steam](http://store.steampowered.com/app/200900/),
 [Desura](http://www.desura.com/games/cave-story) or [Ubuntu Software
 Centre](https://apps.ubuntu.com/cat/applications/cave-story-plus/) and add 
 bitmaps with higher resolution to `content` directory. Next you need to change
-line 6 of `src/config.cpp` to `return GraphicsQuality::HIGH` and recompile the
+line 6 of `src/config.cpp` to `return GraphicsQuality::HIGH;` and recompile the
 game. Game settings will be improved someday (to change it in game itself).
 
 For example, if you take the game from the Humble Indie Bundle 7, you can copy
 bitmaps like that:
 
-    cp
-    <game_root>/data/base/{Arms,bkBlue,MyChar,TextBox,Npc/NpcCemet,Stage/PrtCave}.bmp
-    content
+    cp <game_root>/data/base/{Arms,bkBlue,MyChar,TextBox,Npc/NpcCemet,Stage/PrtCave}.bmp content
 
 Where &lt;game\_root&gt; is path where you install the game.
 
