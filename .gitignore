@@ -2,3 +2,6 @@ bin
 obj
 *.swp
 *.pyc
+
+# For remastered bitmaps
+*.bmp
