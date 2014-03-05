@@ -38,115 +38,161 @@ const units::Tile kProjectileHeight{1};
 PolarStar::PolarStar(Graphics& graphics) :
     sprite_map_(),
     horizontal_projectile_(),
-    vertical_projectile_()
+    vertical_projectile_(),
+    projectile_()
 {
     initializeSprites(graphics);
 }
 
 PolarStar::~PolarStar() {}
 
-const Vector<units::Game> PolarStar::getBulletPos(
-        const Vector<units::Game> pos,
-        const VerticalFacing vfacing,
-        const HorizontalFacing hfacing
-        ) const
-{
-    auto bullet_x = pos.x - units::kHalfTile;
-    auto bullet_y = pos.y - units::kHalfTile;
-
-    switch (vfacing) {
-    case VerticalFacing::HORIZONTAL:
-        bullet_y += kNozzleHorizontalY;
-
-        switch (hfacing) {
-        case HorizontalFacing::LEFT:
-            bullet_x += kNozzleHorizontalLeftX;
-            break;
-        case HorizontalFacing::RIGHT:
-            bullet_x += kNozzleHorizontalRightX;
-            break;
-        default:
-            break;
-        }
-
-        break;
-    case VerticalFacing::UP:
-        bullet_y += kNozzleUpY;
-
-        switch (hfacing) {
-        case HorizontalFacing::LEFT:
-            bullet_x += kNozzleUpLeftX;
-            break;
-        case HorizontalFacing::RIGHT:
-            bullet_x += kNozzleUpRightX;
-            break;
-        default:
-            break;
-        }
-
-        break;
-    case VerticalFacing::DOWN:
-        bullet_y += kNozzleDownY;
-
-        switch (hfacing) {
-        case HorizontalFacing::LEFT:
-            bullet_x += kNozzleDownLeftX;
-            break;
-        case HorizontalFacing::RIGHT:
-            bullet_x += kNozzleDownRightX;
-            break;
-        default:
-            break;
-        }
-
-        break;
-    default:
-        break;
-    }
-
-    return Vector<units::Game>{bullet_x, bullet_y};
-}
-
 void PolarStar::draw(
         Graphics& graphics,
         const HorizontalFacing hfacing,
         const VerticalFacing vfacing,
         bool gun_up,
-        Vector<units::Game> pos) const
+        Vector<units::Game> player_pos) const
 {
-    if (hfacing == HorizontalFacing::LEFT) {
-        pos.x -= units::kHalfTile;
-    }
-    switch (vfacing) {
-    case VerticalFacing::UP:
-        pos.y -= units::kHalfTile / 2;
-        break;
-    case VerticalFacing::DOWN:
-        pos.y += units::kHalfTile / 2;
-        break;
-    case VerticalFacing::HORIZONTAL:
-    case VerticalFacing::LAST_VERTICAL_FACING:
-        break;
-    }
-    if (gun_up) {
-        pos.y -= kGunBob;
-    }
+    const auto gun_pos = calcGunPos(player_pos, hfacing, vfacing, gun_up);
     const auto state = SpriteState{hfacing, vfacing};
-    sprite_map_.at(state)->draw(graphics, pos);
+    sprite_map_.at(state)->draw(graphics, gun_pos);
 
-    const auto bullet_pos = getBulletPos(pos, vfacing, hfacing);
-
-    if (vfacing == VerticalFacing::HORIZONTAL) {
-        horizontal_projectile_->draw(graphics, bullet_pos);
-    } else {
-        vertical_projectile_->draw(graphics, bullet_pos);
+    if (projectile_ != nullptr) {
+        projectile_->draw(graphics);
     }
+}
+
+void PolarStar::startFire(
+        const Vector<units::Game> player_pos,
+        const HorizontalFacing hfacing,
+        const VerticalFacing vfacing,
+        bool gun_up
+        )
+{
+    const auto gun_pos = calcGunPos(player_pos, hfacing, vfacing, gun_up);
+    const auto bullet_pos = getBulletPos(gun_pos, hfacing, vfacing);
+    projectile_.reset(new Projectile(
+                (vfacing == VerticalFacing::HORIZONTAL)
+                ? horizontal_projectile_ : vertical_projectile_,
+                hfacing,
+                vfacing,
+                bullet_pos
+                ));
+
+}
+
+void PolarStar::stopFire() {}
+
+PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
+        const HorizontalFacing hdirection,
+        const VerticalFacing vdirection,
+        const Vector<units::Game> pos) :
+    pos_(pos),
+    horizontal_direction_(hdirection),
+    vertical_direction_(vdirection),
+    sprite_(sprite),
+    offset_(0)
+{}
+
+void PolarStar::Projectile::draw(Graphics& graphics) const
+{
+    sprite_->draw(graphics, pos_);
 }
 
 bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
 {
     return std::tie(a.horizontal_facing, a.vertical_facing) <
         std::tie(b.horizontal_facing, b.vertical_facing);
+}
+
+const Vector<units::Game> PolarStar::calcGunPos(
+        const Vector<units::Game> player_pos,
+        const HorizontalFacing hfacing,
+        const VerticalFacing vfacing,
+        const bool gun_up
+        ) const
+{
+    Vector<units::Game> pos(player_pos);
+    if (hfacing == HorizontalFacing::LEFT) {
+        pos.x -= units::kHalfTile;
+    }
+    switch (vfacing) {
+        case VerticalFacing::UP:
+            pos.y -= units::kHalfTile / 2;
+            break;
+        case VerticalFacing::DOWN:
+            pos.y += units::kHalfTile / 2;
+            break;
+        case VerticalFacing::HORIZONTAL:
+        case VerticalFacing::LAST_VERTICAL_FACING:
+            break;
+    }
+    if (gun_up) {
+        pos.y -= kGunBob;
+    }
+    return pos;
+}
+
+const Vector<units::Game> PolarStar::getBulletPos(
+        const Vector<units::Game> player_pos,
+        const HorizontalFacing hfacing,
+        const VerticalFacing vfacing
+        ) const
+{
+    auto bullet_x = player_pos.x - units::kHalfTile;
+    auto bullet_y = player_pos.y - units::kHalfTile;
+
+    switch (vfacing) {
+        case VerticalFacing::HORIZONTAL:
+            bullet_y += kNozzleHorizontalY;
+
+            switch (hfacing) {
+                case HorizontalFacing::LEFT:
+                    bullet_x += kNozzleHorizontalLeftX;
+                    break;
+                case HorizontalFacing::RIGHT:
+                    bullet_x += kNozzleHorizontalRightX;
+                    break;
+                default:
+                    break;
+            }
+
+            break;
+        case VerticalFacing::UP:
+            bullet_y += kNozzleUpY;
+
+            switch (hfacing) {
+                case HorizontalFacing::LEFT:
+                    bullet_x += kNozzleUpLeftX;
+                    break;
+                case HorizontalFacing::RIGHT:
+                    bullet_x += kNozzleUpRightX;
+                    break;
+                default:
+                    break;
+            }
+
+            break;
+        case VerticalFacing::DOWN:
+            bullet_y += kNozzleDownY;
+
+            switch (hfacing) {
+                case HorizontalFacing::LEFT:
+                    bullet_x += kNozzleDownLeftX;
+                    break;
+                case HorizontalFacing::RIGHT:
+                    bullet_x += kNozzleDownRightX;
+                    break;
+                default:
+                    break;
+            }
+
+            break;
+        default:
+            break;
+    }
+
+    return Vector<units::Game>{bullet_x, bullet_y};
 }
 
 void PolarStar::initializeSprites(Graphics& graphics)
@@ -185,17 +231,17 @@ void PolarStar::initializeSprite(
         tile_y = kRightOffset;
     }
     switch (sprite_state.vertical_facing) {
-    case VerticalFacing::HORIZONTAL:
-        tile_y += kHorizontalOffset;
-        break;
-    case VerticalFacing::UP:
-        tile_y += kUpOffset;
-        break;
-    case VerticalFacing::DOWN:
-        tile_y += kDownOffset;
-        break;
-    case VerticalFacing::LAST_VERTICAL_FACING:
-        break;
+        case VerticalFacing::HORIZONTAL:
+            tile_y += kHorizontalOffset;
+            break;
+        case VerticalFacing::UP:
+            tile_y += kUpOffset;
+            break;
+        case VerticalFacing::DOWN:
+            tile_y += kDownOffset;
+            break;
+        case VerticalFacing::LAST_VERTICAL_FACING:
+            break;
     }
     sprite_map_[sprite_state] = std::shared_ptr<Sprite>{
         new Sprite(graphics,

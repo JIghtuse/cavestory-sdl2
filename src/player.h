@@ -36,6 +36,9 @@ struct Player {
    void startJump();
    void stopJump();
 
+   void startFire();
+   void stopFire();
+
    void takeDamage(units::HP damage);
 
    const Rectangle getDamageRectangle() const;
@@ -43,6 +46,8 @@ struct Player {
    units::Game getCenterY() const {return pos_.y + units::kHalfTile;}
 
 private:
+   bool is_gun_up() const;
+
    enum class MotionType {
        FIRST_MOTION_TYPE,
        STANDING = FIRST_MOTION_TYPE,

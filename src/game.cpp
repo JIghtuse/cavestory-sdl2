@@ -94,6 +94,12 @@ void Game::runEventLoop() {
         } else if (input.wasKeyReleased(SDL_SCANCODE_Z)) {
             player_->stopJump();
         }
+        // Player Fire
+        if (input.wasKeyPressed(SDL_SCANCODE_X)) {
+            player_->startFire();
+        } else if (input.wasKeyReleased(SDL_SCANCODE_X)) {
+            player_->stopFire();
+        }
 
         // update scene and last_updated_time
         const auto current_time = high_resolution_clock::now();

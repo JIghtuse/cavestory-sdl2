@@ -65,23 +65,6 @@ CollisionInfo getWallCollisionInfo(const Map& map, const Rectangle& rect) {
 
 } // anonymous namespace
 
-bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
-{
-    auto atie = std::tie(
-            a.motion_type, 
-            a.horizontal_facing, 
-            a.vertical_facing,
-            a.stride_type
-            );
-    auto btie = std::tie(
-            b.motion_type, 
-            b.horizontal_facing, 
-            b.vertical_facing,
-            b.stride_type
-            );
-    return atie < btie;
-}
-
 Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     pos_(pos),
     velocity_{0.0, 0.0},
@@ -120,14 +103,11 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 void Player::draw(Graphics& graphics) const
 {
     if (spriteIsVisible()) {
-        const bool gun_up = (getMotionType() == MotionType::WALKING)
-            && (walking_animation_.stride() != StrideType::MIDDLE);
-
         polar_star_.draw(
                 graphics,
                 horizontal_facing_,
                 vertical_facing(),
-                gun_up,
+                is_gun_up(),
                 pos_
                 );
         sprites_.at(getSpriteState())->draw(graphics, pos_);
@@ -200,6 +180,21 @@ void Player::stopJump()
     is_jump_active_ = false;
 }
 
+void Player::startFire()
+{
+    polar_star_.startFire(
+            pos_,
+            horizontal_facing_,
+            intended_vertical_facing_,
+            is_gun_up()
+            );
+}
+
+void Player::stopFire()
+{
+    polar_star_.stopFire();
+}
+
 void Player::takeDamage(units::HP damage) {
     if (invincible_timer_.is_active()) return;
 
@@ -215,6 +210,12 @@ const Rectangle Player::getDamageRectangle() const
             pos_.y + kCollisionY.getTop(),
             kCollisionX.getWidth(),
             kCollisionY.getHeight());
+}
+
+bool Player::is_gun_up() const
+{
+    return (getMotionType() == MotionType::WALKING)
+        && (walking_animation_.stride() != StrideType::MIDDLE);
 }
 
 units::Tile Player::getFrameY(const SpriteState& s) const
@@ -342,6 +343,23 @@ VerticalFacing Player::vertical_facing() const
     } else {
         return intended_vertical_facing_;
     }
+}
+
+bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
+{
+    auto atie = std::tie(
+            a.motion_type, 
+            a.horizontal_facing, 
+            a.vertical_facing,
+            a.stride_type
+            );
+    auto btie = std::tie(
+            b.motion_type, 
+            b.horizontal_facing, 
+            b.vertical_facing,
+            b.stride_type
+            );
+    return atie < btie;
 }
 
 const Player::SpriteState Player::getSpriteState() const

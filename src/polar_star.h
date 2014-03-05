@@ -12,17 +12,45 @@ struct PolarStar {
     PolarStar(Graphics& graphics);
     ~PolarStar();
 
-    const Vector<units::Game> getBulletPos(
-            const Vector<units::Game> pos,
-            const VerticalFacing vfacing,
-            const HorizontalFacing hfacing
-            ) const;
     void draw(Graphics& graphics,
             const HorizontalFacing horizontal_facing,
             const VerticalFacing vertical_facing,
             bool gun_up,
-            Vector<units::Game> pos) const;
+            Vector<units::Game> player_pos) const;
+    void startFire(
+            const Vector<units::Game> player_pos,
+            const HorizontalFacing hfacing,
+            const VerticalFacing vfacing,
+            bool gun_up
+            );
+    void stopFire();
 private:
+    const Vector<units::Game> calcGunPos(
+            const Vector<units::Game> player_pos,
+            const HorizontalFacing hfacing,
+            const VerticalFacing vfacing,
+            const bool gun_up
+            ) const;
+    const Vector<units::Game> getBulletPos(
+            const Vector<units::Game> player_pos,
+            const HorizontalFacing hfacing,
+            const VerticalFacing vfacing
+            ) const;
+
+    struct Projectile {
+        Projectile(std::shared_ptr<Sprite> sprite,
+                const HorizontalFacing hdirection,
+                const VerticalFacing vdirection,
+                const Vector<units::Game> pos);
+        void draw(Graphics& graphics) const;
+    private:
+        Vector<units::Game> pos_;
+        HorizontalFacing horizontal_direction_;
+        VerticalFacing vertical_direction_;
+        std::shared_ptr<Sprite> sprite_;
+        units::Game offset_;
+    };
+
     struct SpriteState {
         SpriteState(
                 HorizontalFacing horizontal_facing,
@@ -43,6 +71,7 @@ private:
     std::map<SpriteState, std::shared_ptr<Sprite> > sprite_map_;
     std::shared_ptr<Sprite> horizontal_projectile_;
     std::shared_ptr<Sprite> vertical_projectile_;
+    std::shared_ptr<Projectile> projectile_;
 };
 
 #endif /* POLAR_STAR_H_ */
