@@ -34,6 +34,7 @@ Keys to play
 * &darr; look down / interact
 * &uarr; look up
 * Z jump
+* X fire
 * Q quit
 
 Used materials
