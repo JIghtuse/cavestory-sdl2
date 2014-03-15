@@ -96,6 +96,8 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
     walking_animation_.update();
 
+    polar_star_.updateProjectiles(elapsed_time);
+
     updateX(elapsed_time, map);
     updateY(elapsed_time, map);
 }

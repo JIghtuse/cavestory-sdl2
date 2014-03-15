@@ -1,6 +1,7 @@
 #ifndef POLAR_STAR_H_
 #define POLAR_STAR_H_
 
+#include <chrono>
 #include "sprite_state.h"
 #include "units.h"
 #include "vector.h"
@@ -12,6 +13,7 @@ struct PolarStar {
     PolarStar(Graphics& graphics);
     ~PolarStar();
 
+    void updateProjectiles(std::chrono::milliseconds elapsed_time);
     void draw(Graphics& graphics,
             const HorizontalFacing horizontal_facing,
             const VerticalFacing vertical_facing,
@@ -42,6 +44,7 @@ private:
                 const HorizontalFacing hdirection,
                 const VerticalFacing vdirection,
                 const Vector<units::Game> pos);
+        void update(std::chrono::milliseconds elapsed_time);
         void draw(Graphics& graphics) const;
     private:
         Vector<units::Game> pos_;

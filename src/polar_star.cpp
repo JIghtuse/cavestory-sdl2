@@ -34,6 +34,8 @@ const units::Tile kHorizontalProjectileSourceX{8};
 const units::Tile kVerticalProjectileSourceX{9};
 const units::Tile kProjectileWidth{1};
 const units::Tile kProjectileHeight{1};
+// Projectile Velocity
+const units::Velocity kProjectileSpeed{0.6};
 
 PolarStar::PolarStar(Graphics& graphics) :
     sprite_map_(),
@@ -45,6 +47,13 @@ PolarStar::PolarStar(Graphics& graphics) :
 }
 
 PolarStar::~PolarStar() {}
+
+void PolarStar::updateProjectiles(std::chrono::milliseconds elapsed_time)
+{
+    if (projectile_) {
+        projectile_->update(elapsed_time);
+    }
+}
 
 void PolarStar::draw(
         Graphics& graphics,
@@ -94,9 +103,29 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     offset_(0)
 {}
 
+void PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time)
+{
+    offset_ += kProjectileSpeed * elapsed_time.count();
+}
+
 void PolarStar::Projectile::draw(Graphics& graphics) const
 {
-    sprite_->draw(graphics, pos_);
+    auto pos = Vector<units::Game>{ pos_.x, pos_.y };
+    switch (vertical_direction_) {
+    case VerticalFacing::HORIZONTAL:
+        pos.x += (horizontal_direction_ == HorizontalFacing::LEFT)
+            ? -offset_
+            : offset_;
+        break;
+    case VerticalFacing::UP:
+        pos.y -= offset_;
+        break;
+    case VerticalFacing::DOWN:
+        pos.y += offset_;
+        break;
+    default: break;
+    }
+    sprite_->draw(graphics, pos);
 }
 
 bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
