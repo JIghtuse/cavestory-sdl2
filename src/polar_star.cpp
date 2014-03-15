@@ -43,7 +43,8 @@ PolarStar::PolarStar(Graphics& graphics) :
     sprite_map_(),
     horizontal_projectile_(),
     vertical_projectile_(),
-    projectile_()
+    projectile_a_(),
+    projectile_b_()
 {
     initializeSprites(graphics);
 }
@@ -52,9 +53,14 @@ PolarStar::~PolarStar() {}
 
 void PolarStar::updateProjectiles(std::chrono::milliseconds elapsed_time)
 {
-    if (projectile_) {
-        if (!projectile_->update(elapsed_time)) {
-            projectile_.reset();
+    if (projectile_a_) {
+        if (!projectile_a_->update(elapsed_time)) {
+            projectile_a_.reset();
+        }
+    }
+    if (projectile_b_) {
+        if (!projectile_b_->update(elapsed_time)) {
+            projectile_b_.reset();
         }
     }
 }
@@ -70,8 +76,11 @@ void PolarStar::draw(
     const auto state = SpriteState{hfacing, vfacing};
     sprite_map_.at(state)->draw(graphics, gun_pos);
 
-    if (projectile_ != nullptr) {
-        projectile_->draw(graphics);
+    if (projectile_a_ != nullptr) {
+        projectile_a_->draw(graphics);
+    }
+    if (projectile_b_ != nullptr) {
+        projectile_b_->draw(graphics);
     }
 }
 
@@ -82,16 +91,28 @@ void PolarStar::startFire(
         bool gun_up
         )
 {
+    if (projectile_a_ != nullptr && projectile_b_ != nullptr) {
+        return;
+    }
     const auto gun_pos = calcGunPos(player_pos, hfacing, vfacing, gun_up);
     const auto bullet_pos = getBulletPos(gun_pos, hfacing, vfacing);
-    projectile_.reset(new Projectile(
-                (vfacing == VerticalFacing::HORIZONTAL)
-                ? horizontal_projectile_ : vertical_projectile_,
-                hfacing,
-                vfacing,
-                bullet_pos
-                ));
-
+    if (projectile_a_ == nullptr) {
+        projectile_a_.reset(new Projectile(
+                    (vfacing == VerticalFacing::HORIZONTAL)
+                    ? horizontal_projectile_ : vertical_projectile_,
+                    hfacing,
+                    vfacing,
+                    bullet_pos
+                    ));
+    } else if (projectile_b_ == nullptr) {
+        projectile_b_.reset(new Projectile(
+                    (vfacing == VerticalFacing::HORIZONTAL)
+                    ? horizontal_projectile_ : vertical_projectile_,
+                    hfacing,
+                    vfacing,
+                    bullet_pos
+                    ));
+    }
 }
 
 void PolarStar::stopFire() {}

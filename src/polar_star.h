@@ -75,7 +75,8 @@ private:
     std::map<SpriteState, std::shared_ptr<Sprite> > sprite_map_;
     std::shared_ptr<Sprite> horizontal_projectile_;
     std::shared_ptr<Sprite> vertical_projectile_;
-    std::shared_ptr<Projectile> projectile_;
+    std::shared_ptr<Projectile> projectile_a_;
+    std::shared_ptr<Projectile> projectile_b_;
 };
 
 #endif /* POLAR_STAR_H_ */
