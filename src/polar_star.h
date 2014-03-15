@@ -44,7 +44,8 @@ private:
                 const HorizontalFacing hdirection,
                 const VerticalFacing vdirection,
                 const Vector<units::Game> pos);
-        void update(std::chrono::milliseconds elapsed_time);
+        // Returns true if |this} are alive.
+        bool update(std::chrono::milliseconds elapsed_time);
         void draw(Graphics& graphics) const;
     private:
         Vector<units::Game> pos_;

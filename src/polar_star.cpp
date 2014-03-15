@@ -37,6 +37,8 @@ const units::Tile kProjectileHeight{1};
 // Projectile Velocity
 const units::Velocity kProjectileSpeed{0.6};
 
+const units::Game kProjectileMaxOffset{7 * units::kHalfTile};
+
 PolarStar::PolarStar(Graphics& graphics) :
     sprite_map_(),
     horizontal_projectile_(),
@@ -51,7 +53,9 @@ PolarStar::~PolarStar() {}
 void PolarStar::updateProjectiles(std::chrono::milliseconds elapsed_time)
 {
     if (projectile_) {
-        projectile_->update(elapsed_time);
+        if (!projectile_->update(elapsed_time)) {
+            projectile_.reset();
+        }
     }
 }
 
@@ -103,9 +107,10 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     offset_(0)
 {}
 
-void PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time)
+bool PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time)
 {
     offset_ += kProjectileSpeed * elapsed_time.count();
+    return offset_ < kProjectileMaxOffset;
 }
 
 void PolarStar::Projectile::draw(Graphics& graphics) const
