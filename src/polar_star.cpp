@@ -1,4 +1,5 @@
 #include <string>
+#include "map.h"
 #include "polar_star.h"
 #include "sprite.h"
 
@@ -32,12 +33,13 @@ const units::Game kNozzleDownRightX{19};
 const units::Tile kProjectileSourceY{2};
 const units::Tile kHorizontalProjectileSourceX{8};
 const units::Tile kVerticalProjectileSourceX{9};
-const units::Tile kProjectileWidth{1};
-const units::Tile kProjectileHeight{1};
+const units::Tile kProjectileSourceWidth{1};
+const units::Tile kProjectileSourceHeight{1};
 // Projectile Velocity
 const units::Velocity kProjectileSpeed{0.6};
 
 const units::Game kProjectileMaxOffset{7 * units::kHalfTile};
+const units::Game kProjectileWidth{4.0};
 
 PolarStar::PolarStar(Graphics& graphics) :
     sprite_map_(),
@@ -51,15 +53,16 @@ PolarStar::PolarStar(Graphics& graphics) :
 
 PolarStar::~PolarStar() {}
 
-void PolarStar::updateProjectiles(std::chrono::milliseconds elapsed_time)
+void PolarStar::updateProjectiles(std::chrono::milliseconds elapsed_time,
+        const Map& map)
 {
     if (projectile_a_) {
-        if (!projectile_a_->update(elapsed_time)) {
+        if (!projectile_a_->update(elapsed_time, map)) {
             projectile_a_.reset();
         }
     }
     if (projectile_b_) {
-        if (!projectile_b_->update(elapsed_time)) {
+        if (!projectile_b_->update(elapsed_time, map)) {
             projectile_b_.reset();
         }
     }
@@ -128,30 +131,64 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     offset_(0)
 {}
 
-bool PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time)
+bool PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time,
+        const Map &map)
 {
     offset_ += kProjectileSpeed * elapsed_time.count();
+
+    const std::vector<Map::CollisionTile> colliding_tiles{
+        map.getCollidingTiles(getCollisionRectangle())
+    };
+
+    for (auto &tile : colliding_tiles) {
+        if (tile.tile_type == Map::TileType::WALL) {
+            return false;
+        }
+    }
     return offset_ < kProjectileMaxOffset;
 }
 
 void PolarStar::Projectile::draw(Graphics& graphics) const
 {
-    auto pos = Vector<units::Game>{ pos_.x, pos_.y };
-    switch (vertical_direction_) {
-    case VerticalFacing::HORIZONTAL:
-        pos.x += (horizontal_direction_ == HorizontalFacing::LEFT)
+    sprite_->draw(graphics, getPos());
+}
+
+Rectangle PolarStar::Projectile::getCollisionRectangle() const
+{
+    const auto width = (vertical_direction_ == VerticalFacing::HORIZONTAL)
+        ? units::tileToGame(1)
+        : kProjectileWidth;
+    const auto height = (vertical_direction_ != VerticalFacing::HORIZONTAL)
+        ? units::tileToGame(1)
+        : kProjectileWidth;
+
+    const auto pos = getPos();
+    return Rectangle(pos.x + units::kHalfTile - width / 2,
+            pos.y + units::kHalfTile - height / 2,
+            width, height);
+}
+
+Vector<units::Game> PolarStar::Projectile::getPos() const
+{
+    units::Game x = pos_.x;
+    units::Game y = pos_.y;
+    if (vertical_direction_ == VerticalFacing::HORIZONTAL) {
+        x += (horizontal_direction_ == HorizontalFacing::LEFT)
             ? -offset_
             : offset_;
+    }
+    switch (vertical_direction_) {
+    case VerticalFacing::HORIZONTAL:
         break;
     case VerticalFacing::UP:
-        pos.y -= offset_;
+        y -= offset_;
         break;
     case VerticalFacing::DOWN:
-        pos.y += offset_;
+        y += offset_;
         break;
     default: break;
     }
-    sprite_->draw(graphics, pos);
+    return Vector<units::Game>{ x, y };
 }
 
 bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
@@ -256,15 +293,15 @@ void PolarStar::initializeSprites(Graphics& graphics)
                 graphics, "Bullet",
                 units::tileToPixel(kHorizontalProjectileSourceX),
                 units::tileToPixel(kProjectileSourceY),
-                units::tileToPixel(kProjectileWidth),
-                units::tileToPixel(kProjectileHeight)
+                units::tileToPixel(kProjectileSourceWidth),
+                units::tileToPixel(kProjectileSourceHeight)
                 ));
     vertical_projectile_.reset(new Sprite(
                 graphics, "Bullet",
                 units::tileToPixel(kVerticalProjectileSourceX),
                 units::tileToPixel(kProjectileSourceY),
-                units::tileToPixel(kProjectileWidth),
-                units::tileToPixel(kProjectileHeight)
+                units::tileToPixel(kProjectileSourceWidth),
+                units::tileToPixel(kProjectileSourceHeight)
                 ));
     ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
         ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {

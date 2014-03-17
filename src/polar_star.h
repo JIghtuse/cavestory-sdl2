@@ -2,25 +2,27 @@
 #define POLAR_STAR_H_
 
 #include <chrono>
+#include "rectangle.h"
 #include "sprite_state.h"
 #include "units.h"
 #include "vector.h"
 
 struct Graphics;
+struct Map;
 struct Sprite;
 
 struct PolarStar {
     PolarStar(Graphics& graphics);
     ~PolarStar();
 
-    void updateProjectiles(std::chrono::milliseconds elapsed_time);
+    void updateProjectiles(std::chrono::milliseconds elapsed_time,
+            const Map& map);
     void draw(Graphics& graphics,
             const HorizontalFacing horizontal_facing,
             const VerticalFacing vertical_facing,
             bool gun_up,
             Vector<units::Game> player_pos) const;
-    void startFire(
-            const Vector<units::Game> player_pos,
+    void startFire(const Vector<units::Game> player_pos,
             const HorizontalFacing hfacing,
             const VerticalFacing vfacing,
             bool gun_up
@@ -45,9 +47,12 @@ private:
                 const VerticalFacing vdirection,
                 const Vector<units::Game> pos);
         // Returns true if |this} are alive.
-        bool update(std::chrono::milliseconds elapsed_time);
+        bool update(std::chrono::milliseconds elapsed_time, const Map& map);
         void draw(Graphics& graphics) const;
     private:
+        Rectangle getCollisionRectangle() const;
+        Vector<units::Game> getPos() const;
+
         Vector<units::Game> pos_;
         HorizontalFacing horizontal_direction_;
         VerticalFacing vertical_direction_;
