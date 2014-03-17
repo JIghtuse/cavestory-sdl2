@@ -112,17 +112,6 @@ Map::getCollidingTiles(const Rectangle& rect) const
     return collision_tiles;
 }
 
-void Map::update()
-{
-    for (auto &row : tiles_) {
-        for (auto &col: row) {
-            if (col.sprite != nullptr) {
-                col.sprite->update();
-            }
-        }
-    }
-}
-
 void Map::drawBackground(Graphics& graphics) const
 {
     backdrop_->draw(graphics);
