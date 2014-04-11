@@ -54,6 +54,7 @@ private:
         void draw(Graphics& graphics) const;
         Rectangle getCollisionRectangle() const;
         units::HP getContactDamage() const;
+        void collideWithEnemy();
     private:
         Vector<units::Game> getPos() const;
 
@@ -62,6 +63,7 @@ private:
         VerticalFacing vertical_direction_;
         std::shared_ptr<Sprite> sprite_;
         units::Game offset_;
+        bool alive_;
     };
 
     struct SpriteState {

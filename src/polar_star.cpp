@@ -128,7 +128,8 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     horizontal_direction_(hdirection),
     vertical_direction_(vdirection),
     sprite_(sprite),
-    offset_(0)
+    offset_{0},
+    alive_{true}
 {}
 
 std::vector<std::shared_ptr<GenericProjectile> > PolarStar::getProjectiles()
@@ -158,7 +159,7 @@ bool PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time,
             return false;
         }
     }
-    return offset_ < kProjectileMaxOffset;
+    return alive_ && offset_ < kProjectileMaxOffset;
 }
 
 void PolarStar::Projectile::draw(Graphics& graphics) const
@@ -184,6 +185,11 @@ Rectangle PolarStar::Projectile::getCollisionRectangle() const
 units::HP PolarStar::Projectile::getContactDamage() const
 {
     return 1;
+}
+
+void PolarStar::Projectile::collideWithEnemy()
+{
+    alive_ = false;
 }
 
 Vector<units::Game> PolarStar::Projectile::getPos() const

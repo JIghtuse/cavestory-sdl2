@@ -19,6 +19,7 @@ struct FirstCaveBat {
            const units::Game player_x);
 
    const Rectangle getDamageRectangle() const;
+   const Rectangle getCollisionRectangle() const;
 
    units::HP contactDamage() const;
 

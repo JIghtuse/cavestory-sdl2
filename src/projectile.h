@@ -7,6 +7,7 @@
 struct GenericProjectile {
    virtual Rectangle getCollisionRectangle() const = 0;
    virtual units::HP getContactDamage() const = 0;
+   virtual void collideWithEnemy() = 0;
 };
 
 #endif /* PROJECTILE_H_ */

@@ -52,6 +52,15 @@ const Rectangle FirstCaveBat::getDamageRectangle() const
             0);
 }
 
+const Rectangle FirstCaveBat::getCollisionRectangle() const
+{
+    return Rectangle( pos_.x,
+            pos_.y,
+            units::tileToGame(1),
+            units::tileToGame(1)
+            );
+}
+
 units::HP FirstCaveBat::contactDamage() const
 {
     return kContactDamage;

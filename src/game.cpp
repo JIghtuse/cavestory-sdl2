@@ -3,6 +3,7 @@
 #include "input.h"
 #include "map.h"
 #include "player.h"
+#include "projectile.h"
 #include "timer.h"
 
 const units::FPS kFps{60};
@@ -130,6 +131,17 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
     //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
     bat_->update(elapsed_time, player_->getCenterX());
+
+    auto projectiles = player_->getProjectiles();
+    for (auto projectile: projectiles) {
+        auto projectile_rect = projectile->getCollisionRectangle();
+        if (bat_->getCollisionRectangle().collidesWith(projectile_rect)) {
+            projectile->collideWithEnemy();
+            printf("Ouch! %d\n",
+                    projectile->getContactDamage()
+                    );
+        }
+    }
 
     const auto batRect = bat_->getDamageRectangle();
     if (batRect.collidesWith(player_->getDamageRectangle())) {
