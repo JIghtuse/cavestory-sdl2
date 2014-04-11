@@ -8,7 +8,8 @@ const std::chrono::milliseconds kDamageTime{2000};
 DamageText::DamageText() :
     offset_y_{0},
     damage_{0},
-    damage_timer_(kDamageTime)
+    damage_timer_(kDamageTime),
+    should_rise_{true}
 {}
 
 DamageText::~DamageText() {}
@@ -16,10 +17,12 @@ DamageText::~DamageText() {}
 void DamageText::update(std::chrono::milliseconds elapsed_time)
 {
     if (damage_timer_.is_expired()) {
-        return;
+        damage_ = 0;
     }
-    offset_y_ = std::max(-units::tileToGame(1),
-            offset_y_ + kDamageTextVelocity * elapsed_time.count());
+    if (should_rise_) {
+        offset_y_ = std::max(-units::tileToGame(1),
+                offset_y_ + kDamageTextVelocity * elapsed_time.count());
+    }
 }
 
 void DamageText::draw(Graphics& graphics, Vector<units::Game> pos_center) const
@@ -35,7 +38,10 @@ void DamageText::draw(Graphics& graphics, Vector<units::Game> pos_center) const
 
 void DamageText::setDamage(units::HP damage)
 {
-    damage_ = damage;
-    offset_y_ = 0;
+    should_rise_ = (damage_ == 0);
+    if (should_rise_) {
+        offset_y_ = 0;
+    }
+    damage_ += damage;
     damage_timer_.reset();
 }

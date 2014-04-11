@@ -20,6 +20,7 @@ private:
    units::Game offset_y_;
    units::HP damage_;
    Timer damage_timer_;
+   bool should_rise_;
 };
 
 #endif /* DAMAGE_TEXT_H_ */
