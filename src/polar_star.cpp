@@ -134,6 +134,12 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
 std::vector<std::shared_ptr<GenericProjectile> > PolarStar::getProjectiles()
 {
     std::vector<std::shared_ptr<GenericProjectile> > projectiles;
+    if (projectile_a_) {
+        projectiles.push_back(projectile_a_);
+    }
+    if (projectile_b_) {
+        projectiles.push_back(projectile_b_);
+    }
 
     return projectiles;
 }
