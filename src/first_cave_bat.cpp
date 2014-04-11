@@ -66,6 +66,11 @@ units::HP FirstCaveBat::contactDamage() const
     return kContactDamage;
 }
 
+void FirstCaveBat::takeDamage(units::HP damage)
+{
+    printf("Ouch! %d\n", damage);
+}
+
 void FirstCaveBat::initializeSprites(Graphics& graphics)
 {
     ENUM_FOREACH(facing, HorizontalFacing, HORIZONTAL_FACING) {

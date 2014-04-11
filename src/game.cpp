@@ -137,9 +137,7 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
         auto projectile_rect = projectile->getCollisionRectangle();
         if (bat_->getCollisionRectangle().collidesWith(projectile_rect)) {
             projectile->collideWithEnemy();
-            printf("Ouch! %d\n",
-                    projectile->getContactDamage()
-                    );
+            bat_->takeDamage(projectile->getContactDamage());
         }
     }
 

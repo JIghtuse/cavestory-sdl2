@@ -22,6 +22,7 @@ struct FirstCaveBat {
    const Rectangle getCollisionRectangle() const;
 
    units::HP contactDamage() const;
+   void takeDamage(units::HP damage);
 
 private:
    struct SpriteState {
