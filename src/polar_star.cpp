@@ -131,6 +131,13 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     offset_(0)
 {}
 
+std::vector<std::shared_ptr<GenericProjectile> > PolarStar::getProjectiles()
+{
+    std::vector<std::shared_ptr<GenericProjectile> > projectiles;
+
+    return projectiles;
+}
+
 bool PolarStar::Projectile::update(std::chrono::milliseconds elapsed_time,
         const Map &map)
 {

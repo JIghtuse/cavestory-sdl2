@@ -15,6 +15,7 @@
 struct Graphics;
 struct Map;
 struct NumberSprite;
+struct Projectile;
 struct Rectangle;
 
 struct Player {
@@ -44,6 +45,7 @@ struct Player {
    const Rectangle getDamageRectangle() const;
    units::Game getCenterX() const {return pos_.x + units::kHalfTile;}
    units::Game getCenterY() const {return pos_.y + units::kHalfTile;}
+   std::vector<std::shared_ptr<GenericProjectile> > getProjectiles();
 
 private:
    bool is_gun_up() const;

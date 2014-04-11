@@ -4,7 +4,7 @@
 #include "rectangle.h"
 #include "units.h"
 
-struct Projectile {
+struct GenericProjectile {
    virtual Rectangle getCollisionRectangle() const = 0;
    virtual units::HP getContactDamage() const = 0;
 };

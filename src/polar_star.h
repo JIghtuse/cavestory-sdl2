@@ -2,6 +2,7 @@
 #define POLAR_STAR_H_
 
 #include <chrono>
+#include <vector>
 #include "projectile.h"
 #include "rectangle.h"
 #include "sprite_state.h"
@@ -29,6 +30,7 @@ struct PolarStar {
             bool gun_up
             );
     void stopFire();
+    std::vector<std::shared_ptr<GenericProjectile> > getProjectiles();
 private:
     const Vector<units::Game> calcGunPos(
             const Vector<units::Game> player_pos,
@@ -42,7 +44,7 @@ private:
             const VerticalFacing vfacing
             ) const;
 
-    struct Projectile : public ::Projectile {
+    struct Projectile : public GenericProjectile {
         Projectile(std::shared_ptr<Sprite> sprite,
                 const HorizontalFacing hdirection,
                 const VerticalFacing vdirection,

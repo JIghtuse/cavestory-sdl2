@@ -214,6 +214,11 @@ const Rectangle Player::getDamageRectangle() const
             kCollisionY.getHeight());
 }
 
+std::vector<std::shared_ptr<GenericProjectile> > Player::getProjectiles()
+{
+    return polar_star_.getProjectiles();
+}
+
 bool Player::is_gun_up() const
 {
     return (getMotionType() == MotionType::WALKING)
