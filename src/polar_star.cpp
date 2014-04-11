@@ -168,6 +168,11 @@ Rectangle PolarStar::Projectile::getCollisionRectangle() const
             width, height);
 }
 
+units::HP PolarStar::Projectile::getContactDamage() const
+{
+    return 1;
+}
+
 Vector<units::Game> PolarStar::Projectile::getPos() const
 {
     units::Game x = pos_.x;

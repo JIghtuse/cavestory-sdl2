@@ -2,6 +2,7 @@
 #define POLAR_STAR_H_
 
 #include <chrono>
+#include "projectile.h"
 #include "rectangle.h"
 #include "sprite_state.h"
 #include "units.h"
@@ -41,7 +42,7 @@ private:
             const VerticalFacing vfacing
             ) const;
 
-    struct Projectile {
+    struct Projectile : public ::Projectile {
         Projectile(std::shared_ptr<Sprite> sprite,
                 const HorizontalFacing hdirection,
                 const VerticalFacing vdirection,
@@ -49,8 +50,9 @@ private:
         // Returns true if |this} are alive.
         bool update(std::chrono::milliseconds elapsed_time, const Map& map);
         void draw(Graphics& graphics) const;
-    private:
         Rectangle getCollisionRectangle() const;
+        units::HP getContactDamage() const;
+    private:
         Vector<units::Game> getPos() const;
 
         Vector<units::Game> pos_;
