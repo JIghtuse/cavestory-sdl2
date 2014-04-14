@@ -2,6 +2,7 @@
 #define PLAYER_H_
 
 #include <chrono>
+#include "damageable.h"
 #include "damage_text.h"
 #include "number_sprite.h"
 #include "polar_star.h"
@@ -18,7 +19,7 @@ struct NumberSprite;
 struct Projectile;
 struct Rectangle;
 
-struct Player {
+struct Player : public Damageable {
    Player(Graphics& graphics, Vector<units::Game> pos);
    ~Player();
 
@@ -44,6 +45,7 @@ struct Player {
 
    const Rectangle getDamageRectangle() const;
    const Vector<units::Game> getCenterPos() const;
+   const std::shared_ptr<DamageText> getDamageText() const;
    std::vector<std::shared_ptr<GenericProjectile> > getProjectiles();
 
 private:
@@ -145,7 +147,7 @@ private:
 
    Health health_;
    Timer invincible_timer_;
-   DamageText damage_text_;
+   std::shared_ptr<DamageText> damage_text_;
 
    WalkingAnimation walking_animation_;
    PolarStar polar_star_;

@@ -76,7 +76,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_interacting_{false},
     health_(graphics),
     invincible_timer_{kInvincibleTime},
-    damage_text_(),
+    damage_text_(new DamageText()),
     walking_animation_(),
     polar_star_(graphics),
     sprites_()
@@ -92,9 +92,6 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
     sprites_[getSpriteState()]->update();
 
     health_.update();
-    damage_text_.update(elapsed_time);
-    damage_text_.setCenterPosition(getCenterPos());
-
     walking_animation_.update();
 
     polar_star_.updateProjectiles(elapsed_time, map);
@@ -122,7 +119,6 @@ void Player::drawHUD(Graphics& graphics) const
     if (spriteIsVisible()) {
         health_.draw(graphics);
     }
-    damage_text_.draw(graphics);
 }
 
 void Player::startMovingLeft()
@@ -203,7 +199,7 @@ void Player::takeDamage(units::HP damage) {
     velocity_.y = std::min(velocity_.y, -kShortJumpSpeed);
     invincible_timer_.reset();
     health_.takeDamage(damage);
-    damage_text_.setDamage(damage);
+    damage_text_->setDamage(damage);
 }
 
 const Rectangle Player::getDamageRectangle() const
@@ -220,6 +216,11 @@ const Vector<units::Game> Player::getCenterPos() const
         pos_.x + units::kHalfTile,
         pos_.y + units::kHalfTile
     };
+}
+
+const std::shared_ptr<DamageText> Player::getDamageText() const
+{
+    return damage_text_;
 }
 
 std::vector<std::shared_ptr<GenericProjectile> > Player::getProjectiles()
