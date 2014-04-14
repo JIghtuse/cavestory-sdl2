@@ -43,6 +43,7 @@ void Game::runEventLoop() {
     SDL_Event event;
 
     damage_texts_.addDamageable(player_);
+    damage_texts_.addDamageable(bat_);
 
     bool running{true};
     auto last_updated_time = std::chrono::high_resolution_clock::now();

@@ -2,6 +2,7 @@
 #define FIRST_CAVE_BAT_H_
 
 #include <chrono>
+#include "damageable.h"
 #include "damage_text.h"
 #include "vector.h"
 #include "units.h"
@@ -11,7 +12,7 @@
 struct Sprite;
 struct Graphics;
 
-struct FirstCaveBat {
+struct FirstCaveBat : public Damageable {
    FirstCaveBat(Graphics& graphics, Vector<units::Game> pos);
    ~FirstCaveBat();
 
@@ -39,13 +40,14 @@ private:
    const SpriteState getSpriteState() const;
 
    const Vector<units::Game> getCenterPos() const;
+   const std::shared_ptr<DamageText> getDamageText() const;
 
    Vector<units::Game> pos_;
    const units::Game flight_center_y_;
    HorizontalFacing facing_;
    units::Degrees flight_angle_;
    std::map<SpriteState, std::shared_ptr<Sprite> > sprites_;
-   DamageText damage_text_;
+   std::shared_ptr<DamageText> damage_text_;
 };
 
 #endif /* FIRST_CAVE_BAT_H_ */

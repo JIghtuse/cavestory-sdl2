@@ -18,7 +18,7 @@ FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
     facing_{HorizontalFacing::RIGHT},
     flight_angle_{0.0},
     sprites_(),
-    damage_text_()
+    damage_text_(new DamageText())
 {
     initializeSprites(graphics);
 }
@@ -28,15 +28,12 @@ FirstCaveBat::~FirstCaveBat() {}
 void FirstCaveBat::draw(Graphics& graphics) const
 {
     sprites_.at(getSpriteState())->draw(graphics, pos_);
-    damage_text_.draw(graphics);
 }
 
 void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
         const units::Game player_x)
 {
     flight_angle_ += kAngularVelocity * elapsed_time.count();
-    damage_text_.update(elapsed_time);
-    damage_text_.setCenterPosition(getCenterPos());
 
     facing_ = pos_.x + units::kHalfTile > player_x
         ? HorizontalFacing::LEFT
@@ -72,7 +69,7 @@ units::HP FirstCaveBat::contactDamage() const
 
 void FirstCaveBat::takeDamage(units::HP damage)
 {
-    damage_text_.setDamage(damage);
+    damage_text_->setDamage(damage);
 }
 
 void FirstCaveBat::initializeSprites(Graphics& graphics)
@@ -107,4 +104,9 @@ const Vector<units::Game> FirstCaveBat::getCenterPos() const
         pos_.y + units::kHalfTile
     };
 
+}
+
+const std::shared_ptr<DamageText> FirstCaveBat::getDamageText() const
+{
+    return damage_text_;
 }
