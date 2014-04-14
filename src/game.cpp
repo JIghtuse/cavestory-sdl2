@@ -130,7 +130,9 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
     Timer::updateAll(elapsed_time);
     //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
-    bat_->update(elapsed_time, player_->getCenterX());
+
+    auto player_pos = player_->getCenterPos();
+    bat_->update(elapsed_time, player_pos.x);
 
     auto projectiles = player_->getProjectiles();
     for (auto projectile: projectiles) {

@@ -28,7 +28,7 @@ FirstCaveBat::~FirstCaveBat() {}
 void FirstCaveBat::draw(Graphics& graphics) const
 {
     sprites_.at(getSpriteState())->draw(graphics, pos_);
-    damage_text_.draw(graphics, getCenterPos());
+    damage_text_.draw(graphics);
 }
 
 void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
@@ -36,6 +36,7 @@ void FirstCaveBat::update(const std::chrono::milliseconds elapsed_time,
 {
     flight_angle_ += kAngularVelocity * elapsed_time.count();
     damage_text_.update(elapsed_time);
+    damage_text_.setCenterPosition(getCenterPos());
 
     facing_ = pos_.x + units::kHalfTile > player_x
         ? HorizontalFacing::LEFT

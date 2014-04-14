@@ -93,6 +93,7 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
     health_.update();
     damage_text_.update(elapsed_time);
+    damage_text_.setCenterPosition(getCenterPos());
 
     walking_animation_.update();
 
@@ -121,8 +122,7 @@ void Player::drawHUD(Graphics& graphics) const
     if (spriteIsVisible()) {
         health_.draw(graphics);
     }
-    auto center_pos = Vector<units::Game>{getCenterX(), getCenterY()};
-    damage_text_.draw(graphics, center_pos);
+    damage_text_.draw(graphics);
 }
 
 void Player::startMovingLeft()
@@ -212,6 +212,14 @@ const Rectangle Player::getDamageRectangle() const
             pos_.y + kCollisionY.getTop(),
             kCollisionX.getWidth(),
             kCollisionY.getHeight());
+}
+
+const Vector<units::Game> Player::getCenterPos() const
+{
+    return Vector<units::Game> {
+        pos_.x + units::kHalfTile,
+        pos_.y + units::kHalfTile
+    };
 }
 
 std::vector<std::shared_ptr<GenericProjectile> > Player::getProjectiles()

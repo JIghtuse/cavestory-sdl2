@@ -43,8 +43,7 @@ struct Player {
    void takeDamage(units::HP damage);
 
    const Rectangle getDamageRectangle() const;
-   units::Game getCenterX() const {return pos_.x + units::kHalfTile;}
-   units::Game getCenterY() const {return pos_.y + units::kHalfTile;}
+   const Vector<units::Game> getCenterPos() const;
    std::vector<std::shared_ptr<GenericProjectile> > getProjectiles();
 
 private:

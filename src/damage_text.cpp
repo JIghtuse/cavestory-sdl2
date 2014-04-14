@@ -9,7 +9,8 @@ DamageText::DamageText() :
     offset_y_{0},
     damage_{0},
     damage_timer_(kDamageTime),
-    should_rise_{true}
+    should_rise_{true},
+    center_pos_{0, 0}
 {}
 
 DamageText::~DamageText() {}
@@ -25,15 +26,16 @@ void DamageText::update(std::chrono::milliseconds elapsed_time)
     }
 }
 
-void DamageText::draw(Graphics& graphics, Vector<units::Game> pos_center) const
+void DamageText::draw(Graphics& graphics) const
 {
     if (damage_timer_.is_expired()) {
         return;
     }
-    pos_center.y += offset_y_;
+    auto pos = center_pos_;
+    pos.y += offset_y_;
 
     auto nsprite = NumberSprite::DamageNumber(graphics, damage_);
-    nsprite.drawCentered(graphics, pos_center);
+    nsprite.drawCentered(graphics, pos);
 }
 
 void DamageText::setDamage(units::HP damage)
@@ -44,4 +46,9 @@ void DamageText::setDamage(units::HP damage)
     }
     damage_ += damage;
     damage_timer_.reset();
+}
+
+void DamageText::setCenterPosition(const Vector<units::Game> center_pos)
+{
+    center_pos_ = center_pos;
 }
