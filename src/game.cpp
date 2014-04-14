@@ -139,20 +139,26 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
     player_->update(elapsed_time, *map_);
 
     auto player_pos = player_->getCenterPos();
-    bat_->update(elapsed_time, player_pos.x);
+    if (bat_) {
+        if (!bat_->update(elapsed_time, player_pos.x)) {
+            bat_.reset();
+        }
+    }
 
     auto projectiles = player_->getProjectiles();
     for (auto projectile: projectiles) {
         auto projectile_rect = projectile->getCollisionRectangle();
-        if (bat_->getCollisionRectangle().collidesWith(projectile_rect)) {
+        if (bat_ && bat_->getCollisionRectangle().collidesWith(projectile_rect)) {
             projectile->collideWithEnemy();
             bat_->takeDamage(projectile->getContactDamage());
         }
     }
 
-    const auto batRect = bat_->getDamageRectangle();
-    if (batRect.collidesWith(player_->getDamageRectangle())) {
-        player_->takeDamage(bat_->contactDamage());
+    if (bat_) {
+        const auto batRect = bat_->getDamageRectangle();
+        if (batRect.collidesWith(player_->getDamageRectangle())) {
+            player_->takeDamage(bat_->contactDamage());
+        }
     }
 }
 
@@ -161,7 +167,8 @@ void Game::draw(Graphics& graphics) const
     graphics.clear();
 
     map_->drawBackground(graphics);
-    bat_->draw(graphics);
+    if (bat_)
+        bat_->draw(graphics);
     player_->draw(graphics);
     map_->draw(graphics);
 

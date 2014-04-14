@@ -17,7 +17,7 @@ struct FirstCaveBat : public Damageable {
    ~FirstCaveBat();
 
    void draw(Graphics& graphics) const;
-   void update(const std::chrono::milliseconds elapsed_time,
+   bool update(const std::chrono::milliseconds elapsed_time,
            const units::Game player_x);
 
    const Rectangle getDamageRectangle() const;
@@ -44,6 +44,7 @@ private:
 
    Vector<units::Game> pos_;
    const units::Game flight_center_y_;
+   bool alive_;
    HorizontalFacing facing_;
    units::Degrees flight_angle_;
    std::map<SpriteState, std::shared_ptr<Sprite> > sprites_;
