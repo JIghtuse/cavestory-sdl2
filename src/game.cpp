@@ -1,8 +1,10 @@
+#include "player.h"
+
+#include "damage_texts.h"
 #include "first_cave_bat.h"
 #include "game.h"
 #include "input.h"
 #include "map.h"
-#include "player.h"
 #include "projectile.h"
 #include "timer.h"
 
@@ -26,7 +28,8 @@ Game::Game() :
             units::tileToGame(Game::kScreenHeight/2 + 1)}
             )
     },
-    map_{Map::createTestMap(graphics_)}
+    map_{Map::createTestMap(graphics_)},
+    damage_texts_()
 {
     runEventLoop();
 }
@@ -38,6 +41,8 @@ Game::~Game()
 void Game::runEventLoop() {
     Input input;
     SDL_Event event;
+
+    damage_texts_.addDamageable(player_);
 
     bool running{true};
     auto last_updated_time = std::chrono::high_resolution_clock::now();
@@ -128,6 +133,7 @@ void Game::runEventLoop() {
 void Game::update(const std::chrono::milliseconds elapsed_time)
 {
     Timer::updateAll(elapsed_time);
+    damage_texts_.update(elapsed_time);
     //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
 
@@ -157,6 +163,8 @@ void Game::draw(Graphics& graphics) const
     bat_->draw(graphics);
     player_->draw(graphics);
     map_->draw(graphics);
+
+    damage_texts_.draw(graphics);
     player_->drawHUD(graphics);
 
     graphics.flip();

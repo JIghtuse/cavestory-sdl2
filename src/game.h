@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <memory>
+#include "damage_texts.h"
 #include "sdlengine.h"
 #include "graphics.h"
 #include "units.h"
@@ -25,9 +26,10 @@ private:
 
     const SDLEngine sdlEngine_;
     Graphics graphics_;
-    std::unique_ptr<Player> player_;
-    std::unique_ptr<FirstCaveBat> bat_;
+    std::shared_ptr<Player> player_;
+    std::shared_ptr<FirstCaveBat> bat_;
     std::unique_ptr<Map> map_;
+    DamageTexts damage_texts_;
 };
 
 #endif /* GAME_H */
