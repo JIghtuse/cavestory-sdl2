@@ -1,0 +1,24 @@
+#ifndef DAMAGE_TEXTS_H_
+#define DAMAGE_TEXTS_H_
+
+#include <chrono>
+#include <map>
+#include <memory>
+#include "units.h"
+
+struct Damageable;
+struct DamageText;
+struct Graphics;
+
+struct DamageTexts {
+   DamageTexts();
+   void update(std::chrono::milliseconds elapsed_time);
+   void draw(Graphics& graphics) const;
+private:
+   typedef std::map<std::shared_ptr<DamageText>, std::weak_ptr<Damageable> >
+       DamageTextMap;
+
+   DamageTextMap damage_text_map_;
+};
+
+#endif /* DAMAGE_TEXTS_H_ */

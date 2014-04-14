@@ -19,6 +19,7 @@ bin/cave: obj/animated_sprite.o \
 	obj/backdrop.o \
 	obj/config.o \
 	obj/damage_text.o \
+	obj/damage_texts.o \
 	obj/first_cave_bat.o \
 	obj/game.o \
 	obj/graphics.o \
