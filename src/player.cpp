@@ -39,7 +39,19 @@ const units::Frame kBackFrame{7};
 
 //Collision rectangles
 const Rectangle kCollisionX{ 6, 10, 20, 12 };
-const Rectangle kCollisionY{ 10, 2, 12, 30 };
+
+const units::Game kCollisionYTop{2};
+const units::Game kCollisionYHeight{30};
+const units::Game kCollisionYBottom{kCollisionYTop+ kCollisionYHeight};
+
+const units::Game kCollisionTopWidth{18};
+const units::Game kCollisionBottomWidth{10};
+const units::Game kCollisionTopLeft{
+    (units::tileToGame(1) - kCollisionTopWidth) / 2
+};
+const units::Game kCollisionBottomLeft{
+    (units::tileToGame(1) - kCollisionBottomWidth) / 2
+};
 
 const std::chrono::milliseconds kInvincibleFlashTime{50};
 const std::chrono::milliseconds kInvincibleTime{3000};
@@ -205,9 +217,9 @@ void Player::takeDamage(units::HP damage) {
 const Rectangle Player::getDamageRectangle() const
 {
     return Rectangle(pos_.x + kCollisionX.getLeft(),
-            pos_.y + kCollisionY.getTop(),
+            pos_.y + kCollisionYTop,
             kCollisionX.getWidth(),
-            kCollisionY.getHeight());
+            kCollisionYHeight);
 }
 
 const Vector<units::Game> Player::getCenterPos() const
@@ -414,10 +426,10 @@ const Rectangle Player::topCollision(units::Game delta) const
 {
     assert(delta <= 0 && "Wrong delta value");
     return Rectangle(
-            pos_.x + kCollisionY.getLeft(),
-            pos_.y + kCollisionY.getTop() + delta,
-            kCollisionY.getWidth(),
-            kCollisionY.getHeight() / 2 - delta
+            pos_.x + kCollisionTopLeft,
+            pos_.y + kCollisionYTop + delta,
+            kCollisionTopWidth,
+            kCollisionYHeight / 2 - delta
             );
 }
 
@@ -425,10 +437,10 @@ const Rectangle Player::bottomCollision(units::Game delta) const
 {
     assert(delta >= 0 && "Wrong delta value");
     return Rectangle(
-            pos_.x + kCollisionY.getLeft(),
-            pos_.y + kCollisionY.getTop() + kCollisionY.getHeight() / 2,
-            kCollisionY.getWidth(),
-            kCollisionY.getHeight() / 2 + delta
+            pos_.x + kCollisionBottomLeft,
+            pos_.y + kCollisionYTop + kCollisionYHeight / 2,
+            kCollisionBottomWidth,
+            kCollisionYHeight / 2 + delta
             );
 }
 
@@ -510,7 +522,7 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
         CollisionInfo info = getWallCollisionInfo(map, bottomCollision(delta));
         // React to collision
         if (info.collided) {
-            pos_.y = units::tileToGame(info.row) - kCollisionY.getBottom();
+            pos_.y = units::tileToGame(info.row) - kCollisionYBottom;
             velocity_.y = 0.0;
             is_on_ground_ = true;
         } else {
@@ -520,14 +532,14 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
         // Check collision in the direction opposite to delta
         info = getWallCollisionInfo(map, topCollision(0));
         if (info.collided) {
-            pos_.y = units::tileToGame(info.row) + kCollisionY.getHeight();
+            pos_.y = units::tileToGame(info.row) + kCollisionYHeight;
         }
     } else {
         // Check collision in the direction of delta
         CollisionInfo info = getWallCollisionInfo(map, topCollision(delta));
         // React to collision
         if (info.collided) {
-            pos_.y = units::tileToGame(info.row) + kCollisionY.getHeight();
+            pos_.y = units::tileToGame(info.row) + kCollisionYHeight;
             velocity_.y = 0.0;
         } else {
             pos_.y += delta;
@@ -536,7 +548,7 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
         // Check collision in the direction opposite to delta
         info = getWallCollisionInfo(map, bottomCollision(0));
         if (info.collided) {
-            pos_.y = units::tileToGame(info.row) - kCollisionY.getBottom();
+            pos_.y = units::tileToGame(info.row) - kCollisionYBottom;
             is_on_ground_ = true;
         }
     }
