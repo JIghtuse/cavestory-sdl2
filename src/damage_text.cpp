@@ -15,7 +15,7 @@ DamageText::DamageText() :
 
 DamageText::~DamageText() {}
 
-void DamageText::update(std::chrono::milliseconds elapsed_time)
+bool DamageText::update(std::chrono::milliseconds elapsed_time)
 {
     if (damage_timer_.is_expired()) {
         damage_ = 0;
@@ -24,6 +24,7 @@ void DamageText::update(std::chrono::milliseconds elapsed_time)
         offset_y_ = std::max(-units::tileToGame(1),
                 offset_y_ + kDamageTextVelocity * elapsed_time.count());
     }
+    return !damage_timer_.is_expired();
 }
 
 void DamageText::draw(Graphics& graphics) const

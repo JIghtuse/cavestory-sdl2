@@ -14,7 +14,12 @@ void DamageTexts::update(std::chrono::milliseconds elapsed_time)
             std::shared_ptr<Damageable> damageable(pair.second);
             pair.first->setCenterPosition(damageable->getCenterPos());
         }
-        pair.first->update(elapsed_time);
+        // Owner still alive or timer is not expired - damage text still exists
+        if (pair.first->update(elapsed_time) || !pair.second.expired()) {
+            continue;
+        } else {
+            damage_text_map_.erase(pair.first);
+        }
     }
 }
 

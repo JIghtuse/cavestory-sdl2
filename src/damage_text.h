@@ -12,7 +12,7 @@ struct DamageText {
    DamageText();
    ~DamageText();
 
-   void update(std::chrono::milliseconds elapsed_time);
+   bool update(std::chrono::milliseconds elapsed_time);
    void draw(Graphics& graphics) const;
 
    void setDamage(units::HP damage);
