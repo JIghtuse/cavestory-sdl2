@@ -2,8 +2,8 @@
 
 std::set<Timer*> Timer::timers_;
 
-Timer::Timer(milliseconds expiration_time) :
-    current_time_{expiration_time.count() + 1},
+Timer::Timer(milliseconds expiration_time, bool start_active) :
+    current_time_{ start_active ? 0 :  expiration_time.count() + 1},
     expiration_time_{expiration_time}
 {
     timers_.insert(this);

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <memory>
 #include "damage_texts.h"
+#include "head_bump_particle.h"
 #include "sdlengine.h"
 #include "graphics.h"
 #include "units.h"
@@ -29,6 +30,7 @@ private:
     std::shared_ptr<Player> player_;
     std::shared_ptr<FirstCaveBat> bat_;
     std::unique_ptr<Map> map_;
+    std::unique_ptr<HeadBumpParticle> bump_particle_;
     DamageTexts damage_texts_;
 };
 

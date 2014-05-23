@@ -29,6 +29,7 @@ Game::Game() :
             )
     },
     map_{Map::createTestMap(graphics_)},
+    bump_particle_(),
     damage_texts_()
 {
     runEventLoop();
@@ -44,6 +45,11 @@ void Game::runEventLoop() {
 
     damage_texts_.addDamageable(player_);
     damage_texts_.addDamageable(bat_);
+    const auto bump_pos = Vector<units::Game>{
+        units::tileToGame(kScreenWidth) / 2,
+        units::tileToGame(kScreenHeight) / 2
+    };
+    bump_particle_.reset(new HeadBumpParticle(graphics_, bump_pos));
 
     bool running{true};
     auto last_updated_time = std::chrono::high_resolution_clock::now();
@@ -135,9 +141,10 @@ void Game::update(const std::chrono::milliseconds elapsed_time)
 {
     Timer::updateAll(elapsed_time);
     damage_texts_.update(elapsed_time);
+    bump_particle_->update(elapsed_time);
+
     //TODO: update map when it is changed
     player_->update(elapsed_time, *map_);
-
     auto player_pos = player_->getCenterPos();
     if (bat_) {
         if (!bat_->update(elapsed_time, player_pos.x)) {
@@ -166,14 +173,15 @@ void Game::draw(Graphics& graphics) const
 {
     graphics.clear();
 
-    map_->drawBackground(graphics);
-    if (bat_)
-        bat_->draw(graphics);
-    player_->draw(graphics);
-    map_->draw(graphics);
+    /* map_->drawBackground(graphics); */
+    /* if (bat_) */
+    /*     bat_->draw(graphics); */
+    /* player_->draw(graphics); */
+    /* map_->draw(graphics); */
 
-    damage_texts_.draw(graphics);
-    player_->drawHUD(graphics);
+    /* damage_texts_.draw(graphics); */
+    /* player_->drawHUD(graphics); */
+    bump_particle_->draw(graphics);
 
     graphics.flip();
 }

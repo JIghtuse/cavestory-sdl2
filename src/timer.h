@@ -7,7 +7,7 @@
 using std::chrono::milliseconds;
 
 struct Timer {
-   Timer(milliseconds expiration_time);
+   Timer(milliseconds expiration_time, bool start_active=false);
    Timer(const Timer&)=delete;
    Timer& operator=(const Timer&)=delete;
    ~Timer();
