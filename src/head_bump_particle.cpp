@@ -17,7 +17,8 @@ HeadBumpParticle::HeadBumpParticle(Graphics& graphics,
             units::gameToPixel(kSourceWidth),
             units::gameToPixel(kSourceHeight)),
     live_timer_(kLifeTime, kTimerStartActive),
-    center_pos_(center_pos)
+    center_pos_(center_pos),
+    particle_a_(0, 0)
 {}
 
 void HeadBumpParticle::draw(Graphics& graphics) const

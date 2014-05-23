@@ -28,6 +28,14 @@ namespace units {
         return degrees * kPi / 180.0;
     }
 
+    inline Game sin(Degrees degrees) {
+        return static_cast<Game>(std::sin(degreesToRadians(degrees)));
+    }
+
+    inline Game cos(Degrees degrees) {
+        return static_cast<Game>(std::cos(degreesToRadians(degrees)));
+    }
+
     inline Pixel gameToPixel(Game game) {
         if (config::getGraphicsQuality() == config::GraphicsQuality::HIGH) {
             return Pixel(round(game));

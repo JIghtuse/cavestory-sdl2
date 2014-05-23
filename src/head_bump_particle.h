@@ -2,6 +2,7 @@
 #define HEAD_BUMP_PARTICLE_H_
 
 #include <chrono>
+#include "polar_vector.h"
 #include "sprite.h"
 #include "timer.h"
 #include "units.h"
@@ -18,6 +19,7 @@ private:
    Sprite sprite_;
    Timer live_timer_;
    const Vector<units::Game> center_pos_;
+   PolarVector particle_a_;
 };
 
 #endif /* HEAD_BUMP_PARTICLE_H_ */
