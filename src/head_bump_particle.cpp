@@ -8,7 +8,7 @@ const units::Game kSourceHeight{6};
 const std::chrono::milliseconds kLifeTime{600};
 const std::chrono::milliseconds kFlashPeriod{25};
 const bool kTimerStartActive{true};
-const units::Degrees kDegreesPerMilliSecond{60.0 / 1000.0};
+const units::Velocity kDegreesPerMilliSecond{60.0 / 1000.0};
 
 HeadBumpParticle::HeadBumpParticle(Graphics& graphics,
         Vector<units::Game> center_pos) :
