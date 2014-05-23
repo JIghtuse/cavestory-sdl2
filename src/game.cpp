@@ -173,15 +173,15 @@ void Game::draw(Graphics& graphics) const
 {
     graphics.clear();
 
-    /* map_->drawBackground(graphics); */
-    /* if (bat_) */
-    /*     bat_->draw(graphics); */
-    /* player_->draw(graphics); */
-    /* map_->draw(graphics); */
-
-    /* damage_texts_.draw(graphics); */
-    /* player_->drawHUD(graphics); */
+    map_->drawBackground(graphics);
+    if (bat_)
+        bat_->draw(graphics);
+    player_->draw(graphics);
+    map_->draw(graphics);
     bump_particle_->draw(graphics);
+
+    damage_texts_.draw(graphics);
+    player_->drawHUD(graphics);
 
     graphics.flip();
 }

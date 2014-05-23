@@ -20,6 +20,9 @@ private:
    Timer live_timer_;
    const Vector<units::Game> center_pos_;
    PolarVector particle_a_;
+   PolarVector particle_b_;
+   const units::Game game_max_offset_a_;
+   const units::Game game_max_offset_b_;
 };
 
 #endif /* HEAD_BUMP_PARTICLE_H_ */
