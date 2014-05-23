@@ -53,7 +53,8 @@ SDL_Texture* Graphics::loadImage(const std::string& file_name,
         if (black_is_transparent) {
             SDL_Surface *surface = SDL_LoadBMP(file_path.c_str());
             if (surface == nullptr) {
-                throw std::runtime_error("Cannot load texture!");
+                const auto warn_str = "Cannot load texture '" + file_path + "'!";
+                throw std::runtime_error(warn_str);
             }
             const Uint32 black_color = SDL_MapRGB(surface->format, 0, 0, 0);
             SDL_SetColorKey(surface, SDL_TRUE, black_color);
