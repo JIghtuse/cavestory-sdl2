@@ -12,9 +12,9 @@ struct Graphics;
 
 struct DamageTexts {
    DamageTexts();
-   void update(std::chrono::milliseconds elapsed_time);
+   void update(const std::chrono::milliseconds elapsed_time);
    void draw(Graphics& graphics) const;
-   void addDamageable(std::shared_ptr<Damageable> damageable);
+   void addDamageable(const std::shared_ptr<Damageable> damageable);
 private:
    typedef std::map<std::shared_ptr<DamageText>, std::weak_ptr<Damageable> >
        DamageTextMap;

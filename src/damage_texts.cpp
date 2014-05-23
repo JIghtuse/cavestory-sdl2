@@ -7,7 +7,7 @@ DamageTexts::DamageTexts() :
 {}
 
 
-void DamageTexts::update(std::chrono::milliseconds elapsed_time)
+void DamageTexts::update(const std::chrono::milliseconds elapsed_time)
 {
     for (auto pair : damage_text_map_) {
         if (!pair.second.expired()) {
@@ -30,7 +30,7 @@ void DamageTexts::draw(Graphics& graphics) const
     }
 }
 
-void DamageTexts::addDamageable(std::shared_ptr<Damageable> damageable)
+void DamageTexts::addDamageable(const std::shared_ptr<Damageable> damageable)
 {
     auto damage_text_ = damageable->getDamageText();
     damage_text_map_[damage_text_] = std::weak_ptr<Damageable>(damageable);
