@@ -1,0 +1,7 @@
+SubDir TOP src ;
+
+LINKLIBS on cave$(SUFEXE) = `pkg-config --libs sdl2 SDL2_image` ;
+
+Main cave : animated_sprite.cpp backdrop.cpp config.cpp damage_text.cpp damage_texts.cpp first_cave_bat.cpp game.cpp graphics.cpp head_bump_particle.cpp input.cpp main.cpp map.cpp number_sprite.cpp player.cpp player_health.cpp player_walking_animation.cpp polar_star.cpp polar_vector.cpp sprite.cpp timer.cpp varying_width_sprite.cpp ;
+
+InstallBin bin : cave$(SUFEXE) ;

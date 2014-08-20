@@ -1,5 +1,6 @@
 bin
 obj
+*.o
 *.swp
 *.pyc
 

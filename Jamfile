@@ -1,0 +1,7 @@
+C++ = g++-4.9 ;
+LINK = g++-4.9 ;
+C++FLAGS += `pkg-config --cflags sdl2 SDL2_image` -Wall -Werror -Wextra -Weffc++ -pedantic -std=c++0x ;
+OPTIM = -O2 ;
+
+SubDir TOP ;
+SubInclude TOP src ;
