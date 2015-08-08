@@ -10,7 +10,7 @@ Player::WalkingAnimation::WalkingAnimation() :
     forward_{true}
 {}
 
-Player::StrideType Player::WalkingAnimation::stride() const
+StrideType Player::WalkingAnimation::stride() const
 {
     switch (current_index_) {
     case 0:

@@ -5,9 +5,11 @@
 #include "damageable.h"
 #include "damage_text.h"
 #include "number_sprite.h"
+#include "motion_type.h"
 #include "polar_star.h"
 #include "sprite.h"
 #include "sprite_state.h"
+#include "stride_type.h"
 #include "timer.h"
 #include "units.h"
 #include "varying_width_sprite.h"
@@ -51,22 +53,6 @@ struct Player : public Damageable {
 private:
    bool is_gun_up() const;
 
-   enum class MotionType {
-       FIRST_MOTION_TYPE,
-       STANDING = FIRST_MOTION_TYPE,
-       INTERACTING,
-       WALKING,
-       JUMPING,
-       FALLING,
-       LAST_MOTION_TYPE
-   };
-   enum StrideType {
-       FIRST_STRIDE_TYPE,
-       MIDDLE = FIRST_STRIDE_TYPE,
-       LEFT,
-       RIGHT,
-       LAST_STRIDE_TYPE
-   };
    struct SpriteState {
        SpriteState(MotionType motion_type=MotionType::STANDING,
                HorizontalFacing horizontal_facing=HorizontalFacing::LEFT,

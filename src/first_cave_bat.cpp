@@ -77,8 +77,8 @@ void FirstCaveBat::takeDamage(units::HP damage)
 
 void FirstCaveBat::initializeSprites(Graphics& graphics)
 {
-    ENUM_FOREACH(facing, HorizontalFacing, HORIZONTAL_FACING) {
-        initializeSprite(graphics, SpriteState(HorizontalFacing(facing)));
+    for (auto hf = HorizontalFacing::FIRST; hf != HorizontalFacing::LAST; ++hf) {
+        initializeSprite(graphics, SpriteState(hf));
     }
 }
 

@@ -4,26 +4,23 @@
 #include <map>
 #include <memory>
 
-#define ENUM_CLASS(enum_class) enum_class
-
-#define ENUM_FOREACH(var, enum_class, enum_name)         \
-    for (int var = (int) ENUM_CLASS(enum_class)::FIRST_##enum_name; \
-            var < (int) ENUM_CLASS(enum_class)::LAST_##enum_name;   \
-            ++var)
-
 enum class HorizontalFacing {
-    FIRST_HORIZONTAL_FACING,
-    LEFT = FIRST_HORIZONTAL_FACING,
+    FIRST,
+    LEFT = FIRST,
     RIGHT,
-    LAST_HORIZONTAL_FACING
+    LAST,
 };
+
+HorizontalFacing& operator++(HorizontalFacing& hf);
+
 enum class VerticalFacing {
-    FIRST_VERTICAL_FACING,
-    UP = FIRST_VERTICAL_FACING,
+    FIRST,
+    UP = FIRST,
     DOWN,
     HORIZONTAL,
-    LAST_VERTICAL_FACING
+    LAST,
 };
 
-#endif /* SPRITE_STATE_H_ */
+VerticalFacing& operator++(VerticalFacing& vf);
 
+#endif /* SPRITE_STATE_H_ */

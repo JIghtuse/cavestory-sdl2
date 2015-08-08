@@ -240,7 +240,7 @@ const Vector<units::Game> PolarStar::calcGunPos(
             pos.y += units::kHalfTile / 2;
             break;
         case VerticalFacing::HORIZONTAL:
-        case VerticalFacing::LAST_VERTICAL_FACING:
+        case VerticalFacing::LAST:
             break;
     }
     if (gun_up) {
@@ -327,11 +327,9 @@ void PolarStar::initializeSprites(Graphics& graphics)
                 units::tileToPixel(kProjectileSourceWidth),
                 units::tileToPixel(kProjectileSourceHeight)
                 ));
-    ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
-        ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
-            HorizontalFacing horiz_facing = (HorizontalFacing)h;
-            VerticalFacing vert_facing = (VerticalFacing)v;
-            initializeSprite(graphics, SpriteState(horiz_facing, vert_facing));
+    for (auto hf = HorizontalFacing::FIRST; hf != HorizontalFacing::LAST; ++hf) {
+        for (auto vf = VerticalFacing::FIRST; vf != VerticalFacing::LAST; ++vf) {
+            initializeSprite(graphics, SpriteState(hf, vf));
         }
     }
 }
@@ -356,7 +354,7 @@ void PolarStar::initializeSprite(
         case VerticalFacing::DOWN:
             tile_y += kDownOffset;
             break;
-        case VerticalFacing::LAST_VERTICAL_FACING:
+        case VerticalFacing::LAST:
             break;
     }
     sprite_map_[sprite_state] = std::shared_ptr<Sprite>{

@@ -287,7 +287,7 @@ units::Tile Player::getFrameX(const SpriteState& s) const
     case MotionType::FALLING:
         tile_x = kFallFrame;
         break;
-    case MotionType::LAST_MOTION_TYPE:
+    case MotionType::LAST:
         break;
     }
     switch (s.vertical_facing) {
@@ -324,17 +324,11 @@ void Player::initializeSprite(Graphics& graphics,
 
 void Player::initializeSprites(Graphics& graphics)
 {
-    ENUM_FOREACH(m, MotionType, MOTION_TYPE) {
-        ENUM_FOREACH(h, HorizontalFacing, HORIZONTAL_FACING) {
-            ENUM_FOREACH(v, VerticalFacing, VERTICAL_FACING) {
-                ENUM_FOREACH(s, StrideType, STRIDE_TYPE) {
-                    MotionType mtype = (MotionType)m;
-                    HorizontalFacing hfacing = (HorizontalFacing)h;
-                    VerticalFacing vfacing = (VerticalFacing)v;
-                    StrideType stride = (StrideType)s;
-
-                    auto sprite = SpriteState(mtype, hfacing, vfacing, stride);
-
+    for (auto mt = MotionType::FIRST; mt != MotionType::LAST; ++mt) {
+        for (auto hf = HorizontalFacing::FIRST; hf != HorizontalFacing::LAST; ++hf) {
+            for (auto vf = VerticalFacing::FIRST; vf != VerticalFacing::LAST; ++vf) {
+                for (auto st = StrideType::FIRST; st != StrideType::LAST; ++st) {
+                    auto sprite = SpriteState(mt, hf, vf, st);
                     initializeSprite(graphics, sprite);
                 }
             }
@@ -342,7 +336,7 @@ void Player::initializeSprites(Graphics& graphics)
     }
 }
 
-Player::MotionType Player::getMotionType() const
+MotionType Player::getMotionType() const
 {
     MotionType motion;
     if (is_interacting_) {
