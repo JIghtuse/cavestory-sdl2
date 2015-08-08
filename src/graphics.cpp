@@ -10,7 +10,7 @@ Graphics::Graphics() :
                 SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                 units::tileToPixel(Game::kScreenWidth),
                 units::tileToPixel(Game::kScreenHeight),
-                0
+                SDL_WINDOW_RESIZABLE
                 )},
     sdlRenderer {SDL_CreateRenderer(
             sdlWindow,
@@ -24,6 +24,8 @@ Graphics::Graphics() :
     if (sdlRenderer == nullptr) {
         throw std::runtime_error("SDL_CreateRenderer");
     }
+    SDL_RenderSetLogicalSize(sdlRenderer, units::tileToPixel(Game::kScreenWidth),
+                                          units::tileToPixel(Game::kScreenHeight));
 }
 
 Graphics::~Graphics()
