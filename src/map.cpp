@@ -15,10 +15,11 @@ Map::Map() :
 
 Map::~Map() {}
 
+/* TODO: use uniquie_ptr */
 Map* Map::createTestMap(Graphics& graphics)
 {
     using std::vector;
-    Map* map = new Map();
+    auto map = new Map();
 
     const std::string bkPath{"bkBlue"};
     map->backdrop_.reset(new FixedBackdrop(bkPath, graphics));

@@ -1,6 +1,7 @@
 #include "head_bump_particle.h"
 #include "rand.h"
 #include <iostream>
+#include <utility>
 
 const units::Game kSourceX{116};
 const units::Game kSourceY{54};
@@ -20,7 +21,7 @@ HeadBumpParticle::HeadBumpParticle(Graphics& graphics,
             units::gameToPixel(kSourceWidth),
             units::gameToPixel(kSourceHeight)),
     live_timer_(kLifeTime, kTimerStartActive),
-    center_pos_(center_pos),
+    center_pos_(std::move(center_pos)),
     particle_a_(0, rand_angle()),
     particle_b_(0, rand_angle()),
     game_max_offset_a_{static_cast<units::Game>(rand_double(4.0, 20.0))},

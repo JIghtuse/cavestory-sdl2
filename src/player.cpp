@@ -78,7 +78,7 @@ CollisionInfo getWallCollisionInfo(const Map& map, const Rectangle& rect) {
 } // anonymous namespace
 
 Player::Player(Graphics& graphics, Vector<units::Game> pos) :
-    pos_(pos),
+    pos_(std::move(pos)),
     velocity_{0.0, 0.0},
     acceleration_x_direction_{0},
     horizontal_facing_{HorizontalFacing::LEFT},

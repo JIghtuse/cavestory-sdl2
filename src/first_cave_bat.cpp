@@ -13,7 +13,7 @@ const std::string kSpritePath{"NpcCemet"};
 const units::HP kContactDamage{1};
 
 FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
-    pos_(pos),
+    pos_(std::move(pos)),
     flight_center_y_{pos_.y},
     alive_{true},
     facing_{HorizontalFacing::RIGHT},

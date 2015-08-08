@@ -127,7 +127,7 @@ PolarStar::Projectile::Projectile(std::shared_ptr<Sprite> sprite,
     pos_(pos),
     horizontal_direction_(hdirection),
     vertical_direction_(vdirection),
-    sprite_(sprite),
+    sprite_(std::move(sprite)),
     offset_{0},
     alive_{true}
 {}
