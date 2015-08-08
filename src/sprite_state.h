@@ -8,7 +8,7 @@ enum class HorizontalFacing {
     FIRST,
     LEFT = FIRST,
     RIGHT,
-    LAST,
+    LAST
 };
 
 HorizontalFacing& operator++(HorizontalFacing& hf);
@@ -18,7 +18,7 @@ enum class VerticalFacing {
     UP = FIRST,
     DOWN,
     HORIZONTAL,
-    LAST,
+    LAST
 };
 
 VerticalFacing& operator++(VerticalFacing& vf);

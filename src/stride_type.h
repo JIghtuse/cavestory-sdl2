@@ -6,7 +6,7 @@ enum StrideType {
     MIDDLE = FIRST,
     LEFT,
     RIGHT,
-    LAST,
+    LAST
 };
 
 StrideType& operator++(StrideType& st);
