@@ -2,6 +2,7 @@
 #define HEAD_BUMP_PARTICLE_H_
 
 #include <chrono>
+#include "particle.h"
 #include "polar_vector.h"
 #include "sprite.h"
 #include "timer.h"
@@ -10,7 +11,7 @@
 
 struct Graphics;
 
-struct HeadBumpParticle {
+struct HeadBumpParticle : public Particle {
    HeadBumpParticle(Graphics& graphics, Vector<units::Game> center_pos);
 
    void draw(Graphics& graphics) const;

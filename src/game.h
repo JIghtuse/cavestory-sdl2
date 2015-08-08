@@ -4,9 +4,9 @@
 #include <chrono>
 #include <memory>
 #include "damage_texts.h"
-#include "head_bump_particle.h"
-#include "sdlengine.h"
 #include "graphics.h"
+#include "particle_system.h"
+#include "sdlengine.h"
 #include "units.h"
 
 struct Map;
@@ -22,7 +22,7 @@ struct Game {
 
 private:
     void runEventLoop();
-    void update(const std::chrono::milliseconds elapsed_time);
+    void update(const std::chrono::milliseconds elapsed_time, Graphics& graphics);
     void draw(Graphics& graphics) const;
 
     const SDLEngine sdlEngine_;
@@ -30,7 +30,7 @@ private:
     std::shared_ptr<Player> player_;
     std::shared_ptr<FirstCaveBat> bat_;
     std::unique_ptr<Map> map_;
-    std::unique_ptr<HeadBumpParticle> bump_particle_;
+    ParticleSystem particle_system_;
     DamageTexts damage_texts_;
 };
 

@@ -5,6 +5,7 @@
 #include "game.h"
 #include "input.h"
 #include "map.h"
+#include "particle_tools.h"
 #include "projectile.h"
 #include "timer.h"
 
@@ -29,7 +30,7 @@ Game::Game() :
             )
     },
     map_{Map::createTestMap(graphics_)},
-    bump_particle_(),
+    particle_system_{},
     damage_texts_()
 {
     runEventLoop();
@@ -45,11 +46,6 @@ void Game::runEventLoop() {
 
     damage_texts_.addDamageable(player_);
     damage_texts_.addDamageable(bat_);
-    const auto bump_pos = Vector<units::Game>{
-        units::tileToGame(kScreenWidth) / 2,
-        units::tileToGame(kScreenHeight) / 2
-    };
-    bump_particle_.reset(new HeadBumpParticle(graphics_, bump_pos));
 
     bool running{true};
     auto last_updated_time = std::chrono::high_resolution_clock::now();
@@ -120,8 +116,9 @@ void Game::runEventLoop() {
 
         update(std::min(
                     duration_cast<milliseconds>(upd_elapsed_time),
-                    kMaxFrameTime)
-                );
+                    kMaxFrameTime),
+               graphics_
+              );
         last_updated_time = current_time;
 
         draw(graphics_);
@@ -137,14 +134,15 @@ void Game::runEventLoop() {
     }
 }
 
-void Game::update(const std::chrono::milliseconds elapsed_time)
+void Game::update(const std::chrono::milliseconds elapsed_time, Graphics& graphics)
 {
     Timer::updateAll(elapsed_time);
     damage_texts_.update(elapsed_time);
-    bump_particle_->update(elapsed_time);
+    particle_system_.update(elapsed_time);
 
+    auto particle_tools = ParticleTools{ particle_system_, graphics };
     //TODO: update map when it is changed
-    player_->update(elapsed_time, *map_);
+    player_->update(elapsed_time, *map_, particle_tools);
     auto player_pos = player_->getCenterPos();
     if (bat_) {
         if (!bat_->update(elapsed_time, player_pos.x)) {
@@ -178,7 +176,7 @@ void Game::draw(Graphics& graphics) const
         bat_->draw(graphics);
     player_->draw(graphics);
     map_->draw(graphics);
-    bump_particle_->draw(graphics);
+    particle_system_.draw(graphics);
 
     damage_texts_.draw(graphics);
     player_->drawHUD(graphics);

@@ -20,12 +20,14 @@ struct Map;
 struct NumberSprite;
 struct Projectile;
 struct Rectangle;
+struct ParticleTools;
 
 struct Player : public Damageable {
    Player(Graphics& graphics, Vector<units::Game> pos);
    ~Player();
 
-   void update(const std::chrono::milliseconds elapsed_time, const Map& map);
+   void update(const std::chrono::milliseconds elapsed_time, const Map& map,
+               ParticleTools& particle_tools);
    void draw(Graphics& graphics) const;
    void drawHUD(Graphics& graphics) const;
 
@@ -113,8 +115,11 @@ private:
    const Rectangle topCollision(units::Game delta) const;
    const Rectangle bottomCollision(units::Game delta) const;
 
-   void updateX(const std::chrono::milliseconds elapsed_time, const Map& map);
-   void updateY(const std::chrono::milliseconds elapsed_time, const Map& map);
+   void createHeadBumpParticle(ParticleTools& particle_tools);
+   void updateX(const std::chrono::milliseconds elapsed_time, const Map& map,
+                ParticleTools& particle_tools);
+   void updateY(const std::chrono::milliseconds elapsed_time, const Map& map,
+                ParticleTools& particle_tools);
 
    bool spriteIsVisible() const;
 

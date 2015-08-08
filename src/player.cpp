@@ -6,7 +6,9 @@
 #include "number_sprite.h"
 #include "graphics.h"
 #include "game.h"
+#include "head_bump_particle.h"
 #include "map.h"
+#include "particle_tools.h"
 #include "rectangle.h"
 
 // Walk Motion
@@ -99,7 +101,8 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
 Player::~Player() {}
 
 void Player::update(const std::chrono::milliseconds elapsed_time,
-        const Map& map)
+                    const Map& map,
+                    ParticleTools& particle_tools)
 {
     sprites_[getSpriteState()]->update();
 
@@ -108,8 +111,8 @@ void Player::update(const std::chrono::milliseconds elapsed_time,
 
     polar_star_.updateProjectiles(elapsed_time, map);
 
-    updateX(elapsed_time, map);
-    updateY(elapsed_time, map);
+    updateX(elapsed_time, map, particle_tools);
+    updateY(elapsed_time, map, particle_tools);
 }
 
 void Player::draw(Graphics& graphics) const
@@ -439,7 +442,8 @@ const Rectangle Player::bottomCollision(units::Game delta) const
 }
 
 void Player::updateX(const std::chrono::milliseconds elapsed_time,
-        const Map& map)
+                     const Map& map,
+                     ParticleTools&)
 {
     // Update velocity
     units::Acceleration acceleration_x{0.0};
@@ -500,8 +504,20 @@ void Player::updateX(const std::chrono::milliseconds elapsed_time,
     }
 }
 
+void Player::createHeadBumpParticle(ParticleTools& particle_tools)
+{
+    auto bump_pos = Vector<units::Game>{
+        pos_.x,
+        pos_.y + kCollisionYTop
+    };
+    particle_tools.system.addNewParticle(std::shared_ptr<Particle>(
+                new HeadBumpParticle(particle_tools.graphics, bump_pos)));
+
+}
+
 void Player::updateY(const std::chrono::milliseconds elapsed_time,
-        const Map& map)
+                     const Map& map,
+                     ParticleTools& particle_tools)
 {
     // Update velocity
     const units::Acceleration gravity = is_jump_active_ && velocity_.y < 0
@@ -527,6 +543,7 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
         info = getWallCollisionInfo(map, topCollision(0));
         if (info.collided) {
             pos_.y = units::tileToGame(info.row) + kCollisionYHeight;
+            createHeadBumpParticle(particle_tools);
         }
     } else {
         // Check collision in the direction of delta
@@ -534,6 +551,7 @@ void Player::updateY(const std::chrono::milliseconds elapsed_time,
         // React to collision
         if (info.collided) {
             pos_.y = units::tileToGame(info.row) + kCollisionYHeight;
+            createHeadBumpParticle(particle_tools);
             velocity_.y = 0.0;
         } else {
             pos_.y += delta;
