@@ -11,10 +11,6 @@ Sprite::Sprite(Graphics& graphics,
 {
 }
 
-Sprite::~Sprite()
-{
-}
-
 void Sprite::draw(Graphics& graphics, const Vector<units::Game>& pos) const
 {
     const units::Pixel dstx = units::gameToPixel(pos.x);

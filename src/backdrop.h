@@ -5,13 +5,13 @@
 #include "graphics.h"
 
 struct Backdrop {
-    virtual ~Backdrop() {};
+    virtual ~Backdrop() = default;
     virtual void draw(Graphics& graphics) const = 0;
 };
 
 struct FixedBackdrop : public Backdrop {
     FixedBackdrop(const std::string& path, Graphics& graphics);
-    ~FixedBackdrop() {};
+    ~FixedBackdrop() = default;
     void draw(Graphics& graphics) const;
     FixedBackdrop(const FixedBackdrop&)=delete;
     FixedBackdrop& operator=(const FixedBackdrop&)=delete;

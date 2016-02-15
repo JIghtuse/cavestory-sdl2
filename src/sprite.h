@@ -16,7 +16,7 @@ struct Sprite {
             const units::Pixel source_x, const units::Pixel source_y,
             const units::Pixel width, const units::Pixel height
             );
-    virtual ~Sprite();
+    virtual ~Sprite() = default;
 
     Sprite(const Sprite&)=delete;
     Sprite& operator=(const Sprite&)=delete;
