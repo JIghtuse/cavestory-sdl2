@@ -48,8 +48,8 @@ struct Player : public Damageable {
    void takeDamage(units::HP damage);
 
    const Rectangle getDamageRectangle() const;
-   const Vector<units::Game> getCenterPos() const;
-   const std::shared_ptr<DamageText> getDamageText() const;
+   const Vector<units::Game> getCenterPos() const override;
+   const std::shared_ptr<DamageText> getDamageText() const override;
    std::vector<std::shared_ptr<GenericProjectile> > getProjectiles();
 
 private:

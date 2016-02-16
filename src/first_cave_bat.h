@@ -39,8 +39,8 @@ private:
    void initializeSprite(Graphics& graphics, const SpriteState& sprite_state);
    const SpriteState getSpriteState() const;
 
-   const Vector<units::Game> getCenterPos() const;
-   const std::shared_ptr<DamageText> getDamageText() const;
+   const Vector<units::Game> getCenterPos() const override;
+   const std::shared_ptr<DamageText> getDamageText() const override;
 
    Vector<units::Game> pos_;
    const units::Game flight_center_y_;

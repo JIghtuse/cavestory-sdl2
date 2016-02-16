@@ -52,9 +52,9 @@ private:
         // Returns true if |this} are alive.
         bool update(std::chrono::milliseconds elapsed_time, const Map& map);
         void draw(Graphics& graphics) const;
-        Rectangle getCollisionRectangle() const;
-        units::HP getContactDamage() const;
-        void collideWithEnemy();
+        Rectangle getCollisionRectangle() const override;
+        units::HP getContactDamage() const override;
+        void collideWithEnemy() override;
     private:
         Vector<units::Game> getPos() const;
 

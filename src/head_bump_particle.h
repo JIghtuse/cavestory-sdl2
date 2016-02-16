@@ -14,8 +14,8 @@ struct Graphics;
 struct HeadBumpParticle : public Particle {
    HeadBumpParticle(Graphics& graphics, Vector<units::Game> center_pos);
 
-   void draw(Graphics& graphics) const;
-   bool update(const std::chrono::milliseconds elapsed_time);
+   void draw(Graphics& graphics) const override;
+   bool update(const std::chrono::milliseconds elapsed_time) override;
 private:
    Sprite sprite_;
    Timer live_timer_;

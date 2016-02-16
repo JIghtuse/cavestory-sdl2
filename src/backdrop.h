@@ -12,7 +12,7 @@ struct Backdrop {
 struct FixedBackdrop : public Backdrop {
     FixedBackdrop(const std::string& path, Graphics& graphics);
     ~FixedBackdrop() = default;
-    void draw(Graphics& graphics) const;
+    void draw(Graphics& graphics) const override;
     FixedBackdrop(const FixedBackdrop&)=delete;
     FixedBackdrop& operator=(const FixedBackdrop&)=delete;
     // TODO: does texture_id_ leaks when FixedBackdrop destroyed?

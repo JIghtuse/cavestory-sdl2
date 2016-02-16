@@ -16,7 +16,7 @@ struct AnimatedSprite : public Sprite {
 
     ~AnimatedSprite();
 
-    void update();
+    void update() override;
 
 private:
     Timer frame_timer_;
