@@ -100,21 +100,19 @@ void PolarStar::startFire(
     const auto gun_pos = calcGunPos(player_pos, hfacing, vfacing, gun_up);
     const auto bullet_pos = getBulletPos(gun_pos, hfacing, vfacing);
     if (projectile_a_ == nullptr) {
-        projectile_a_.reset(new Projectile(
+        projectile_a_ = std::make_shared<Projectile>(
                     (vfacing == VerticalFacing::HORIZONTAL)
                     ? horizontal_projectile_ : vertical_projectile_,
                     hfacing,
                     vfacing,
-                    bullet_pos
-                    ));
+                    bullet_pos);
     } else if (projectile_b_ == nullptr) {
-        projectile_b_.reset(new Projectile(
+        projectile_b_ = std::make_shared<Projectile>(
                     (vfacing == VerticalFacing::HORIZONTAL)
                     ? horizontal_projectile_ : vertical_projectile_,
                     hfacing,
                     vfacing,
-                    bullet_pos
-                    ));
+                    bullet_pos);
     }
 }
 
@@ -313,20 +311,18 @@ const Vector<units::Game> PolarStar::getBulletPos(
 
 void PolarStar::initializeSprites(Graphics& graphics)
 {
-    horizontal_projectile_.reset(new Sprite(
+    horizontal_projectile_ = std::make_shared<Sprite>(
                 graphics, "Bullet",
                 units::tileToPixel(kHorizontalProjectileSourceX),
                 units::tileToPixel(kProjectileSourceY),
                 units::tileToPixel(kProjectileSourceWidth),
-                units::tileToPixel(kProjectileSourceHeight)
-                ));
-    vertical_projectile_.reset(new Sprite(
+                units::tileToPixel(kProjectileSourceHeight));
+    vertical_projectile_ = std::make_shared<Sprite>(
                 graphics, "Bullet",
                 units::tileToPixel(kVerticalProjectileSourceX),
                 units::tileToPixel(kProjectileSourceY),
                 units::tileToPixel(kProjectileSourceWidth),
-                units::tileToPixel(kProjectileSourceHeight)
-                ));
+                units::tileToPixel(kProjectileSourceHeight));
     for (auto hf = HorizontalFacing::FIRST; hf != HorizontalFacing::LAST; ++hf) {
         for (auto vf = VerticalFacing::FIRST; vf != VerticalFacing::LAST; ++vf) {
             initializeSprite(graphics, SpriteState(hf, vf));
@@ -357,14 +353,11 @@ void PolarStar::initializeSprite(
         case VerticalFacing::LAST:
             break;
     }
-    sprite_map_[sprite_state] = std::shared_ptr<Sprite>{
-        new Sprite(graphics,
+    sprite_map_[sprite_state] = std::make_shared<Sprite>(graphics,
                 kArmsSpritePath,
                 units::gameToPixel(kPolarStarIndex * kGunWidth),
                 units::tileToPixel(tile_y),
                 units::gameToPixel(kGunWidth),
-                units::gameToPixel(kGunHeight)
-                )
-    };
+                units::gameToPixel(kGunHeight));
 }
 

@@ -17,13 +17,13 @@ units::Tile Game::kScreenHeight{15};
 Game::Game() :
     sdlEngine_(),
     graphics_(),
-    player_{new Player(graphics_,
+    player_{std::make_shared<Player>(graphics_,
             Vector<units::Game>{
             units::tileToGame(Game::kScreenWidth/2),
             units::tileToGame(Game::kScreenHeight/2)}
             )
     },
-    bat_{new FirstCaveBat(graphics_,
+    bat_{std::make_shared<FirstCaveBat>(graphics_,
             Vector<units::Game>{
             units::tileToGame(7),
             units::tileToGame(Game::kScreenHeight/2 + 1)}

@@ -19,7 +19,7 @@ FirstCaveBat::FirstCaveBat(Graphics& graphics, Vector<units::Game> pos) :
     facing_{HorizontalFacing::RIGHT},
     flight_angle_{0.0},
     sprites_(),
-    damage_text_(new DamageText())
+    damage_text_(std::make_shared<DamageText>())
 {
     initializeSprites(graphics);
 }
@@ -86,13 +86,13 @@ void FirstCaveBat::initializeSprite(Graphics& graphics,
         const SpriteState& sprite_state)
 {
     auto tile_y = sprite_state.facing == HorizontalFacing::RIGHT ? 3 : 2;
-    sprites_[sprite_state] = std::shared_ptr<Sprite>(new AnimatedSprite{
+    sprites_[sprite_state] = std::make_shared<AnimatedSprite>(
             graphics,
             kSpritePath,
             units::tileToPixel(2), units::tileToPixel(tile_y),
             units::tileToPixel(1), units::tileToPixel(1),
             kFlyFps, kNumFlyFrames
-            });
+            );
 }
 
 const FirstCaveBat::SpriteState FirstCaveBat::getSpriteState() const

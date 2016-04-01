@@ -15,14 +15,13 @@ Map::Map() :
 
 Map::~Map() {}
 
-/* TODO: use uniquie_ptr */
-Map* Map::createTestMap(Graphics& graphics)
+std::unique_ptr<Map> Map::createTestMap(Graphics& graphics)
 {
     using std::vector;
-    auto map = new Map();
+    auto map = std::make_unique<Map>();
 
     const std::string bkPath{"bkBlue"};
-    map->backdrop_.reset(new FixedBackdrop(bkPath, graphics));
+    map->backdrop_ = std::make_unique<FixedBackdrop>(bkPath, graphics);
 
     const units::Tile num_rows{15}; // 15 * 32 == 480
     const units::Tile num_cols{20}; // 20 * 32 == 640
@@ -35,12 +34,11 @@ Map* Map::createTestMap(Graphics& graphics)
             num_rows, vector<std::shared_ptr<Sprite> >(
                 num_cols, std::shared_ptr<Sprite>()));
 
-    std::shared_ptr<Sprite> sprite{new Sprite(
+    auto sprite = std::make_shared<Sprite>(
             graphics,
             kMapSpriteFilePath,
             units::tileToPixel(1), units::tileToPixel(0),
-            units::tileToPixel(1), units::tileToPixel(1)
-            )};
+            units::tileToPixel(1), units::tileToPixel(1));
     Tile tile(TileType::WALL, sprite);
     const units::Tile row{11};
     for (units::Tile col = 0; col < num_cols; ++col) {
@@ -66,24 +64,21 @@ Map* Map::createTestMap(Graphics& graphics)
     map->tiles_[8][19] = tile;
     map->tiles_[7][19] = tile;
 
-    std::shared_ptr<Sprite> chain_top{new Sprite(
+    auto chain_top = std::make_shared<Sprite>(
             graphics,
             kMapSpriteFilePath,
             units::tileToPixel(11), units::tileToPixel(2),
-            units::tileToPixel(1), units::tileToPixel(1)
-            )};
-    std::shared_ptr<Sprite> chain_middle{new Sprite(
+            units::tileToPixel(1), units::tileToPixel(1));
+    auto chain_middle = std::make_shared<Sprite>(
             graphics,
             kMapSpriteFilePath,
             units::tileToPixel(12), units::tileToPixel(2),
-            units::tileToPixel(1), units::tileToPixel(1)
-            )};
-    std::shared_ptr<Sprite> chain_bottom{new Sprite(
+            units::tileToPixel(1), units::tileToPixel(1));
+    auto chain_bottom = std::make_shared<Sprite>(
             graphics,
             kMapSpriteFilePath,
             units::tileToPixel(13), units::tileToPixel(2),
-            units::tileToPixel(1), units::tileToPixel(1)
-            )};
+            units::tileToPixel(1), units::tileToPixel(1));
 
     map->background_tiles_[8][2] = chain_top;
     map->background_tiles_[9][2] = chain_middle;

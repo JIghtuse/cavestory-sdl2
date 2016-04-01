@@ -31,7 +31,7 @@ struct Map {
        TileType tile_type;
    };
 
-   static Map* createTestMap(Graphics& graphics);
+   static std::unique_ptr<Map> createTestMap(Graphics& graphics);
 
    const std::vector<CollisionTile>
        getCollidingTiles(const Rectangle& rect) const;

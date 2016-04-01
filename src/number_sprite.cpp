@@ -67,14 +67,13 @@ NumberSprite::NumberSprite(Graphics& graphics,
     do {
         const int digit = number % kRadix;
         reversed_glyphs_.push_back(
-                std::shared_ptr<Sprite>{new Sprite(
+                std::make_shared<Sprite>(
                     graphics,
                     kNumberSpritePath,
                     units::gameToPixel(digit * units::kHalfTile),
                     units::gameToPixel(source_y),
                     units::gameToPixel(kSourceWidth),
-                    units::gameToPixel(kSourceHeight)
-                    )});
+                    units::gameToPixel(kSourceHeight)));
         number /= kRadix;
         ++digit_count;
     } while (number != 0);
@@ -88,25 +87,23 @@ NumberSprite::NumberSprite(Graphics& graphics,
     switch(op) {
     case OperatorType::MINUS:
         reversed_glyphs_.push_back(
-                std::shared_ptr<Sprite>{new Sprite(
+                std::make_shared<Sprite>(
                     graphics,
                     kNumberSpritePath,
                     units::gameToPixel(kMinusSourceX),
                     units::gameToPixel(kOpSourceY),
                     units::gameToPixel(kSourceWidth),
-                    units::gameToPixel(kSourceHeight)
-                    )});
+                    units::gameToPixel(kSourceHeight)));
         break;
     case OperatorType::PLUS:
         reversed_glyphs_.push_back(
-                std::shared_ptr<Sprite>{new Sprite(
+                std::make_shared<Sprite>(
                     graphics,
                     kNumberSpritePath,
                     units::gameToPixel(kPlusSourceX),
                     units::gameToPixel(kOpSourceY),
                     units::gameToPixel(kSourceWidth),
-                    units::gameToPixel(kSourceHeight)
-                    )});
+                    units::gameToPixel(kSourceHeight)));
         break;
     case OperatorType::NONE:
         break;

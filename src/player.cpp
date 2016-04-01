@@ -90,7 +90,7 @@ Player::Player(Graphics& graphics, Vector<units::Game> pos) :
     is_interacting_{false},
     health_(graphics),
     invincible_timer_{kInvincibleTime},
-    damage_text_(new DamageText()),
+    damage_text_(std::make_shared<DamageText>()),
     walking_animation_(),
     polar_star_(graphics),
     sprites_()
@@ -315,14 +315,12 @@ void Player::initializeSprite(Graphics& graphics,
     units::Tile tile_y = getFrameY(sprite_state);
     units::Tile tile_x = getFrameX(sprite_state);
 
-    sprites_[sprite_state] = std::unique_ptr<Sprite>{
-        new Sprite(
+    sprites_[sprite_state] = std::make_unique<Sprite>(
                 graphics,
                 kPlayerSpriteFilePath,
                 units::tileToPixel(tile_x), units::tileToPixel(tile_y),
                 units::tileToPixel(1), units::tileToPixel(1)
-                )
-    };
+    );
 }
 
 void Player::initializeSprites(Graphics& graphics)
@@ -510,8 +508,8 @@ void Player::createHeadBumpParticle(ParticleTools& particle_tools)
         pos_.x,
         pos_.y + kCollisionYTop
     };
-    particle_tools.system.addNewParticle(std::shared_ptr<Particle>(
-                new HeadBumpParticle(particle_tools.graphics, bump_pos)));
+    particle_tools.system.addNewParticle(
+            std::make_shared<HeadBumpParticle>(particle_tools.graphics, bump_pos));
 
 }
 
