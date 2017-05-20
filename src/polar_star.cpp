@@ -213,10 +213,14 @@ Vector<units::Game> PolarStar::Projectile::getPos() const
     return Vector<units::Game>{ x, y };
 }
 
+auto PolarStar::SpriteState::rank() const
+{
+    return std::tie(horizontal_facing, vertical_facing);
+}
+
 bool operator<(const PolarStar::SpriteState& a, const PolarStar::SpriteState& b)
 {
-    return std::tie(a.horizontal_facing, a.vertical_facing) <
-        std::tie(b.horizontal_facing, b.vertical_facing);
+    return a.rank() < b.rank();
 }
 
 const Vector<units::Game> PolarStar::calcGunPos(

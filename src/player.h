@@ -67,6 +67,8 @@ private:
            stride_type{stride_type}
        {}
 
+       auto rank() const;
+
        MotionType motion_type;
        HorizontalFacing horizontal_facing;
        VerticalFacing vertical_facing;

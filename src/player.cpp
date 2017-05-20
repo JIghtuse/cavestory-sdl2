@@ -368,21 +368,14 @@ VerticalFacing Player::vertical_facing() const
     }
 }
 
+auto Player::SpriteState::rank() const
+{
+    return std::tie(motion_type, horizontal_facing, vertical_facing, stride_type);
+}
+
 bool operator<(const Player::SpriteState& a, const Player::SpriteState& b)
 {
-    auto atie = std::tie(
-            a.motion_type, 
-            a.horizontal_facing, 
-            a.vertical_facing,
-            a.stride_type
-            );
-    auto btie = std::tie(
-            b.motion_type, 
-            b.horizontal_facing, 
-            b.vertical_facing,
-            b.stride_type
-            );
-    return atie < btie;
+    return a.rank() < b.rank();
 }
 
 const Player::SpriteState Player::getSpriteState() const

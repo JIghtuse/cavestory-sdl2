@@ -75,6 +75,8 @@ private:
             vertical_facing{vertical_facing}
         {}
 
+        auto rank() const;
+
         HorizontalFacing horizontal_facing;
         VerticalFacing vertical_facing;
     };
